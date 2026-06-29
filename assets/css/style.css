@@ -309,3 +309,81 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- UTIL -------------------------------------------------------------- */
 .stack > * + * { margin-top: 1.5rem; }
 .muted { color: var(--muted); }
+
+/* ---- INSIGHT DRAWER ("What's the insight") ---------------------------- */
+/* trigger: reads as a link with the same arrow as .links-row */
+.insight-trigger {
+  font: inherit; font-weight: 600; color: var(--accent);
+  background: none; border: none; padding: 0; margin: 1.1rem 0 0; cursor: pointer;
+  letter-spacing: inherit;
+}
+.insight-trigger::after { content: " \2197"; }
+.insight-trigger:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+#insight-overlay {
+  position: fixed; inset: 0; z-index: 40;
+  background: color-mix(in srgb, var(--times-coal) 46%, transparent);
+  opacity: 0; visibility: hidden; transition: opacity .26s ease, visibility .26s ease;
+}
+#insight-overlay.open { opacity: 1; visibility: visible; }
+
+#insight-drawer {
+  position: fixed; top: 0; right: 0; z-index: 41;
+  height: 100vh; height: 100dvh; width: min(560px, 92vw);
+  background: var(--bg); color: var(--fg);
+  border-left: 1px solid var(--rule); box-shadow: -16px 0 48px rgba(51, 51, 51, .22);
+  transform: translateX(102%); transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+  display: flex; flex-direction: column;
+}
+#insight-drawer.open { transform: translateX(0); }
+
+.insight-head {
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem clamp(1.25rem, 3vw, 2rem); border-bottom: 1px solid var(--rule);
+}
+.insight-head .label {
+  text-transform: uppercase; letter-spacing: 0.14em;
+  font-size: 0.72rem; font-weight: 700; color: var(--subtitle); margin: 0;
+}
+.insight-x {
+  background: none; border: none; color: var(--muted); font-size: 1.6rem; line-height: 1;
+  cursor: pointer; padding: 0 0.2rem;
+}
+.insight-x:hover { color: var(--fg); }
+
+.insight-body {
+  flex: 1 1 auto; overflow-y: auto; padding: clamp(1.4rem, 3.5vw, 2.2rem);
+}
+.insight-body h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); margin: 0 0 1rem; }
+.insight-body p { max-width: 60ch; }
+.insight-body sup.fn { line-height: 0; }
+.insight-body sup.fn a { color: var(--subtitle); font-weight: 700; text-decoration: none; }
+.insight-body sup.fn a:hover { text-decoration: underline; }
+
+/* the gas-price chart artefact */
+.gas-chart { margin: 1.8rem 0; }
+.gas-chart #gas-chart {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 0.6rem 0.4rem;
+}
+.gas-chart #gas-chart svg { width: 100%; height: auto; display: block;
+  font-family: var(--font-body); }
+.gas-chart figcaption {
+  color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin-top: 0.6rem;
+}
+
+/* notes / sources */
+.footnotes { margin-top: 2rem; border-top: 1px solid var(--rule); padding-top: 1.2rem; }
+.footnotes h3 {
+  text-transform: uppercase; letter-spacing: 0.12em; font-family: var(--font-body);
+  font-size: 0.72rem; font-weight: 700; color: var(--subtitle); margin: 0 0 0.8rem;
+}
+.footnotes ol { margin: 0; padding-left: 1.2rem; }
+.footnotes li { font-size: 0.86rem; color: var(--muted); margin-bottom: 0.7rem; line-height: 1.45; }
+.footnotes a { color: var(--accent); }
+
+body.drawer-open { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  #insight-drawer, #insight-overlay { transition: none; }
+}

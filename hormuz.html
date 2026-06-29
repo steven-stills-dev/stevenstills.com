@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hormuz Tracker · Steven Stills</title>
+  <meta name="description" content="A live map of ship traffic through the Strait of Hormuz that infers tanker and LNG trade disruption and surfaces a single strait-status signal." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter:wght@100..900&display=swap" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-head">
+    <div class="wrap">
+      <div class="brand"><a href="index.html">Steven Stills</a></div>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Projects</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. TITLE + LIVE LINK -->
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Project · energy markets</p>
+        <h1>Hormuz Tracker</h1>
+        <p class="lede">A live map of ship traffic through the Strait of Hormuz, covering the Persian Gulf and Gulf of Oman. It infers tanker and LNG trade disruption and surfaces it as one strait-status signal.</p>
+        <div class="links-row">
+          <a href="https://hormuz.stevenstills.com" target="_blank" rel="noopener">View live tracker</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. INSIGHT (before the write-up: the punchline) -->
+    <section class="section">
+      <div class="wrap">
+        <div class="insight">
+          <p class="label">The insight</p>
+          <p>A simple ship count through the Strait of Hormuz can miss a disruption to oil and gas entirely. Tankers and LNG carriers get held up while ordinary traffic keeps the total looking normal. So the tracker follows the tanker and LNG fleet on its own. When that segment thins out, it's an early warning on energy supply, and on the wholesale-market moves that follow.</p>
+          <button type="button" class="insight-trigger" data-insight-open aria-haspopup="dialog" aria-controls="insight-drawer">What's the insight</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WRITE-UP -->
+    <section class="section">
+      <div class="wrap prose">
+        <h2>Context</h2>
+        <p>Roughly a fifth of the world's oil and a large share of its LNG pass through the Strait of Hormuz. It's one of the most-watched chokepoints in energy. But "how many ships went through" is the wrong question. A busy strait can still mean stalled energy trade if the cargo mix has shifted. What matters is the cargo, not the count.</p>
+
+        <h2>What I built</h2>
+        <p>A live tracker of around 1,300 ships across the Persian Gulf and Gulf of Oman. It ingests AIS positions, classifies each ship by type, and watches the tanker and LNG segment specifically. From that it derives a single strait-status signal: a plain read on whether energy trade is flowing or under stress.</p>
+
+        <figure class="shot"><img src="assets/img/hormuz-tracker.png" alt="Hormuz Tracker: live satellite map of Strait of Hormuz ship traffic and strait status" /></figure>
+
+        <h2>The data artefact</h2>
+        <p>The map is the artefact. The headline is the status line above it: flowing when tanker and LNG movement holds against the baseline, escalating as it drops away. One status line replaces a thousand ship positions, so analysts and executives read the same signal.</p>
+
+        <h2>Method</h2>
+        <ul>
+          <li>Ingest live AIS ship positions across the Gulf region.</li>
+          <li>Classify each ship; isolate tankers and LNG carriers from general traffic.</li>
+          <li>Compare current tanker and LNG movement against a rolling baseline.</li>
+          <li>Roll it up into one strait-status signal anyone can read.</li>
+        </ul>
+
+        <h2>Tech</h2>
+        <ul class="tech-list">
+          <li>FastAPI</li>
+          <li>Leaflet</li>
+          <li>SQLite</li>
+          <li>GCP VM</li>
+        </ul>
+
+        <p style="margin-top:2rem;"><a href="index.html">← All projects</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>© 2026 Steven Stills</span>
+      <nav class="contact-links" aria-label="Contact">
+        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- INSIGHT DRAWER: "What's the insight" opens this from the right -->
+  <div id="insight-overlay" aria-hidden="true"></div>
+  <aside id="insight-drawer" role="dialog" aria-modal="true"
+         aria-labelledby="insight-drawer-title" aria-hidden="true">
+    <header class="insight-head">
+      <p class="label">The insight</p>
+      <button type="button" class="insight-x" aria-label="Close">&times;</button>
+    </header>
+    <div class="insight-body">
+      <h2 id="insight-drawer-title">When one ship could move a market</h2>
+
+      <p>Through the spring and summer of 2026, Iran and the United States slid into open confrontation, an escalation many analysts struggled to tie to any clear war aim.<sup class="fn"><a href="#fn-1" id="ref-1">1</a></sup> With no obvious path to a decisive victory, the Strait of Hormuz became the pivot of the whole conflict, and the United States reached again for a familiar argument about keeping the world's fuel routes open, not for the first time in its history.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup></p>
+
+      <p>For a stretch of the crisis, UK wholesale gas could swing violently on whether a single cargo cleared the strait. The threat of closure alone was enough: on 13 April 2026 the benchmark jumped 11.7% in one session, and front-month gas later peaked near 151 pence a therm.<sup class="fn"><a href="#fn-3" id="ref-3">3</a></sup> As the conflict settled into a grind and the market priced the risk in, that sensitivity faded. By late May prices had fallen back toward 96 pence, and the June reopening eased them further.<sup class="fn"><a href="#fn-4" id="ref-4">4</a></sup> The strait stayed a focal point for political argument long after it stopped moving the market.</p>
+
+      <figure class="gas-chart">
+        <div id="gas-chart"></div>
+        <figcaption>UK NBP front-month wholesale gas, pence per therm. Reported levels at selected dates, April to June 2026; the late-April closure scare marks the peak. Figures from notes 3 and 4, not a continuous daily series.</figcaption>
+      </figure>
+
+      <section class="footnotes">
+        <h3>Notes &amp; sources</h3>
+        <ol>
+          <li id="fn-1">The 2026 Iran-US confrontation and how the strait became its pivot. <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" rel="noopener">2026 Strait of Hormuz crisis, overview</a>; <a href="https://researchbriefings.files.parliament.uk/documents/CBP-10636/CBP-10636.pdf" target="_blank" rel="noopener">UK Parliament research briefing CBP-10636</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
+          <li id="fn-2">US precedent for using force to keep Gulf fuel routes open: the <a href="https://en.wikipedia.org/wiki/Carter_Doctrine" target="_blank" rel="noopener">Carter Doctrine</a> (1980); the 1984-88 <a href="https://www.usni.org/magazines/naval-history/2025/june/tanker-war" target="_blank" rel="noopener">Tanker War</a>; and <a href="https://www.globalsecurity.org/military/ops/earnest_will.htm" target="_blank" rel="noopener">Operation Earnest Will</a> (1987-88), when the US Navy reflagged and escorted Kuwaiti tankers through the Gulf. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
+          <li id="fn-3">UK NBP gas rose 11.7% in one session on 13 April 2026, to 122.5p per therm, after a formal warning the strait could close "indefinitely"; the benchmark later peaked near 151p. <a href="https://www.financialcontent.com/article/marketminute-2026-4-13-british-natural-gas-prices-soar-117-amid-hormuz-blockade-threat" target="_blank" rel="noopener">FinancialContent, 13 Apr 2026</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
+          <li id="fn-4">Prices eased to about 96p by late May 2026, the lowest since February, as shipping normalised and Qatari LNG resumed; a US-Iran agreement to reopen the strait was announced on 14 June and signed on 17 June. <a href="https://tradingeconomics.com/commodity/uk-natural-gas" target="_blank" rel="noopener">Trading Economics, UK natural gas</a>; <a href="https://www.aljazeera.com/news/2026/6/11/iran-shuts-hormuz-strait-but-wasnt-it-already-closed" target="_blank" rel="noopener">Al Jazeera</a>. <a href="#ref-4" aria-label="Back to text">&#8617;</a></li>
+        </ol>
+      </section>
+    </div>
+  </aside>
+
+  <script src="assets/js/insight-drawer.js" defer></script>
+
+  <!-- TEMPORARY design tool — remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
+  <script src="assets/js/design-tray.js" defer></script>
+</body>
+</html>
