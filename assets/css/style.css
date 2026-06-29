@@ -10,7 +10,8 @@
 :root {
   /* Colour scheme */
   /* ---- NAMED BRAND COLOURS (refer to these by name) -------------------
-     Financial Times-inspired. Full reference + chart palette: DESIGN.md   */
+     Financial Times-inspired. Full reference + chart palette:
+     .claude/DESIGN.md (local design notes, not in the repo)              */
   --times-coal:  #333333;  /* headers + body text          */
   --times-red:   #990f3d;  /* subtitles · chart primary    */
   --times-blue:  #0f5499;  /* page links · chart secondary */
