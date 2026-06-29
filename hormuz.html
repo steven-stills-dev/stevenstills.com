@@ -51,6 +51,11 @@
           <figcaption>UK NBP front-month wholesale gas, pence per therm. Reported levels at selected dates, April to June 2026; the late-April closure scare marks the peak. Figures from notes 3 and 4, not a continuous daily series.</figcaption>
         </figure>
 
+        <figure class="gas-chart">
+          <div id="transit-chart"></div>
+          <figcaption>Daily tanker transits through the Strait of Hormuz, February to June 2026. Tanker traffic fell from roughly 50 a day to near zero from late February; the red column marks 13 April, the day UK gas jumped 11.7%. The price moved because the ships stopped. Source: IMF PortWatch.<sup class="fn"><a href="#fn-5" id="ref-5">5</a></sup></figcaption>
+        </figure>
+
         <h2>What I built</h2>
         <p>A live tracker of around 1,300 ships across the Persian Gulf and Gulf of Oman. It ingests AIS positions, classifies each ship by type, and watches the tanker and LNG segment specifically. From that it derives a single strait-status signal: a plain read on whether energy trade is flowing or under stress.</p>
 
@@ -63,6 +68,7 @@
             <li id="fn-2">US precedent for using force to keep Gulf fuel routes open: the <a href="https://en.wikipedia.org/wiki/Carter_Doctrine" target="_blank" rel="noopener">Carter Doctrine</a> (1980); the 1984-88 <a href="https://www.usni.org/magazines/naval-history/2025/june/tanker-war" target="_blank" rel="noopener">Tanker War</a>; and <a href="https://www.globalsecurity.org/military/ops/earnest_will.htm" target="_blank" rel="noopener">Operation Earnest Will</a> (1987-88), when the US Navy reflagged and escorted Kuwaiti tankers through the Gulf. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-3">UK NBP gas rose 11.7% in one session on 13 April 2026, to 122.5p per therm, after a formal warning the strait could close "indefinitely"; the benchmark later peaked near 151p. <a href="https://www.financialcontent.com/article/marketminute-2026-4-13-british-natural-gas-prices-soar-117-amid-hormuz-blockade-threat" target="_blank" rel="noopener">FinancialContent, 13 Apr 2026</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-4">Prices eased to about 96p by late May 2026, the lowest since February, as shipping normalised and Qatari LNG resumed; a US-Iran agreement to reopen the strait was announced on 14 June and signed on 17 June. <a href="https://tradingeconomics.com/commodity/uk-natural-gas" target="_blank" rel="noopener">Trading Economics, UK natural gas</a>; <a href="https://www.aljazeera.com/news/2026/6/11/iran-shuts-hormuz-strait-but-wasnt-it-already-closed" target="_blank" rel="noopener">Al Jazeera</a>. <a href="#ref-4" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-5">Daily tanker-transit counts are from <a href="https://portwatch.imf.org/" target="_blank" rel="noopener">IMF PortWatch</a>, "Daily Chokepoints Data" for the Strait of Hormuz (field <em>n_tanker</em>), built on AIS data from the UN Global Platform. Static snapshot, 1 February to 21 June 2026, retrieved 29 June 2026. AIS coverage in the region was degraded during the crisis by GPS jamming and vessels going dark, so counts are a lower bound. <a href="#ref-5" aria-label="Back to text">&#8617;</a></li>
           </ol>
         </section>
 
@@ -82,6 +88,7 @@
   </footer>
 
   <script src="assets/js/gas-chart.js" defer></script>
+  <script src="assets/js/transit-chart.js" defer></script>
 
   <!-- TEMPORARY design tool — remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
   <script src="assets/js/design-tray.js" defer></script>

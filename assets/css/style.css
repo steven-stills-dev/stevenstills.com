@@ -344,11 +344,11 @@ sup.fn a:hover { text-decoration: underline; }
 
 /* the gas-price chart artefact */
 .gas-chart { margin: 1.8rem 0; }
-.gas-chart #gas-chart {
+.gas-chart #gas-chart, .gas-chart #transit-chart {
   background: #fff7ef; border: 1px solid var(--rule); border-radius: 6px;
   padding: 0.6rem 0.4rem;
 }
-.gas-chart #gas-chart svg { width: 100%; height: auto; display: block;
+.gas-chart #gas-chart svg, .gas-chart #transit-chart svg { width: 100%; height: auto; display: block;
   font-family: var(--font-body); }
 .gas-chart figcaption {
   color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin-top: 0.6rem;
