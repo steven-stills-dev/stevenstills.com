@@ -196,9 +196,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   display: grid; gap: 2rem; grid-template-columns: 1fr;
 }
 @media (min-width: 62rem) {
-  /* FT three-up: text · portrait · mantras. minmax(0,..) lets the columns shrink
-     below their content so a long mantra can't force the card past .wrap. */
-  .author-head { grid-template-columns: minmax(0, 1.5fr) 260px minmax(0, 0.9fr); align-items: start; }
+  /* FT three-up: text · portrait · mantras. Fractional tracks so the portrait
+     scales with the band; minmax(0,..) lets a long mantra wrap rather than
+     force the layout wider. */
+  .author-head { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.8fr); align-items: start; }
 }
 .author-head h1 { margin: 0; }
 .author-head .role {
@@ -217,10 +218,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .author-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block; }
 
-/* mantras column — FT-style pull-quotes to the right of the portrait */
+/* mantras column — FT-style pull-quotes to the right of the portrait,
+   set off by a thin grey column rule (left) + a hairline between the two */
 .author-quotes {
-  display: flex; flex-direction: column; gap: 1.4rem;
-  align-self: center;
+  display: flex; flex-direction: column; gap: 1.4rem; justify-content: center;
+  align-self: stretch;                          /* rule runs the full band height */
+  border-left: 1px solid var(--rule);
+  padding-left: clamp(1.25rem, 2vw, 2rem);
 }
 .pull-quote { margin: 0; }
 .pull-quote + .pull-quote {
