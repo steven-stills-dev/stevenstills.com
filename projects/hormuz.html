@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hormuz Tracker — Steven Stills</title>
-  <meta name="description" content="Placeholder — add project description here." />
+  <title>Hormuz Tracker · Steven Stills</title>
+  <meta name="description" content="A live map of vessel traffic through the Strait of Hormuz that infers tanker and LNG trade disruption and surfaces a single strait-status signal." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,22 +28,22 @@
     <!-- 1. TITLE + LIVE LINK -->
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Project</p>
+        <p class="kicker">Project · energy markets</p>
         <h1>Hormuz Tracker</h1>
-        <p class="lede">add project intro here</p>
+        <p class="lede">A live map of vessel traffic through the Strait of Hormuz, covering the Persian Gulf and Gulf of Oman. It infers tanker and LNG trade disruption and surfaces it as one strait-status signal.</p>
         <div class="links-row">
-          <a href="#" target="_blank" rel="noopener">add live link here</a>
-          <a href="#" target="_blank" rel="noopener">add source link here</a>
+          <a href="https://hormuz.stevenstills.com" target="_blank" rel="noopener">View live tracker</a>
+          <a href="#" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
       </div>
     </section>
 
-    <!-- 2. INSIGHT (before the write-up — the punchline) -->
+    <!-- 2. INSIGHT (before the write-up: the punchline) -->
     <section class="section">
       <div class="wrap">
         <div class="insight">
           <p class="label">The insight</p>
-          <p>add key insight here</p>
+          <p>General shipping traffic can look normal while tanker and LNG trade is disrupted. Headline vessel counts hide it. Split the fleet by cargo and the disruption shows, along with the risk to oil and gas prices, days before the news reports it.</p>
         </div>
       </div>
     </section>
@@ -52,28 +52,30 @@
     <section class="section">
       <div class="wrap prose">
         <h2>Context</h2>
-        <p>add context details here</p>
+        <p>Roughly a fifth of the world's oil and a large share of its LNG pass through the Strait of Hormuz. It's one of the most-watched chokepoints in energy. But "how many ships went through" is the wrong question. A busy strait can still mean stalled energy trade if the cargo mix has shifted. What matters is the cargo, not the count.</p>
 
         <h2>What I built</h2>
-        <p>add build details here</p>
+        <p>A live tracker of around 1,300 vessels across the Persian Gulf and Gulf of Oman. It ingests AIS positions, classifies each vessel by type, and watches the tanker and LNG segment specifically. From that it derives a single strait-status signal: a plain read on whether energy trade is flowing or under stress.</p>
 
-        <figure class="shot"><img src="../assets/img/hormuz-tracker.png" alt="Hormuz Tracker — live satellite map of Strait of Hormuz vessel traffic and strait status" /></figure>
+        <figure class="shot"><img src="../assets/img/hormuz-tracker.png" alt="Hormuz Tracker: live satellite map of Strait of Hormuz vessel traffic and strait status" /></figure>
 
         <h2>The data artefact</h2>
-        <p>add data artefact details here</p>
+        <p>The map is the artefact. The headline is the status line above it: flowing when tanker and LNG movement holds against the baseline, escalating as it drops away. One status line replaces a thousand vessel positions, so analysts and executives read the same signal.</p>
 
         <h2>Method</h2>
         <ul>
-          <li>add method step here</li>
-          <li>add method step here</li>
-          <li>add method step here</li>
+          <li>Ingest live AIS vessel positions across the Gulf region.</li>
+          <li>Classify each vessel; isolate tankers and LNG carriers from general traffic.</li>
+          <li>Compare current tanker and LNG movement against a rolling baseline.</li>
+          <li>Roll it up into one strait-status signal anyone can read.</li>
         </ul>
 
         <h2>Tech</h2>
         <ul class="tech-list">
-          <li>add tech here</li>
-          <li>add tech here</li>
-          <li>add tech here</li>
+          <li>FastAPI</li>
+          <li>Leaflet</li>
+          <li>SQLite</li>
+          <li>GCP VM</li>
         </ul>
 
         <p style="margin-top:2rem;"><a href="index.html">← All projects</a></p>
@@ -83,10 +85,10 @@
 
   <footer class="site-foot">
     <div class="wrap">
-      <span>© 2026 add name here</span>
+      <span>© 2026 Steven Stills</span>
       <nav class="contact-links" aria-label="Contact">
-        <a href="#">add email here</a>
-        <a href="#" target="_blank" rel="noopener">add LinkedIn here</a>
+        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
       </nav>
     </div>
   </footer>
