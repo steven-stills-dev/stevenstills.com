@@ -35,8 +35,8 @@
             <p class="bio">put short bio here</p>
             <p><a href="../about.html">add bio link here →</a></p>
           </div>
-          <figure class="author-portrait switch" id="proj-portrait" title="Click to switch photo (testing)">
-            <img id="proj-portrait-img" src="../assets/img/portrait-3.png" alt="Steven Stills" />
+          <figure class="author-portrait">
+            <img src="../assets/img/portrait-4.png" alt="Steven Stills" />
           </figure>
         </div>
       </div>
@@ -52,7 +52,7 @@
           <!-- Hormuz Tracker -->
           <article class="article-row">
             <div class="article-date">June 8 2026</div>
-            <div class="article-thumb">add thumbnail here</div>
+            <div class="article-thumb"><img src="../assets/img/hormuz-tracker.png" alt="Hormuz Tracker live map" /></div>
             <div class="article-body">
               <p class="article-cat">add category here</p>
               <h3><a href="hormuz.html">Hormuz Tracker</a></h3>
@@ -104,27 +104,6 @@
       </nav>
     </div>
   </footer>
-
-  <!-- TEMP testing aid: click the portrait to compare photos. Remove before go-live. -->
-  <script>
-    (function () {
-      var shots = [
-        "../assets/img/portrait-3.png",
-        "../assets/img/portrait-4.png",
-        "../assets/img/portrait-5.png",
-        "../assets/img/profile_2.png",
-        "../assets/img/headshot.png"
-      ];
-      var img = document.getElementById("proj-portrait-img");
-      var fig = document.getElementById("proj-portrait");
-      if (!img || !fig) return;
-      var i = 0;
-      fig.addEventListener("click", function () {
-        i = (i + 1) % shots.length;
-        img.src = shots[i];
-      });
-    })();
-  </script>
 
   <!-- TEMPORARY design tool — remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
   <script src="../assets/js/design-tray.js" defer></script>

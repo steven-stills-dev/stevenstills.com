@@ -29,8 +29,8 @@
       <div class="wrap">
         <p class="kicker">About</p>
         <div class="about-grid">
-          <figure class="portrait" id="portrait" title="Click to switch photo (testing)">
-            <img id="portrait-img" src="assets/img/portrait-3.png" alt="Steven Stills" />
+          <figure class="portrait">
+            <img src="assets/img/portrait-4.png" alt="Steven Stills" />
           </figure>
           <div class="prose">
             <h1 style="margin-top:0;">add name here</h1>
@@ -59,27 +59,6 @@
       </nav>
     </div>
   </footer>
-
-  <!-- TEMP testing aid: click the portrait to compare photos. Remove before go-live. -->
-  <script>
-    (function () {
-      var shots = [
-        "assets/img/portrait-3.png",
-        "assets/img/portrait-4.png",
-        "assets/img/portrait-5.png",
-        "assets/img/profile_2.png",
-        "assets/img/headshot.png"
-      ];
-      var img = document.getElementById("portrait-img");
-      var fig = document.getElementById("portrait");
-      if (!img || !fig) return;
-      var i = 0;
-      fig.addEventListener("click", function () {
-        i = (i + 1) % shots.length;
-        img.src = shots[i];
-      });
-    })();
-  </script>
 
   <!-- TEMPORARY design tool — remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
   <script src="assets/js/design-tray.js" defer></script>
