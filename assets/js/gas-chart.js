@@ -1,10 +1,9 @@
 /* =========================================================================
-   INSIGHT DRAWER — "What's the insight" slide-in panel for the project page.
+   GAS CHART — inline SVG of UK wholesale gas through the 2026 Hormuz crisis.
 
-   Opens from the right (matching the site's drawer convention), holds a short
-   article + an inline SVG chart of UK wholesale gas through the 2026 Hormuz
-   crisis. Pure vanilla, no build step. Chart colours are read from the site's
-   CSS custom properties so it stays in sync with the palette (see DESIGN.md):
+   Renders into #gas-chart on load (no drawer; the story is now inline on the
+   Hormuz page). Pure vanilla, no build step. Chart colours are read from the
+   site's CSS custom properties so it stays in sync with the palette:
    times_red = the signal (the price spike), times_coal = line/axes,
    times_blue = context dots, times_line = gridlines, times_grey = labels.
    ========================================================================= */
@@ -13,7 +12,7 @@
 
   /* ---- UK NBP front-month wholesale gas, pence/therm ---------------------
      Reported levels at key dates, Apr-Jun 2026 (selected points, not a daily
-     series). Sources are in the drawer's footnotes. The late-April peak is the
+     series). Sources are in the page footnotes. The late-April peak is the
      highlighted spike: the Strait-of-Hormuz closure scare.                  */
   var SERIES = [
     { label: "early Apr", v: 110 },
@@ -90,55 +89,15 @@
     return s;
   }
 
-  /* ---- drawer open / close ---------------------------------------------- */
-  var drawer, overlay, lastFocus = null, rendered = false;
-
-  function open() {
-    if (!drawer) return;
-    if (!rendered) {
-      var host = document.getElementById("gas-chart");
-      if (host) { host.innerHTML = chartSVG(); rendered = true; }
-    }
-    lastFocus = document.activeElement;
-    drawer.classList.add("open");
-    overlay.classList.add("open");
-    drawer.setAttribute("aria-hidden", "false");
-    overlay.setAttribute("aria-hidden", "false");
-    document.body.classList.add("drawer-open");
-    var closeBtn = drawer.querySelector(".insight-x");
-    if (closeBtn) closeBtn.focus();
-  }
-
-  function close() {
-    if (!drawer) return;
-    drawer.classList.remove("open");
-    overlay.classList.remove("open");
-    drawer.setAttribute("aria-hidden", "true");
-    overlay.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("drawer-open");
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  function init() {
-    drawer = document.getElementById("insight-drawer");
-    overlay = document.getElementById("insight-overlay");
-    if (!drawer || !overlay) return;
-
-    Array.prototype.forEach.call(
-      document.querySelectorAll("[data-insight-open]"),
-      function (btn) { btn.addEventListener("click", open); }
-    );
-    overlay.addEventListener("click", close);
-    var closeBtn = drawer.querySelector(".insight-x");
-    if (closeBtn) closeBtn.addEventListener("click", close);
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && drawer.classList.contains("open")) close();
-    });
+  /* ---- render into the page on load ------------------------------------- */
+  function render() {
+    var host = document.getElementById("gas-chart");
+    if (host) host.innerHTML = chartSVG();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", render);
   } else {
-    init();
+    render();
   }
 })();
