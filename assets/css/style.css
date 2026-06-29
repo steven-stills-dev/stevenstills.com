@@ -192,10 +192,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- AUTHOR HEAD (projects-page intro blurb, FT columnist style) ------ */
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
-  padding-bottom: 2.5rem; border-bottom: 1px solid var(--rule);
+  background: var(--surface);     /* times_sand card to lift the intro off the page */
+  border: 1px solid var(--rule); border-radius: 8px;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
 }
-@media (min-width: 48rem) {
-  .author-head { grid-template-columns: 1fr 220px; align-items: start; }
+@media (min-width: 62rem) {
+  /* FT three-up: text · portrait · mantras. minmax(0,..) lets the columns shrink
+     below their content so a long mantra can't force the card past .wrap. */
+  .author-head { grid-template-columns: minmax(0, 1.5fr) 260px minmax(0, 0.9fr); align-items: start; }
 }
 .author-head h1 { margin: 0; }
 .author-head .role {
@@ -213,6 +217,25 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     var(--surface);
 }
 .author-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block; }
+
+/* mantras column — FT-style pull-quotes to the right of the portrait */
+.author-quotes {
+  display: flex; flex-direction: column; gap: 1.4rem;
+  align-self: center;
+}
+.pull-quote { margin: 0; }
+.pull-quote + .pull-quote {
+  border-top: 1px solid var(--rule); margin-top: 1.4rem; padding-top: 1.4rem;
+}
+.pull-quote::before {
+  content: "\201C"; display: block;
+  font-family: var(--font-heading); font-size: 1.9rem; line-height: 0.7;
+  color: var(--times-blue); margin-bottom: 0.3rem;   /* FT-style blue quote mark */
+}
+.pull-quote p {
+  margin: 0; font-family: var(--font-heading); font-weight: 540;
+  font-size: 1.2rem; line-height: 1.2; letter-spacing: -0.02em; color: var(--heading);
+}
 
 /* ---- ARTICLE LIST (FT-style project list) ----------------------------- */
 .article-list { margin-top: 0.5rem; }
@@ -310,60 +333,16 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .stack > * + * { margin-top: 1.5rem; }
 .muted { color: var(--muted); }
 
-/* ---- INSIGHT DRAWER ("What's the insight") ---------------------------- */
-/* trigger: reads as a link with the same arrow as .links-row */
-.insight-trigger {
-  font: inherit; font-weight: 600; color: var(--accent);
-  background: none; border: none; padding: 0; margin: 1.1rem 0 0; cursor: pointer;
-  letter-spacing: inherit;
-}
-.insight-trigger::after { content: " \2197"; }
-.insight-trigger:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-#insight-overlay {
-  position: fixed; inset: 0; z-index: 40;
-  background: color-mix(in srgb, var(--times-coal) 46%, transparent);
-  opacity: 0; visibility: hidden; transition: opacity .26s ease, visibility .26s ease;
-}
-#insight-overlay.open { opacity: 1; visibility: visible; }
-
-#insight-drawer {
-  position: fixed; top: 0; right: 0; z-index: 41;
-  height: 100vh; height: 100dvh; width: min(560px, 92vw);
-  background: var(--bg); color: var(--fg);
-  border-left: 1px solid var(--rule); box-shadow: -16px 0 48px rgba(51, 51, 51, .22);
-  transform: translateX(102%); transition: transform .3s cubic-bezier(.4, 0, .2, 1);
-  display: flex; flex-direction: column;
-}
-#insight-drawer.open { transform: translateX(0); }
-
-.insight-head {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding: 1.1rem clamp(1.25rem, 3vw, 2rem); border-bottom: 1px solid var(--rule);
-}
-.insight-head .label {
-  text-transform: uppercase; letter-spacing: 0.14em;
-  font-size: 0.72rem; font-weight: 700; color: var(--subtitle); margin: 0;
-}
-.insight-x {
-  background: none; border: none; color: var(--muted); font-size: 1.6rem; line-height: 1;
-  cursor: pointer; padding: 0 0.2rem;
-}
-.insight-x:hover { color: var(--fg); }
-
-.insight-body {
-  flex: 1 1 auto; overflow-y: auto; padding: clamp(1.4rem, 3.5vw, 2.2rem);
-}
-.insight-body h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); margin: 0 0 1rem; }
-.insight-body p { max-width: 60ch; }
-.insight-body sup.fn { line-height: 0; }
-.insight-body sup.fn a { color: var(--subtitle); font-weight: 700; text-decoration: none; }
-.insight-body sup.fn a:hover { text-decoration: underline; }
+/* ---- INSIGHT STORY (the write-up, now inline as full-width prose) ------ */
+/* footnote superscripts shared by the story body + the notes list */
+sup.fn { line-height: 0; }
+sup.fn a { color: var(--subtitle); font-weight: 700; text-decoration: none; }
+sup.fn a:hover { text-decoration: underline; }
 
 /* the gas-price chart artefact */
 .gas-chart { margin: 1.8rem 0; }
 .gas-chart #gas-chart {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+  background: #fff7ef; border: 1px solid var(--rule); border-radius: 6px;
   padding: 0.6rem 0.4rem;
 }
 .gas-chart #gas-chart svg { width: 100%; height: auto; display: block;
@@ -381,9 +360,3 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .footnotes ol { margin: 0; padding-left: 1.2rem; }
 .footnotes li { font-size: 0.86rem; color: var(--muted); margin-bottom: 0.7rem; line-height: 1.45; }
 .footnotes a { color: var(--accent); }
-
-body.drawer-open { overflow: hidden; }
-
-@media (prefers-reduced-motion: reduce) {
-  #insight-drawer, #insight-overlay { transition: none; }
-}
