@@ -265,6 +265,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .article-thumb:has(img) { padding: 0; }
 .article-thumb img { width: 100%; height: 100%; object-fit: cover; }
+/* icon thumb (e.g. the batteries editorial) — clean fill, centred glyph */
+.article-thumb--icon { background: #fff7ef; padding: 0.6rem 1rem; }
+.article-thumb--icon svg { width: 72%; height: auto; }
 .article-cat { font-weight: 700; color: var(--accent); font-size: 0.95rem; margin: 0 0 0.35rem; }
 .article-cat a { color: var(--accent); }
 .article-row h3 { margin: 0 0 0.5rem; font-size: 1.45rem; }
@@ -363,3 +366,28 @@ sup.fn a:hover { text-decoration: underline; }
 .footnotes ol { margin: 0; padding-left: 1.2rem; }
 .footnotes li { font-size: 0.86rem; color: var(--muted); margin-bottom: 0.7rem; line-height: 1.45; }
 .footnotes a { color: var(--accent); }
+
+/* ---- EDITORIAL EXTRAS (batteries opinion page) ------------------------ */
+/* short summary line that sits under a section heading */
+.prose .summary {
+  color: var(--muted); font-style: italic;
+  margin: -0.2rem 0 1.1rem; font-size: 1.05rem;
+}
+/* monochrome chart boxes, on the darker times_sand ground */
+.battery-fig #solar-profile, .battery-fig #battery-anim, .battery-fig #supplier-chart {
+  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px; padding: 0.6rem 0.4rem;
+}
+.battery-fig #solar-profile svg, .battery-fig #battery-anim svg, .battery-fig #supplier-chart svg {
+  width: 100%; height: auto; display: block; font-family: var(--font-body);
+}
+/* big-number stat callouts */
+.stat-row { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin: 1.8rem 0; }
+.stat { flex: 1 1 200px; border-left: 1px solid var(--rule); padding-left: 1.1rem; }
+.stat-num {
+  font-family: var(--font-heading); font-weight: 600; color: var(--heading);
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem); line-height: 1; margin: 0;
+}
+.stat-label {
+  color: var(--subtitle); text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.72rem; font-weight: 700; margin: 0.55rem 0 0;
+}
