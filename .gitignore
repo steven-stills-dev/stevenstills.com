@@ -9,6 +9,9 @@ desktop.ini
 *.swp
 *~
 
+# Local Claude config / notes (kept out of the repo)
+.claude/
+
 # Local server / misc
 *.log
 .cache/
