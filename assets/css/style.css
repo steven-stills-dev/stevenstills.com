@@ -190,11 +190,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 /* ---- AUTHOR HEAD (projects-page intro blurb, FT columnist style) ------ */
+/* full-bleed sand band behind the intro; the content stays constrained by .wrap */
+.author-band { background: var(--surface); }
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
-  background: var(--surface);     /* times_sand card to lift the intro off the page */
-  border: 1px solid var(--rule); border-radius: 8px;
-  padding: clamp(1.75rem, 4vw, 2.75rem);
 }
 @media (min-width: 62rem) {
   /* FT three-up: text · portrait · mantras. minmax(0,..) lets the columns shrink
