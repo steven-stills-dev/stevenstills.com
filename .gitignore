@@ -12,3 +12,9 @@ desktop.ini
 # Local server / misc
 *.log
 .cache/
+
+# Stray images dropped at repo root (real assets live in assets/img/)
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
