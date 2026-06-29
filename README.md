@@ -14,11 +14,12 @@ to those, shows screenshots, and writes them up. Every project page leads with t
 ## Structure
 
 ```
-index.html          Home page
+index.html          Projects landing page (the site's home)
+about.html          About page
+hormuz.html         Hormuz Tracker project write-up
 assets/css/         Stylesheets
 assets/js/          Scripts (only if/when needed)
 assets/img/         Screenshots, headshot
-projects/           One .html per project page
 .nojekyll           Tells GitHub Pages to serve files as-is (no Jekyll processing)
 CLAUDE.md           Durable brand + working rules for this repo
 ```
