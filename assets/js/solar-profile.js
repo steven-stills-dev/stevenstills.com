@@ -19,6 +19,7 @@
   var COAL = cssVar("--times-coal", "#333333");
   var GREY = cssVar("--times-grey", "#66605c");
   var LINE = cssVar("--times-line", "#e7d3c1");
+  var BLUE = cssVar("--times-blue", "#0f5499"), RED = cssVar("--times-red", "#990f3d");
 
   // hourly profiles, 00:00 -> 24:00 (arbitrary MW). Summer solar hump peaks
   // midday; demand is low midday and peaks in the evening.
@@ -45,11 +46,7 @@
 
   var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
     'aria-label="Summer solar generation overshooting demand at midday, with an evening demand peak">';
-  s += '<defs>' +
-    '<pattern id="sl-line" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-      '<line x1="0" y1="0" x2="0" y2="6" stroke="' + COAL + '" stroke-width="1" opacity="0.34"/></pattern>' +
-    '<pattern id="sl-dot" width="6" height="6" patternUnits="userSpaceOnUse">' +
-      '<circle cx="1.5" cy="1.5" r="1" fill="' + COAL + '" opacity="0.4"/></pattern></defs>';
+  // solid theme fills (blue = cheap charge window, red = dear discharge window)
 
   // y gridlines + labels
   YT.forEach(function (t) {
@@ -59,10 +56,10 @@
   });
   s += '<text x="' + X0 + '" y="14" font-size="11" fill="' + GREY + '">MW</text>';
 
-  // midday surplus (solar over demand, ~08:00-15:00): line-hatch
-  s += '<path d="' + band(SOLAR, DEMAND, 8, 15) + '" fill="url(#sl-line)" stroke="none"/>';
-  // evening gap (demand over solar, ~16:00-22:00): dot-hatch
-  s += '<path d="' + band(DEMAND, SOLAR, 16, 22) + '" fill="url(#sl-dot)" stroke="none"/>';
+  // midday surplus (solar over demand): blue = cheap charge window
+  s += '<path d="' + band(SOLAR, DEMAND, 8, 15) + '" fill="' + BLUE + '" opacity="0.2" stroke="none"/>';
+  // evening gap (demand over solar): red = dear discharge window
+  s += '<path d="' + band(DEMAND, SOLAR, 16, 22) + '" fill="' + RED + '" opacity="0.2" stroke="none"/>';
 
   // lines: solar solid, demand dashed
   s += '<polyline points="' + poly(SOLAR) + '" fill="none" stroke="' + COAL + '" stroke-width="2.2" stroke-linejoin="round"/>';
@@ -74,9 +71,9 @@
   });
 
   // annotations
-  s += '<text x="' + PX(11).toFixed(1) + '" y="' + (PY(100) - 6).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + COAL + '">midday surplus</text>';
+  s += '<text x="' + PX(11).toFixed(1) + '" y="' + (PY(100) - 6).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + BLUE + '">midday surplus</text>';
   s += '<text x="' + PX(11).toFixed(1) + '" y="' + (PY(100) + 8).toFixed(1) + '" text-anchor="middle" font-size="10.5" fill="' + GREY + '">price lowest</text>';
-  s += '<text x="' + PX(18.5).toFixed(1) + '" y="' + (PY(86) - 8).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + COAL + '">evening peak</text>';
+  s += '<text x="' + PX(18.5).toFixed(1) + '" y="' + (PY(86) - 8).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + RED + '">evening peak</text>';
 
   // legend
   s += '<g transform="translate(' + (X1 - 196) + ',16)">' +

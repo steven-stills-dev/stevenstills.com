@@ -52,6 +52,13 @@
   --heading-mt: 0em;        /* top margin on headings */
   --heading-mb: 0.45em;     /* bottom margin on headings */
 
+  /* Typography — quotations (mantra pull-quotes) */
+  --font-quote:     "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --quote-weight:   730;
+  --quote-tracking: -0.03em;
+  --quote-size:     0.85rem;
+  --quote-line:     1.34;
+
   /* Layout */
   --maxw: 64rem;
   --gutter: clamp(1.25rem, 5vw, 3rem);
@@ -235,9 +242,11 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   font-family: var(--font-heading); font-size: 1.9rem; line-height: 0.7;
   color: var(--times-blue); margin-bottom: 0.3rem;   /* FT-style blue quote mark */
 }
+/* quote text — own decoupled "quotations" token group */
 .pull-quote p {
-  margin: 0; font-family: var(--font-heading); font-weight: 540;
-  font-size: 1.2rem; line-height: 1.2; letter-spacing: -0.02em; color: var(--heading);
+  margin: 0; font-family: var(--font-quote); font-weight: var(--quote-weight);
+  font-size: var(--quote-size); line-height: var(--quote-line);
+  letter-spacing: var(--quote-tracking); color: var(--heading);
 }
 
 /* ---- ARTICLE LIST (FT-style project list) ----------------------------- */
@@ -348,7 +357,7 @@ sup.fn a:hover { text-decoration: underline; }
 /* the gas-price chart artefact */
 .gas-chart { margin: 1.8rem 0; }
 .gas-chart #gas-chart, .gas-chart #transit-chart {
-  background: #fff7ef; border: 1px solid var(--rule); border-radius: 6px;
+  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px;
   padding: 0.6rem 0.4rem;
 }
 .gas-chart #gas-chart svg, .gas-chart #transit-chart svg { width: 100%; height: auto; display: block;

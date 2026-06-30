@@ -1,28 +1,48 @@
 /* =========================================================================
    GAS CHART — inline SVG of UK wholesale gas through the 2026 Hormuz crisis.
 
-   Renders into #gas-chart on load (no drawer; the story is now inline on the
-   Hormuz page). Pure vanilla, no build step. Chart colours are read from the
-   site's CSS custom properties so it stays in sync with the palette:
-   times_red = the signal (the price spike), times_coal = line/axes,
-   times_blue = context dots, times_line = gridlines, times_grey = labels.
+   Renders into #gas-chart on load. Pure vanilla, no build step. Shares the
+   transit chart's x-axis (1 Feb -> 21 Jun 2026, daily) so the two stack and
+   the price spike lines up with the tanker collapse below.
+
+   Daily line is an INDICATIVE RECONSTRUCTION: a path interpolated through the
+   reported levels in the page footnotes (notes 3 and 4), not a verified daily
+   market series. Colours come from the site CSS variables: times_red = the
+   signal, times_coal = line/axes, times_line = gridlines, times_grey = labels.
    ========================================================================= */
 (function () {
   "use strict";
 
-  /* ---- UK NBP front-month wholesale gas, pence/therm ---------------------
-     Reported levels at key dates, Apr-Jun 2026 (selected points, not a daily
-     series). Sources are in the page footnotes. The late-April peak is the
-     highlighted spike: the Strait-of-Hormuz closure scare.                  */
-  var SERIES = [
-    { label: "early Apr", v: 110 },
-    { label: "13 Apr",    v: 122.5 },
-    { label: "late Apr",  v: 151, hi: true },
-    { label: "late May",  v: 96 },
-    { label: "late Jun",  v: 100 }
+  /* ---- reported anchor levels, pence/therm ------------------------------
+     [day index from 1 Feb, level]. Feb floor ~96 (late May 96p was the
+     "lowest since February"); early Apr 110; the 13 Apr session +11.7% to
+     122.5; late-Apr peak ~151; back to ~96 by late May; June reopening eases
+     it further. The daily line interpolates between these.                  */
+  var KEYFRAMES = [
+    [0, 97], [14, 95], [27, 96], [33, 98], [40, 102], [50, 106],
+    [59, 108], [62, 110], [70, 109.7], [71, 122.5], [75, 132], [79, 145],
+    [82, 151], [86, 147], [92, 138], [100, 122], [108, 108], [115, 99],
+    [118, 96], [124, 95], [132, 94], [136, 91], [140, 90]
   ];
+  var DAYS = 141;                     // 1 Feb (0) -> 21 Jun (140)
+  var SPIKE_IDX = 71;                 // 13 Apr 2026, the +11.7% session
+  var PEAK_IDX = 82;                  // late-Apr peak, ~151p
+  var MONTHS = [[0, "Feb"], [28, "Mar"], [59, "Apr"], [89, "May"], [120, "Jun"]];
   var Y_TICKS = [80, 100, 120, 140, 160];
   var Y_MIN = 80, Y_MAX = 160;
+
+  /* expand the anchors into a daily series */
+  function dailySeries() {
+    var out = [], k = 0;
+    for (var i = 0; i < DAYS; i++) {
+      while (k < KEYFRAMES.length - 2 && i > KEYFRAMES[k + 1][0]) k++;
+      var a = KEYFRAMES[k], b = KEYFRAMES[k + 1];
+      var t = (b[0] === a[0]) ? 0 : (i - a[0]) / (b[0] - a[0]);
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      out.push(a[1] + (b[1] - a[1]) * t);
+    }
+    return out;
+  }
 
   function cssVar(name, fallback) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -33,56 +53,55 @@
   function chartSVG() {
     var RED  = cssVar("--times-red",  "#990f3d");
     var COAL = cssVar("--times-coal", "#333333");
-    var BLUE = cssVar("--times-blue", "#0f5499");
     var LINE = cssVar("--times-line", "#e7d3c1");
     var GREY = cssVar("--times-grey", "#66605c");
 
-    var W = 560, H = 280, padL = 46, padR = 18, padT = 26, padB = 38;
+    // geometry mirrors transit-chart.js so the two x-axes align
+    var W = 560, H = 280, padL = 34, padR = 12, padT = 22, padB = 34;
     var plotW = W - padL - padR, plotH = H - padT - padB;
-    var n = SERIES.length;
+    var slot = plotW / DAYS;
+    var data = dailySeries();
 
-    function x(i) { return padL + (n === 1 ? 0 : plotW * i / (n - 1)); }
+    function x(i) { return padL + i * slot + slot / 2; }
     function y(v) { return padT + plotH * (1 - (v - Y_MIN) / (Y_MAX - Y_MIN)); }
+    var base = padT + plotH;
 
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
-      'aria-label="UK wholesale gas price, pence per therm, April to June 2026, ' +
-      'peaking near 151 during the Strait of Hormuz closure scare">';
+      'aria-label="UK wholesale gas price, pence per therm, February to June 2026, ' +
+      'flat near 96 then spiking past 150 during the Strait of Hormuz closure scare">';
 
     // y gridlines + labels
     Y_TICKS.forEach(function (t) {
       var yy = y(t).toFixed(1);
       s += '<line x1="' + padL + '" y1="' + yy + '" x2="' + (W - padR) + '" y2="' + yy +
            '" stroke="' + LINE + '" stroke-width="1"/>';
-      s += '<text x="' + (padL - 8) + '" y="' + yy + '" text-anchor="end" ' +
+      s += '<text x="' + (padL - 7) + '" y="' + yy + '" text-anchor="end" ' +
            'dominant-baseline="middle" font-size="11" fill="' + GREY + '">' + t + '</text>';
     });
 
-    // the price line
-    var d = SERIES.map(function (p, i) {
-      return (i ? "L" : "M") + x(i).toFixed(1) + "," + y(p.v).toFixed(1);
+    // dashed red marker on 13 Apr, aligned with the transit chart below
+    var sx = x(SPIKE_IDX).toFixed(1);
+    s += '<line x1="' + sx + '" y1="' + padT + '" x2="' + sx + '" y2="' + base +
+         '" stroke="' + RED + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>';
+
+    // the daily price line
+    var d = data.map(function (v, i) {
+      return (i ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1);
     }).join(" ");
-    s += '<path d="' + d + '" fill="none" stroke="' + COAL + '" stroke-width="2.2" ' +
+    s += '<path d="' + d + '" fill="none" stroke="' + COAL + '" stroke-width="2" ' +
          'stroke-linejoin="round" stroke-linecap="round"/>';
 
-    // points + x labels; peak gets the red signal treatment
-    SERIES.forEach(function (p, i) {
-      var px = x(i), py = y(p.v);
-      if (p.hi) {
-        // dashed drop line + bold red marker + value label for the spike
-        s += '<line x1="' + px.toFixed(1) + '" y1="' + py.toFixed(1) + '" x2="' +
-             px.toFixed(1) + '" y2="' + (padT + plotH) + '" stroke="' + RED +
-             '" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>';
-        s += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) +
-             '" r="5" fill="' + RED + '"/>';
-        s += '<text x="' + px.toFixed(1) + '" y="' + (py - 12).toFixed(1) +
-             '" text-anchor="middle" font-size="12.5" font-weight="700" fill="' +
-             RED + '">~151p</text>';
-      } else {
-        s += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) +
-             '" r="3.4" fill="' + BLUE + '"/>';
-      }
-      s += '<text x="' + px.toFixed(1) + '" y="' + (H - 14) +
-           '" text-anchor="middle" font-size="11" fill="' + GREY + '">' + p.label + '</text>';
+    // peak gets the red signal: marker + value label
+    var px = x(PEAK_IDX), py = y(data[PEAK_IDX]);
+    s += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="4" fill="' + RED + '"/>';
+    s += '<text x="' + px.toFixed(1) + '" y="' + (py - 11).toFixed(1) +
+         '" text-anchor="middle" font-size="12.5" font-weight="700" fill="' +
+         RED + '">~151p</text>';
+
+    // x month labels (positions match the transit chart)
+    MONTHS.forEach(function (m) {
+      s += '<text x="' + x(m[0]).toFixed(1) + '" y="' + (H - 12) +
+           '" text-anchor="start" font-size="11" fill="' + GREY + '">' + m[1] + '</text>';
     });
 
     s += '</svg>';
