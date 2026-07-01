@@ -75,15 +75,24 @@
     ["--body-size", "Font size", 0.85, 1.4, 0.01, "rem"],
     ["--line-height", "Line height", 1.2, 2.1, 0.02, ""]
   ];
+  var QUOTE_RANGES = [
+    ["--quote-weight", "Weight", 100, 900, 10, ""],
+    ["--quote-tracking", "Letter-spacing", -0.05, 0.12, 0.005, "em"],
+    ["--quote-size", "Font size", 0.6, 1.6, 0.01, "rem"],
+    ["--quote-line", "Line height", 1.0, 2.1, 0.02, ""]
+  ];
   var ALL_VARS = []
     .concat(COLORS.map(function (c) { return c[0]; }))
     .concat(HEAD_RANGES.map(function (r) { return r[0]; }))
     .concat(BODY_RANGES.map(function (r) { return r[0]; }))
-    .concat(["--font-heading", "--font-body"]);
+    .concat(QUOTE_RANGES.map(function (r) { return r[0]; }))
+    .concat(["--font-heading", "--font-body", "--font-quote"]);
 
   var root = document.documentElement;
   var DEFAULTS = {};          // captured from style.css at load
-  var DEFAULT_FONTS = { heading: "Fraunces", body: "Inter" };
+  var DEFAULT_FONTS = { heading: "Fraunces", body: "Inter", quote: "Inter" };
+  var FONT_VAR = { heading: "--font-heading", body: "--font-body", quote: "--font-quote" };
+  var FONT_TARGETS = ["heading", "body", "quote"];
   var loadedFonts = {};       // q -> true
 
   function getVar(name) {
@@ -109,7 +118,7 @@
     } catch (e) { return null; }
   }
 
-  var state = { fonts: { heading: DEFAULT_FONTS.heading, body: DEFAULT_FONTS.body } };
+  var state = { fonts: { heading: DEFAULT_FONTS.heading, body: DEFAULT_FONTS.body, quote: DEFAULT_FONTS.quote } };
 
   /* ---- Fonts ------------------------------------------------------------ */
   function loadFont(font) {
@@ -124,8 +133,7 @@
     var font = FONT_BY_NAME[name];
     if (!font) return;
     loadFont(font);
-    setVar(target === "heading" ? "--font-heading" : "--font-body",
-      '"' + name + '", ' + font.fb);
+    setVar(FONT_VAR[target], '"' + name + '", ' + font.fb);
     state.fonts[target] = name;
   }
   function firstFamily(stack) {
@@ -239,6 +247,10 @@
     body.appendChild(section("Body text",
       [buildFontSelect("body")].concat(BODY_RANGES.map(buildRangeRow))));
 
+    // Quotations
+    body.appendChild(section("Quotations",
+      [buildFontSelect("quote")].concat(QUOTE_RANGES.map(buildRangeRow))));
+
     // Export / Import
     var copyBtn = el("button", { class: "dt-btn", text: "Copy CSS" });
     var resetBtn = el("button", { class: "dt-btn dt-btn-warn", text: "Restore defaults" });
@@ -264,8 +276,6 @@
     ]));
 
     panel.appendChild(body);
-    panel.appendChild(el("footer", { class: "dt-foot" },
-      [el("span", { text: "Ctrl+B toggles · temporary tool" })]));
 
     document.body.appendChild(panel);
     return panel;
@@ -290,9 +300,12 @@
 
   /* ---- Export / Import / Reset ------------------------------------------ */
   function exportCSS() {
-    var hf = FONT_BY_NAME[state.fonts.heading], bf = FONT_BY_NAME[state.fonts.body];
-    var link = "https://fonts.googleapis.com/css2?family=" + hf.q +
-      (bf.q === hf.q ? "" : "&family=" + bf.q) + "&display=swap";
+    var qs = [];                                  // dedupe font queries across targets
+    FONT_TARGETS.forEach(function (t) {
+      var q = FONT_BY_NAME[state.fonts[t]].q;
+      if (qs.indexOf(q) === -1) qs.push(q);
+    });
+    var link = "https://fonts.googleapis.com/css2?family=" + qs.join("&family=") + "&display=swap";
     var lines = ["/* Fonts — add to <head> if not already present:",
       '   <link rel="stylesheet" href="' + link + '"> */',
       ":root {"];
@@ -315,8 +328,8 @@
       count++;
     }
     // re-detect fonts from applied vars + load them
-    ["heading", "body"].forEach(function (t) {
-      var stack = root.style.getPropertyValue(t === "heading" ? "--font-heading" : "--font-body");
+    FONT_TARGETS.forEach(function (t) {
+      var stack = root.style.getPropertyValue(FONT_VAR[t]);
       var fam = firstFamily(stack);
       if (fam && FONT_BY_NAME[fam]) { state.fonts[t] = fam; loadFont(FONT_BY_NAME[fam]); }
     });
@@ -327,7 +340,7 @@
 
   function restoreDefaults() {
     ALL_VARS.forEach(function (v) { root.style.removeProperty(v); });
-    state.fonts = { heading: DEFAULT_FONTS.heading, body: DEFAULT_FONTS.body };
+    state.fonts = { heading: DEFAULT_FONTS.heading, body: DEFAULT_FONTS.body, quote: DEFAULT_FONTS.quote };
     try { localStorage.removeItem(STORE_KEY); } catch (e) {}
     syncControls();
   }
@@ -342,8 +355,9 @@
       var r = refs.ranges[v], n = parseFloat(getVar(v));
       if (!isNaN(n)) { r.input.value = n; r.out.textContent = fmt(n, r.unit); }
     });
-    if (refs.fonts.heading) refs.fonts.heading.value = state.fonts.heading;
-    if (refs.fonts.body) refs.fonts.body.value = state.fonts.body;
+    FONT_TARGETS.forEach(function (t) {
+      if (refs.fonts[t]) refs.fonts[t].value = state.fonts[t];
+    });
   }
 
   /* ---- Toggle ----------------------------------------------------------- */
@@ -365,10 +379,10 @@
       if (saved.fonts) {
         state.fonts.heading = saved.fonts.heading || DEFAULT_FONTS.heading;
         state.fonts.body = saved.fonts.body || DEFAULT_FONTS.body;
+        state.fonts.quote = saved.fonts.quote || DEFAULT_FONTS.quote;
       }
       // ensure saved fonts are actually loaded
-      loadFont(FONT_BY_NAME[state.fonts.heading]);
-      loadFont(FONT_BY_NAME[state.fonts.body]);
+      FONT_TARGETS.forEach(function (t) { loadFont(FONT_BY_NAME[state.fonts[t]]); });
     }
     // 3. build the tray reflecting current values
     trayEl = buildTray();
@@ -413,8 +427,7 @@
   "#dtray .dt-ta{width:100%;background:#0e1014;color:#cdd2da;border:1px solid #353a44;border-radius:5px;" +
   "padding:8px;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;resize:vertical;margin-bottom:8px;}" +
   "#dtray .dt-status{min-height:16px;font-size:12px;color:#6ad08a;opacity:0;transition:opacity .2s;margin-top:6px;}" +
-  "#dtray .dt-status.on{opacity:1;}" +
-  "#dtray .dt-foot{flex:0 0 auto;padding:10px 16px;border-top:1px solid #2a2e37;font-size:11px;color:#6b707a;}";
+  "#dtray .dt-status.on{opacity:1;}";
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

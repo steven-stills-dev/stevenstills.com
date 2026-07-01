@@ -49,22 +49,18 @@
   var COAL = cssVar("--times-coal", "#333333");
   var GREY = cssVar("--times-grey", "#66605c");
   var LINE = cssVar("--times-line", "#e7d3c1");
+  var BLUE = cssVar("--times-blue", "#0f5499"), RED = cssVar("--times-red", "#990f3d");
 
   // static scaffold (defs, gridlines, period shading, price line, axis) built once
   function scaffold() {
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
       'aria-label="A battery charging through cheap hours and discharging into the dear evening peak">';
-    s += '<defs>' +
-      '<pattern id="bh-line" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-        '<line x1="0" y1="0" x2="0" y2="6" stroke="' + COAL + '" stroke-width="1" opacity="0.35"/></pattern>' +
-      '<pattern id="bh-dot" width="6" height="6" patternUnits="userSpaceOnUse">' +
-        '<circle cx="1.5" cy="1.5" r="1" fill="' + COAL + '" opacity="0.4"/></pattern>' +
-      '</defs>';
+    // solid theme fills (blue = charge, red = discharge); no patterns
     // period shading: line-hatch = charge, dot-hatch = discharge
     SCHEDULE.forEach(function (a, k) {
       if (a === "idle") return;
       s += '<rect x="' + (PX(k) - pw / 2).toFixed(1) + '" y="' + TY0 + '" width="' + pw.toFixed(1) +
-           '" height="' + (TY1 - TY0) + '" fill="url(#' + (a === "charge" ? "bh-line" : "bh-dot") + ')"/>';
+           '" height="' + (TY1 - TY0) + '" fill="' + (a === "charge" ? BLUE : RED) + '" opacity="' + (a === "charge" ? "0.12" : "0.15") + '"/>';
     });
     // baseline + price line
     s += '<line x1="' + X0 + '" y1="' + TY1 + '" x2="' + X1 + '" y2="' + TY1 + '" stroke="' + LINE + '" stroke-width="1"/>';
@@ -73,9 +69,9 @@
     s += '<text x="' + X0 + '" y="14" font-size="11" fill="' + GREY + '">£/MWh</text>';
     // legend for the two hatches
     s += '<g transform="translate(' + (X1 - 196) + ',8)">' +
-      '<rect x="0" y="-6" width="14" height="10" fill="url(#bh-line)" stroke="' + LINE + '"/>' +
+      '<rect x="0" y="-6" width="14" height="10" fill="' + BLUE + '" opacity="0.85"/>' +
       '<text x="18" y="3" font-size="10.5" fill="' + GREY + '">charge (cheap)</text>' +
-      '<rect x="104" y="-6" width="14" height="10" fill="url(#bh-dot)" stroke="' + LINE + '"/>' +
+      '<rect x="104" y="-6" width="14" height="10" fill="' + RED + '" opacity="0.85"/>' +
       '<text x="122" y="3" font-size="10.5" fill="' + GREY + '">discharge (dear)</text></g>';
     s += '<g id="bh-dynamic"></g></svg>';
     return s;
@@ -89,6 +85,7 @@
   function frame(t) {
     var i = Math.floor(t) % N, f = t - Math.floor(t), j = Math.min(i + 1, N - 1);
     var price = lerp(P[i], P[j], f), soc = lerp(SOC[i], SOC[j], f), action = SCHEDULE[i];
+    var ACT = action === "charge" ? BLUE : action === "discharge" ? RED : COAL;
     var mx = PX(Math.min(t, N - 1));
     var cont = soc * CELLS, full = Math.floor(cont), partial = cont - full;
     var glyph = action === "charge" ? "▲ charging — power is cheap"
@@ -110,7 +107,7 @@
       if (k <= full) {
         var frac = k < full ? 1 : partial, h = Math.max(0.5, 48 * frac);
         s += '<rect x="' + cx + '" y="' + (8 + (48 - h)).toFixed(1) + '" width="16" height="' + h.toFixed(1) +
-             '" rx="3" fill="' + COAL + '"/>';
+             '" rx="3" fill="' + ACT + '"/>';
       }
     }
     s += '</g>';
@@ -119,7 +116,7 @@
     s += '<g transform="translate(320,212)">';
     s += '<text x="0" y="0" font-family="' + cssVar("--font-heading", "Georgia") + '" font-size="26" font-weight="600" fill="' + COAL + '">£' +
          price.toFixed(0) + '<tspan font-size="13" fill="' + GREY + '"> /MWh</tspan></text>';
-    s += '<text x="0" y="24" font-size="13.5" font-weight="600" fill="' + COAL + '">' + glyph + '</text>';
+    s += '<text x="0" y="24" font-size="13.5" font-weight="600" fill="' + ACT + '">' + glyph + '</text>';
     s += '<text x="0" y="46" font-size="12" fill="' + GREY + '">' + LABELS[i] + ' · state of charge ' + (soc * 100).toFixed(0) + '%</text>';
     s += '</g>';
     dyn.innerHTML = s;

@@ -20,6 +20,7 @@
   var COAL = cssVar("--times-coal", "#333333");
   var GREY = cssVar("--times-grey", "#66605c");
   var LINE = cssVar("--times-line", "#e7d3c1");
+  var BLUE = cssVar("--times-blue", "#0f5499"), RED = cssVar("--times-red", "#990f3d");
 
   var N = 48;                       // half-hours; k/2 = hour, 20:30 = index 41
   var BASELOAD = 63;
@@ -60,8 +61,7 @@
 
   var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
     'aria-label="Day-ahead price versus imbalance price across a day, with the evening spread shaded">';
-  s += '<defs><pattern id="sp-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-       '<line x1="0" y1="0" x2="0" y2="6" stroke="' + COAL + '" stroke-width="1" opacity="0.32"/></pattern></defs>';
+  // solid theme fill (red = the captured evening spread); no patterns
 
   // y gridlines + labels
   YT.forEach(function (t) {
@@ -75,7 +75,7 @@
   for (var a = 33; a <= 46; a++) poly += (a === 33 ? "M" : "L") + PX(a).toFixed(1) + "," + PY(IMB[a]).toFixed(1) + " ";
   for (var b = 46; b >= 33; b--) poly += "L" + PX(b).toFixed(1) + "," + PY(DA[b]).toFixed(1) + " ";
   poly += "Z";
-  s += '<path d="' + poly + '" fill="url(#sp-hatch)" stroke="none"/>';
+  s += '<path d="' + poly + '" fill="' + RED + '" opacity="0.16" stroke="none"/>';
 
   // flat baseload reference (dotted)
   var by = PY(BASELOAD).toFixed(1);
@@ -85,8 +85,8 @@
        '">baseload ≈ £' + BASELOAD + '</text>';
 
   // the two price lines: day-ahead dashed, imbalance solid
-  s += '<polyline points="' + pts(DA) + '" fill="none" stroke="' + COAL + '" stroke-width="1.8" stroke-dasharray="5 4"/>';
-  s += '<polyline points="' + pts(IMB) + '" fill="none" stroke="' + COAL + '" stroke-width="2.2" stroke-linejoin="round"/>';
+  s += '<polyline points="' + pts(DA) + '" fill="none" stroke="' + BLUE + '" stroke-width="1.8" stroke-dasharray="5 4"/>';
+  s += '<polyline points="' + pts(IMB) + '" fill="none" stroke="' + RED + '" stroke-width="2.2" stroke-linejoin="round"/>';
 
   // x ticks
   TICKS.forEach(function (t) {
@@ -97,8 +97,8 @@
   var ax = PX(41);
   s += '<line x1="' + ax.toFixed(1) + '" y1="' + Y0 + '" x2="' + ax.toFixed(1) + '" y2="' + Y1 +
        '" stroke="' + COAL + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>';
-  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(139).toFixed(1) + '" r="3.6" fill="#fff1e5" stroke="' + COAL + '" stroke-width="2"/>';
-  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(150).toFixed(1) + '" r="3.6" fill="' + COAL + '"/>';
+  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(139).toFixed(1) + '" r="3.6" fill="#fff1e5" stroke="' + BLUE + '" stroke-width="2"/>';
+  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(150).toFixed(1) + '" r="3.6" fill="' + RED + '"/>';
   s += '<text x="' + (ax - 8).toFixed(1) + '" y="' + (PY(150) - 10).toFixed(1) + '" text-anchor="end" font-size="11" font-weight="700" fill="' + COAL +
        '">20:30 · £139 vs £150</text>';
   s += '<text x="' + (ax - 8).toFixed(1) + '" y="' + (PY(150) + 4).toFixed(1) + '" text-anchor="end" font-size="10.5" fill="' + GREY +
@@ -106,9 +106,9 @@
 
   // legend
   s += '<g transform="translate(' + (X0 + 6) + ',18)">' +
-    '<line x1="0" y1="-3" x2="18" y2="-3" stroke="' + COAL + '" stroke-width="1.8" stroke-dasharray="5 4"/>' +
+    '<line x1="0" y1="-3" x2="18" y2="-3" stroke="' + BLUE + '" stroke-width="1.8" stroke-dasharray="5 4"/>' +
     '<text x="22" y="0" font-size="10.5" fill="' + GREY + '">day-ahead</text>' +
-    '<line x1="92" y1="-3" x2="110" y2="-3" stroke="' + COAL + '" stroke-width="2.2"/>' +
+    '<line x1="92" y1="-3" x2="110" y2="-3" stroke="' + RED + '" stroke-width="2.2"/>' +
     '<text x="114" y="0" font-size="10.5" fill="' + GREY + '">imbalance</text></g>';
 
   s += '</svg>';
