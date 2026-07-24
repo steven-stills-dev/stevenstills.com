@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saving your tokens · Steven Stills</title>
+  <meta name="description" content="Why long context windows quietly burn money, and how to spend far less: cheaper models, local engines like Ollama and LM Studio on llama.cpp, vLLM for a team, and Kimi K3's downloadable weights. With the World Cup run that cost me 5 million tokens." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter:wght@100..900&display=swap" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-head">
+    <div class="wrap">
+      <div class="brand"><a href="index.html">Steven Stills</a></div>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Projects</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- TITLE -->
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Field notes · working with AI</p>
+        <h1>Saving your tokens</h1>
+        <p class="lede">The Kimi K3, GPT-5.6 and Fable 5 headlines make it sound like the rules changed overnight. They didn't. The way you keep an AI project cheap is the same discipline that kept a data project cheap: get the structure right at the front. Here's where the money actually leaks, and how to close the tap.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap prose">
+
+        <!-- 1. THE NOISE -->
+        <h2>1. The noise, and the thing under it</h2>
+        <p class="summary">Every launch is sold as a revolution. The fundamentals haven't moved.</p>
+        <p>We're in the loud part of the cycle. Kimi K3, GPT-5.6 and Fable 5 landed inside a few weeks of each other, every benchmark framed as a step change and every comment thread insisting last month's model is a relic. A lot of that volume is timing. With IPOs circling, there's real money in making every release sound like it rewrote the field, so the sensational read gets amplified and the boring read gets buried.</p>
+        <p>The boring read is the true one. Nothing about doing this well has changed since the days of plain data work. Good structure up front still produces better results at the end. Define the question, shape the inputs, decide the method before you run anything — and your output is cleaner and your bill is smaller. Skip that and hand the thinking to the model, and it will happily think, at length, on your account. I know because I did exactly that, and it cost me five million tokens.</p>
+
+        <!-- 2. WHERE THE MONEY GOES -->
+        <h2>2. Where the money actually goes</h2>
+        <p class="summary">You are billed for the whole conversation, on every single call.</p>
+        <p>Here's the part people miss. A model has no memory between calls. To keep a conversation going, the entire history — system prompt, every earlier message, every tool result — is sent again with each new step. You pay input tokens on all of it, every time. So the cost of a call isn't the size of your new message. It's the size of everything said so far.</p>
+        <p>That means a long context doesn't cost a bit more, it compounds. Ten turns of real work can bill like fifty, because turn ten re-sends turns one through nine underneath it. Let an agent loop run with dozens of research bots dumping their raw findings back into the thread, and the context balloons, and every subsequent step drags that whole weight along. The diagram below is the shape of it: the new message is a sliver, the re-sent history is the bulk.</p>
+
+        <figure class="diagram">
+          <div class="diagram-box">
+            <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tokens billed on each call as a conversation grows">
+              <!-- legend -->
+              <rect x="360" y="18" width="14" height="14" fill="#333333"/>
+              <text x="380" y="30" font-size="13" fill="#66605c">new message</text>
+              <rect x="490" y="18" width="14" height="14" fill="#990f3d" opacity="0.20"/>
+              <text x="510" y="30" font-size="13" fill="#66605c">old context, re-sent</text>
+              <!-- baseline -->
+              <line x1="46" y1="250" x2="606" y2="250" stroke="#333333" stroke-width="1.5"/>
+              <!-- bars: prior context (red tint, bottom) + new turn (coal, top) -->
+              <!-- turn 1 -->
+              <rect x="60"  y="222" width="58" height="28"  fill="#333333"/>
+              <!-- turn 2 -->
+              <rect x="150" y="194" width="58" height="28"  fill="#333333"/>
+              <rect x="150" y="222" width="58" height="28"  fill="#990f3d" opacity="0.20"/>
+              <!-- turn 3 -->
+              <rect x="240" y="166" width="58" height="28"  fill="#333333"/>
+              <rect x="240" y="194" width="58" height="56"  fill="#990f3d" opacity="0.20"/>
+              <!-- turn 4 -->
+              <rect x="330" y="138" width="58" height="28"  fill="#333333"/>
+              <rect x="330" y="166" width="58" height="84"  fill="#990f3d" opacity="0.20"/>
+              <!-- turn 5 -->
+              <rect x="420" y="110" width="58" height="28"  fill="#333333"/>
+              <rect x="420" y="138" width="58" height="112" fill="#990f3d" opacity="0.20"/>
+              <!-- turn 6 -->
+              <rect x="510" y="82"  width="58" height="28"  fill="#333333"/>
+              <rect x="510" y="110" width="58" height="140" fill="#990f3d" opacity="0.20"/>
+              <!-- callout -->
+              <text x="539" y="72" font-size="12.5" fill="#990f3d" font-weight="700" text-anchor="middle">call 6 pays</text>
+              <text x="539" y="72" font-size="12.5" fill="#990f3d" font-weight="700" text-anchor="middle" dy="15">for all 6 turns</text>
+              <!-- turn labels -->
+              <text x="89"  y="270" font-size="13" fill="#66605c" text-anchor="middle">1</text>
+              <text x="179" y="270" font-size="13" fill="#66605c" text-anchor="middle">2</text>
+              <text x="269" y="270" font-size="13" fill="#66605c" text-anchor="middle">3</text>
+              <text x="359" y="270" font-size="13" fill="#66605c" text-anchor="middle">4</text>
+              <text x="449" y="270" font-size="13" fill="#66605c" text-anchor="middle">5</text>
+              <text x="539" y="270" font-size="13" fill="#66605c" text-anchor="middle">6</text>
+              <text x="326" y="290" font-size="12.5" fill="#66605c" text-anchor="middle">turn number</text>
+            </svg>
+          </div>
+          <figcaption>Tokens billed on each call as the conversation grows. The coal block is your new message; the shaded block is the earlier context re-sent with it. By turn six you are paying to re-send five turns of history every time. Illustrative.</figcaption>
+        </figure>
+
+        <!-- 3. THE WORLD CUP RUN -->
+        <h2>3. My five-million-token World Cup run</h2>
+        <p class="summary">Above-average result, well below-average discipline.</p>
+        <p>I ran a World Cup prediction on Fable 5 and let it think for itself. No fixed method, no cap on the loop — just a goal and dozens of back-end research bots feeding findings in. It worked, in the sense that I finished 10th out of 300, comfortably above average.<sup class="fn"><a href="#fn-1" id="ref-1">1</a></sup> It also burned through five million tokens, because I'd handed the model the one job I should have kept: deciding <em>how</em> to do the work.</p>
+        <p>Every bot returned its research as raw prose, and all of it piled into the running context. The model re-read the whole growing heap on each step to decide the next one. That's the compounding curve above, running unsupervised for hours. The result was genuinely good; the cost was indefensible for what it was.</p>
+
+        <h3>What would have kept it well under a million</h3>
+        <p>None of this needed a cheaper model or a cleverer prompt. It needed structure decided before the first call:</p>
+        <ul>
+          <li><strong>Fix the method first.</strong> Write the ranking approach down — the factors, the weighting, the steps — so the model executes a plan instead of inventing one live. Most of the five million went on the model deliberating about method.</li>
+          <li><strong>Summarise before it enters the context.</strong> Each bot should return three lines, not three pages. Roll raw research into a short structured note — a stat line per team — and feed the model that, not the transcripts.</li>
+          <li><strong>Cap the loop.</strong> A hard step limit and a clear stop condition. Open-ended agents wander, and every wandering step re-bills the whole context.</li>
+          <li><strong>Carry a window, not the whole history.</strong> Keep a running summary plus the last few messages, and let older raw turns drop off rather than paying for them forever.</li>
+          <li><strong>Split the work by model.</strong> Cheap, small model for the bulk research and cleanup; the expensive frontier model only for the final judgement call. More on that split below.</li>
+          <li><strong>Cache the stable prefix.</strong> The system prompt and fixed instructions don't change between calls; prompt caching bills the repeated prefix at a fraction of the rate.</li>
+        </ul>
+        <p>Same 10th place, a fraction of the tokens. The structure was the saving, not the hardware.</p>
+
+        <!-- 4. CHEAPER MODELS + LOCAL -->
+        <h2>4. Cheaper models, and running your own</h2>
+        <p class="summary">Not every step needs a frontier model. Many need no API at all.</p>
+        <p>Once the structure is sound, the next lever is not paying premium rates for cheap work. Most steps in an agent — reformat this, extract those fields, summarise that page — are easily handled by a small model. Reserve the flagship for the hard reasoning at the end. And for a lot of that routine work you can drop the API bill to zero by running a model on your own machine.</p>
+        <p>This is where people tangle two different things, so it's worth being precise: the <strong>engine</strong> is the software that runs a model; the <strong>model</strong> is the downloaded intelligence it runs. They're chosen separately, and the same engine will run many different models.</p>
+
+        <figure class="diagram">
+          <div class="diagram-box">
+            <svg viewBox="0 0 660 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Local AI stack: models loaded into engines, run on a laptop or a team server">
+              <!-- MODELS row -->
+              <text x="30" y="26" font-size="13" font-weight="700" fill="#990f3d" letter-spacing="0.5">MODELS — the downloaded intelligence (swap freely)</text>
+              <g font-size="14" fill="#333333" text-anchor="middle">
+                <rect x="30"  y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <text x="100" y="63">Gemma</text>
+                <rect x="188" y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <text x="258" y="63">Llama</text>
+                <rect x="346" y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <text x="416" y="63">Qwen</text>
+                <rect x="504" y="38" width="126" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <text x="567" y="63">Mistral</text>
+              </g>
+              <!-- feed-in arrows -->
+              <g stroke="#66605c" stroke-width="1.5" fill="none">
+                <line x1="220" y1="86" x2="220" y2="150"/>
+                <line x1="520" y1="86" x2="520" y2="150"/>
+              </g>
+              <g fill="#66605c">
+                <path d="M220 152 l-4 -8 l8 0 z"/>
+                <path d="M520 152 l-4 -8 l8 0 z"/>
+              </g>
+              <text x="336" y="108" font-size="12.5" fill="#66605c" font-style="italic">loaded into an engine ↓</text>
+
+              <!-- ENGINES: personal group -->
+              <rect x="20" y="156" width="404" height="176" rx="8" fill="none" stroke="#333333" stroke-width="1.5"/>
+              <text x="36" y="178" font-size="13" font-weight="700" fill="#333333">Your laptop / desktop — one user</text>
+              <rect x="40"  y="192" width="170" height="46" rx="6" fill="#fff7ef" stroke="#333333" stroke-width="1.5"/>
+              <text x="125" y="220" font-size="14.5" fill="#333333" text-anchor="middle">Ollama</text>
+              <rect x="234" y="192" width="170" height="46" rx="6" fill="#fff7ef" stroke="#333333" stroke-width="1.5"/>
+              <text x="319" y="220" font-size="14.5" fill="#333333" text-anchor="middle">LM Studio</text>
+              <rect x="40"  y="254" width="364" height="58" rx="6" fill="#990f3d" opacity="0.10" stroke="#990f3d" stroke-width="1.5"/>
+              <text x="222" y="279" font-size="14.5" fill="#990f3d" text-anchor="middle" font-weight="700">llama.cpp</text>
+              <text x="222" y="299" font-size="12" fill="#66605c" text-anchor="middle">the inference core underneath both</text>
+
+              <!-- ENGINES: team group -->
+              <rect x="440" y="156" width="200" height="176" rx="8" fill="none" stroke="#333333" stroke-width="1.5"/>
+              <text x="456" y="178" font-size="13" font-weight="700" fill="#333333">One GPU server</text>
+              <rect x="460" y="192" width="160" height="120" rx="6" fill="#0f5499" opacity="0.09" stroke="#0f5499" stroke-width="1.5"/>
+              <text x="540" y="248" font-size="15" fill="#0f5499" text-anchor="middle" font-weight="700">vLLM</text>
+              <text x="540" y="270" font-size="12" fill="#66605c" text-anchor="middle">serves the whole</text>
+              <text x="540" y="286" font-size="12" fill="#66605c" text-anchor="middle">team at once</text>
+
+              <text x="222" y="352" font-size="12.5" fill="#66605c" text-anchor="middle">ENGINES — the software that loads a model and runs it</text>
+            </svg>
+          </div>
+          <figcaption>The local stack. Any model (top) loads into an engine (bottom). Ollama and LM Studio are friendly front ends both built on llama.cpp, the core that does the actual inference. vLLM is a separate, heavier engine for serving many people from one GPU server.</figcaption>
+        </figure>
+
+        <p><strong>Ollama</strong> and <strong>LM Studio</strong> are the two easy ways in. Ollama is a lean command-line tool with an API that mimics the big providers, so pointing existing code at it is a one-line change. LM Studio is a desktop app with a proper interface for browsing, downloading and chatting to models. Both are conveniences over the same engine: <strong>llama.cpp</strong>, the C++ project that actually runs the model on your CPU and GPU and defined the GGUF file format these tools download. You rarely touch it directly, but it's what's doing the work.</p>
+        <p><strong>vLLM</strong> is the different animal. It's built for throughput — one GPU server answering many people's requests at once — so it's what you reach for when a whole team needs a shared local model, not a laptop setup. Different tool, different job.</p>
+        <p>The models themselves are the interchangeable part. <strong>Gemma</strong> (Google), <strong>Llama</strong> (Meta), <strong>Qwen</strong> (Alibaba) and <strong>Mistral</strong> (Mistral AI) are open-weight families you download and point any of these engines at. Trying a different one is swapping a file, not changing your setup.</p>
+
+        <h3>The one hardware limit that actually bites</h3>
+        <p class="summary">Everything hinges on VRAM.</p>
+        <p>A model has to fit in your graphics card's memory to run fast. That single number sets what's realistic. On a common 8GB consumer GPU, the honest ceiling is a 7B-to-8B model at 4-bit quantisation — "quantisation" meaning the weights are compressed to about half a byte each, which shrinks a 7B model to roughly 4GB and leaves room for your context. It's a genuine quality drop from a frontier model, but for routine steps in a pipeline it's often more than enough, and it runs for free on hardware you already own.</p>
+
+        <div class="stat-row" aria-label="Local model on an 8GB GPU">
+          <div class="stat">
+            <p class="stat-num">7–8B</p>
+            <p class="stat-label">model size on an 8GB GPU</p>
+          </div>
+          <div class="stat">
+            <p class="stat-num">4-bit</p>
+            <p class="stat-label">quantisation to make it fit</p>
+          </div>
+          <div class="stat">
+            <p class="stat-num">£0</p>
+            <p class="stat-label">API cost, once it runs local</p>
+          </div>
+        </div>
+
+        <!-- 5. KIMI K3 -->
+        <h2>5. Kimi K3, and paying once instead of per token</h2>
+        <p class="summary">Downloadable weights turn a metered bill into a fixed cost.</p>
+        <p>This is what makes Kimi K3 interesting beyond the benchmark noise. Alongside the hosted API, you can download the model and run it yourself, which removes the per-token charge entirely.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup> For a workload heavy enough that the API bill hurts, that changes the maths: instead of paying for every token forever, you pay once for the hardware to serve it.</p>
+        <p>The honest caveat is that a frontier-scale model is nothing like a 7B on a laptop — it wants serious GPU capacity, which is why vLLM on a real server exists. So "eliminate API cost" is true, but you're trading a metered bill for an infrastructure one. Whether that's cheaper depends entirely on your volume. It's the same call as owning versus renting, and the answer is a spreadsheet, not a headline.</p>
+
+        <!-- 6. CLOSE -->
+        <h2>6. The part that never changed</h2>
+        <p>Strip away the launch noise and the advice is dull, which is how you know it's right. Decide the method before you run the model. Keep the context lean and structured. Send small models the small jobs, and save the expensive one for the decision that needs it. Run locally when the work is routine and the volume is high. Every one of those is a front-loaded structure choice, the same discipline that separated a good data project from an expensive one long before any of this. New models, same habit: sort the structure out first, and the bill takes care of itself.</p>
+
+        <!-- SOURCES -->
+        <section class="footnotes">
+          <h3>Notes &amp; sources</h3>
+          <ol>
+            <li id="fn-1">The World Cup prediction run and its 10th-of-300 result are described in my post on catching AI getting things wrong. <a href="https://www.linkedin.com/posts/steven-stills_do-you-also-catch-ai-getting-things-wrong-activity-7471156959866646530-1qsY" target="_blank" rel="noopener">LinkedIn, on the Fable 5 run</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-2">Kimi K3 is offered both as a hosted API and as downloadable open weights you can self-host, which removes the per-token API charge in favour of running the model on your own hardware. Framing per the recent Kimi K3 release; check the model card for the current licence and weight availability. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
+          </ol>
+        </section>
+
+        <p style="margin-top:2rem;"><a href="index.html">← All projects</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>© 2026 Steven Stills</span>
+      <nav class="contact-links" aria-label="Contact">
+        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- TEMPORARY design tool: remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
+  <script src="assets/js/design-tray.js" defer></script>
+</body>
+</html>

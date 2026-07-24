@@ -389,6 +389,17 @@ sup.fn a:hover { text-decoration: underline; }
 .battery-fig #solar-profile svg, .battery-fig #battery-anim svg, .battery-fig #supplier-chart svg {
   width: 100%; height: auto; display: block; font-family: var(--font-body);
 }
+/* ---- TECHNICAL DIAGRAMS (inline SVG, e.g. token / local-stack notes) --- */
+.diagram { margin: 1.8rem 0; }
+.diagram .diagram-box {
+  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1rem 0.8rem;
+}
+.diagram svg { width: 100%; height: auto; display: block; font-family: var(--font-body); }
+.diagram figcaption {
+  color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin-top: 0.6rem;
+}
+
 /* big-number stat callouts */
 .stat-row { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin: 1.8rem 0; }
 .stat { flex: 1 1 200px; border-left: 1px solid var(--rule); padding-left: 1.1rem; }
