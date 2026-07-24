@@ -3,26 +3,30 @@
 
    Renders into #gas-chart on load. Pure vanilla, no build step. Shares the
    transit chart's x-axis (1 Feb -> 21 Jun 2026, daily) so the two stack and
-   the price spike lines up with the tanker collapse below.
+   the price move lines up with the tanker collapse below.
 
-   Daily line is an INDICATIVE RECONSTRUCTION: a path interpolated through the
-   reported levels in the page footnotes (notes 3 and 4), not a verified daily
-   market series. Colours come from the site CSS variables: times_red = the
-   signal, times_coal = line/axes, times_line = gridlines, times_grey = labels.
+   Plots the FIXED August-2026 NBP contract, not rolling front month, so the
+   product does not change under the series and risk prices in from the day
+   transits stop (day 28, 1 Mar). Daily line is an INDICATIVE RECONSTRUCTION
+   shaped by the reported levels in the page footnotes (notes 3 and 4), not a
+   verified daily market series. Colours come from the site CSS variables:
+   times_red = the signal, times_coal = line/axes, times_grey = labels.
    ========================================================================= */
 (function () {
   "use strict";
 
-  /* ---- reported anchor levels, pence/therm ------------------------------
-     [day index from 1 Feb, level]. Feb floor ~96 (late May 96p was the
-     "lowest since February"); early Apr 110; the 13 Apr session +11.7% to
-     122.5; late-Apr peak ~151; back to ~96 by late May; June reopening eases
-     it further. The daily line interpolates between these.                  */
+  /* ---- indicative Aug-26 contract anchors, pence/therm ------------------
+     [day index from 1 Feb, level]. Calm ~94 while tankers flow; climbs from
+     day 28 (1 Mar) when transits collapse; kicks on the 13 Apr session
+     (day 71, "indefinitely" warning); peaks late Apr; bleeds off through
+     May; drops on the 14 Jun reopening announcement (day 133), signed
+     17 Jun. The daily line interpolates between these.                     */
   var KEYFRAMES = [
-    [0, 97], [14, 95], [27, 96], [33, 98], [40, 102], [50, 106],
-    [59, 108], [62, 110], [70, 109.7], [71, 122.5], [75, 132], [79, 145],
-    [82, 151], [86, 147], [92, 138], [100, 122], [108, 108], [115, 99],
-    [118, 96], [124, 95], [132, 94], [136, 91], [140, 90]
+    [0, 94], [10, 93], [20, 94], [27, 95],
+    [28, 97], [31, 101], [36, 108], [42, 115], [50, 122], [59, 127],
+    [65, 129], [70, 130], [71, 140], [75, 144], [79, 147], [82, 149],
+    [86, 146], [92, 141], [100, 133], [108, 126], [115, 120], [124, 113],
+    [130, 109], [132, 107], [133, 97], [136, 91], [140, 88]
   ];
   var DAYS = 141;                     // 1 Feb (0) -> 21 Jun (140)
   var SPIKE_IDX = 71;                 // 13 Apr 2026, the +11.7% session
@@ -67,8 +71,8 @@
     var base = padT + plotH;
 
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
-      'aria-label="UK wholesale gas price, pence per therm, February to June 2026, ' +
-      'flat near 96 then spiking past 150 during the Strait of Hormuz closure scare">';
+      'aria-label="UK NBP August 2026 gas contract, pence per therm, February to June 2026, ' +
+      'climbing from the day tanker transits stop and peaking near 149 before the June reopening">';
 
     // y gridlines + labels
     Y_TICKS.forEach(function (t) {
@@ -96,7 +100,7 @@
     s += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="4" fill="' + RED + '"/>';
     s += '<text x="' + px.toFixed(1) + '" y="' + (py - 11).toFixed(1) +
          '" text-anchor="middle" font-size="12.5" font-weight="700" fill="' +
-         RED + '">~151p</text>';
+         RED + '">~149p</text>';
 
     // x month labels (positions match the transit chart)
     MONTHS.forEach(function (m) {
