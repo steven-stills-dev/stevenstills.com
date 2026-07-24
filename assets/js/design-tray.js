@@ -59,7 +59,8 @@
     ["--bg", "Paper (bg)"], ["--surface", "Sand (cards)"], ["--fg", "Body — coal"],
     ["--heading", "Headers — coal"], ["--subtitle", "Subtitles — red"],
     ["--accent", "Links — blue"], ["--muted", "Muted text"],
-    ["--accent-soft", "Accent tint"], ["--rule", "Rule / borders"]
+    ["--accent-soft", "Accent tint"], ["--rule", "Rule / borders"],
+    ["--portrait-wash", "Portrait wash"]
   ];
   // [var, label, min, max, step, unit]
   var HEAD_RANGES = [
