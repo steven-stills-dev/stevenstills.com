@@ -2,36 +2,34 @@
    GAS CHART — inline SVG of UK wholesale gas through the 2026 Hormuz crisis.
 
    Renders into #gas-chart on load. Pure vanilla, no build step. Shares the
-   transit chart's x-axis (1 Feb -> 21 Jun 2026, daily) so the two stack and
+   transit chart's x-axis (1 Feb -> 16 Apr 2026, daily) so the two stack and
    the price move lines up with the tanker collapse below.
 
    Plots the FIXED August-2026 NBP contract, not rolling front month, so the
-   product does not change under the series and risk prices in from the day
-   transits stop (day 28, 1 Mar). Daily line is an INDICATIVE RECONSTRUCTION
-   shaped by the reported levels in the page footnotes (notes 3 and 4), not a
-   verified daily market series. Colours come from the site CSS variables:
-   times_red = the signal, times_coal = line/axes, times_grey = labels.
+   product does not change under the series. Risk prices in from the day
+   transits stop (day 28, 1 Mar); the 27 Mar breakout (day 54) carries the
+   dashed marker; the series ends on the 149p peak day (16 Apr). Daily line
+   is an INDICATIVE RECONSTRUCTION shaped by the reported levels in the page
+   footnotes (notes 3 and 4), not a verified daily market series.
    ========================================================================= */
 (function () {
   "use strict";
 
   /* ---- indicative Aug-26 contract anchors, pence/therm ------------------
-     [day index from 1 Feb, level]. Calm ~94 while tankers flow; climbs from
-     day 28 (1 Mar) when transits collapse; kicks on the 13 Apr session
-     (day 71, "indefinitely" warning); peaks late Apr; bleeds off through
-     May; drops on the 14 Jun reopening announcement (day 133), signed
-     17 Jun. The daily line interpolates between these.                     */
+     [day index from 1 Feb, level]. Calm ~94 while tankers flow; grinds up
+     from day 28 (1 Mar) when transits collapse; explodes from 27 Mar
+     (day 54); the 13 Apr "indefinitely" session (day 71) kicks it again;
+     peaks at 149 on 16 Apr (day 74), where the series ends.                */
   var KEYFRAMES = [
     [0, 94], [10, 93], [20, 94], [27, 95],
-    [28, 97], [31, 101], [36, 108], [42, 115], [50, 122], [59, 127],
-    [65, 129], [70, 130], [71, 140], [75, 144], [79, 147], [82, 149],
-    [86, 146], [92, 141], [100, 133], [108, 126], [115, 120], [124, 113],
-    [130, 109], [132, 107], [133, 97], [136, 91], [140, 88]
+    [28, 97], [34, 101], [41, 105], [48, 108], [53, 110],
+    [54, 115], [58, 124], [63, 132], [67, 136], [70, 138],
+    [71, 144], [74, 149]
   ];
-  var DAYS = 141;                     // 1 Feb (0) -> 21 Jun (140)
-  var SPIKE_IDX = 71;                 // 13 Apr 2026, the +11.7% session
-  var PEAK_IDX = 82;                  // late-Apr peak, ~151p
-  var MONTHS = [[0, "Feb"], [28, "Mar"], [59, "Apr"], [89, "May"], [120, "Jun"]];
+  var DAYS = 75;                      // 1 Feb (0) -> 16 Apr (74)
+  var SPIKE_IDX = 54;                 // 27 Mar 2026, the breakout
+  var PEAK_IDX = 74;                  // 16 Apr peak, ~149p
+  var MONTHS = [[0, "Feb"], [28, "Mar"], [59, "Apr"]];
   var Y_TICKS = [80, 100, 120, 140, 160];
   var Y_MIN = 80, Y_MAX = 160;
 
@@ -71,8 +69,8 @@
     var base = padT + plotH;
 
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
-      'aria-label="UK NBP August 2026 gas contract, pence per therm, February to June 2026, ' +
-      'climbing from the day tanker transits stop and peaking near 149 before the June reopening">';
+      'aria-label="UK NBP August 2026 gas contract, pence per therm, February to mid-April 2026, ' +
+      'climbing from the day tanker transits stop, breaking out on 27 March and peaking near 149">';
 
     // y gridlines + labels
     Y_TICKS.forEach(function (t) {
@@ -83,7 +81,7 @@
            'dominant-baseline="middle" font-size="11" fill="' + GREY + '">' + t + '</text>';
     });
 
-    // dashed red marker on 13 Apr, aligned with the transit chart below
+    // dashed red marker on 27 Mar, aligned with the transit chart below
     var sx = x(SPIKE_IDX).toFixed(1);
     s += '<line x1="' + sx + '" y1="' + padT + '" x2="' + sx + '" y2="' + base +
          '" stroke="' + RED + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>';
@@ -95,11 +93,11 @@
     s += '<path d="' + d + '" fill="none" stroke="' + COAL + '" stroke-width="2" ' +
          'stroke-linejoin="round" stroke-linecap="round"/>';
 
-    // peak gets the red signal: marker + value label
+    // peak gets the red signal: marker + value label (end-anchored, peak sits at the right edge)
     var px = x(PEAK_IDX), py = y(data[PEAK_IDX]);
     s += '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="4" fill="' + RED + '"/>';
-    s += '<text x="' + px.toFixed(1) + '" y="' + (py - 11).toFixed(1) +
-         '" text-anchor="middle" font-size="12.5" font-weight="700" fill="' +
+    s += '<text x="' + (px + 2).toFixed(1) + '" y="' + (py - 11).toFixed(1) +
+         '" text-anchor="end" font-size="12.5" font-weight="700" fill="' +
          RED + '">~149p</text>';
 
     // x month labels (positions match the transit chart)

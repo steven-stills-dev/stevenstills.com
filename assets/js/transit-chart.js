@@ -2,21 +2,22 @@
    TRANSIT CHART — daily tanker transits through the Strait of Hormuz.
 
    Companion to the gas-price chart: it shows WHY the price moved. Tanker
-   traffic collapsed from ~50/day in February to near zero through March-April;
-   the red column marks 13 April 2026, the day UK gas jumped 11.7%.
+   traffic collapsed from ~50/day in February to near zero from 1 March; the
+   dashed marker sits on 27 March 2026, the gas-price breakout, and the
+   series ends 16 April, the 149p peak day, matching the gas chart above.
 
    Data: IMF PortWatch "Daily Chokepoints Data" (AIS via the UN Global
-   Platform), Strait of Hormuz, n_tanker, 1 Feb - 21 Jun 2026. Static snapshot
-   retrieved 29 Jun 2026 — see the page footnotes. Bars use #424141; the spike
-   day uses the brand red #990f3d.
+   Platform), Strait of Hormuz, n_tanker; snapshot covers 1 Feb - 21 Jun 2026,
+   trimmed here to 16 Apr — see the page footnotes. Bars use #424141; the
+   marker uses the brand red #990f3d.
    ========================================================================= */
 (function () {
   "use strict";
 
-  /* daily tanker transits, 1 Feb 2026 (index 0) -> 21 Jun 2026 (index 140) */
-  var DATA = [37,55,45,43,46,50,48,49,41,59,46,55,64,58,50,60,43,52,62,54,54,72,62,55,58,53,53,44,7,2,2,0,1,0,2,1,6,1,1,3,3,1,5,0,1,0,1,3,0,0,2,1,1,0,0,0,2,12,2,0,2,4,2,7,1,3,0,4,1,5,3,4,3,4,3,4,16,2,4,1,2,0,2,1,1,1,3,3,3,2,2,1,0,0,0,1,0,1,2,3,3,4,4,2,2,0,1,4,4,2,0,4,2,2,0,2,0,1,0,2,1,4,3,1,1,1,1,1,2,0,2,1,0,0,1,4,1,7,7,9,0];
-  var SPIKE_IDX = 71;                 // 13 Apr 2026
-  var MONTHS = [[0,"Feb"],[28,"Mar"],[59,"Apr"],[89,"May"],[120,"Jun"]];
+  /* daily tanker transits, 1 Feb 2026 (index 0) -> 16 Apr 2026 (index 74) */
+  var DATA = [37,55,45,43,46,50,48,49,41,59,46,55,64,58,50,60,43,52,62,54,54,72,62,55,58,53,53,44,7,2,2,0,1,0,2,1,6,1,1,3,3,1,5,0,1,0,1,3,0,0,2,1,1,0,0,0,2,12,2,0,2,4,2,7,1,3,0,4,1,5,3,4,3,4,3];
+  var SPIKE_IDX = 54;                 // 27 Mar 2026, the price breakout
+  var MONTHS = [[0,"Feb"],[28,"Mar"],[59,"Apr"]];
   var Y_MAX = 75, Y_TICKS = [0, 25, 50, 75];
   var BAR = "#424141", SPIKE = "#990f3d";
 
@@ -38,8 +39,8 @@
     var base = padT + plotH;
 
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
-      'aria-label="Daily tanker transits through the Strait of Hormuz, February to June 2026, ' +
-      'collapsing from about 50 a day to near zero; 13 April highlighted">';
+      'aria-label="Daily tanker transits through the Strait of Hormuz, February to mid-April 2026, ' +
+      'collapsing from about 50 a day to near zero; 27 March highlighted">';
 
     // y gridlines + labels
     Y_TICKS.forEach(function (t) {
@@ -55,7 +56,7 @@
     s += '<line x1="' + sx + '" y1="' + padT + '" x2="' + sx + '" y2="' + base +
          '" stroke="' + SPIKE + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>';
     s += '<text x="' + sx + '" y="' + (padT - 8) + '" text-anchor="middle" font-size="11.5" ' +
-         'font-weight="700" fill="' + SPIKE + '">13 Apr · gas +11.7%</text>';
+         'font-weight="700" fill="' + SPIKE + '">27 Mar · price breaks out</text>';
 
     // bars
     DATA.forEach(function (v, i) {
