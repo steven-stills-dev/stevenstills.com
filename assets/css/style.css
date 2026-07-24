@@ -231,10 +231,11 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block;
   filter: grayscale(1);
 }
-/* red multiply wash: clear at the top, times_red at the foot */
+/* red multiply wash: clear at the top, lightened times_red at the foot */
 .author-portrait::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 30%, var(--times-red) 100%);
+  background: linear-gradient(to bottom, transparent 30%,
+    color-mix(in srgb, var(--times-red) 60%, white) 100%);
   mix-blend-mode: multiply; pointer-events: none;
 }
 
