@@ -97,7 +97,7 @@
   var ax = PX(41);
   s += '<line x1="' + ax.toFixed(1) + '" y1="' + Y0 + '" x2="' + ax.toFixed(1) + '" y2="' + Y1 +
        '" stroke="' + COAL + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>';
-  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(139).toFixed(1) + '" r="3.6" fill="#fff1e5" stroke="' + BLUE + '" stroke-width="2"/>';
+  s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(139).toFixed(1) + '" r="3.6" fill="#CDCDC4" stroke="' + BLUE + '" stroke-width="2"/>';
   s += '<circle cx="' + ax.toFixed(1) + '" cy="' + PY(150).toFixed(1) + '" r="3.6" fill="' + RED + '"/>';
   s += '<text x="' + (ax - 8).toFixed(1) + '" y="' + (PY(150) - 10).toFixed(1) + '" text-anchor="end" font-size="11" font-weight="700" fill="' + COAL +
        '">20:30 · £139 vs £150</text>';

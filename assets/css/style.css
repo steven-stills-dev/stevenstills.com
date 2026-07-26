@@ -12,40 +12,47 @@
   /* ---- NAMED BRAND COLOURS (refer to these by name) -------------------
      Financial Times-inspired. Full reference + chart palette:
      .claude/DESIGN.md (local design notes, not in the repo)              */
-  --times-coal:  #333333;  /* headers + body text          */
-  --times-red:   #990f3d;  /* subtitles · chart primary    */
-  --times-blue:  #0f5499;  /* page links · chart secondary */
-  --times-paper: #fff1e5;  /* page background              */
-  --times-sand:  #f2dfce;  /* containers / secondary bg    */
-  --times-grey:  #66605c;  /* muted / secondary text       */
-  --times-line:  #e7d3c1;  /* hairlines / borders          */
+  /* chart aliases — kept for the chart scripts, remapped to the palette */
+  --times-coal:  var(--fg);         /* chart axes / dark lines  */
+  --times-red:   var(--rust);       /* chart signal / markers   */
+  --times-blue:  var(--green);      /* chart secondary series   */
+  --times-paper: var(--bg);
+  --times-sand:  var(--surface);
+  --times-grey:  var(--muted);      /* chart labels             */
+  --times-line:  var(--rule);       /* chart gridlines          */
+
+  /* ---- BRAND PALETTE (warm energy) --------------------------------------
+     Warm paper grounds keyed to the portrait; deep green = renewables,
+     amber = the energy highlight, rust = the sparing signal.               */
+  --green: #1F6B52; /* renewables brand — links, kickers, chart data */
+  --amber: #E9A13B; /* energy highlight — card accents, borders      */
+  --rust:  #B4441F; /* signal — chart event markers, sparing         */
 
   /* ---- SEMANTIC TOKENS (what the rules below actually use) ------------- */
-  --bg:          var(--times-paper);
-  --surface:     var(--times-sand);
-  --fg:          var(--times-coal);   /* body text */
-  --heading:     var(--times-coal);   /* headers   */
-  --subtitle:    #ea3471;             /* kickers, labels, subtitles — bright pink (tray pick) */
-  --accent:      var(--times-blue);   /* links     */
-  --muted:       var(--times-grey);
-  --rule:        var(--times-line);
-  --accent-soft: #f8e8da;             /* light tint for hover fills */
-  --portrait-wash: #c26f8b;           /* portrait gradient foot (lightened times_red) */
+  --bg:          #FBF7EF;            /* warm paper ground        */
+  --surface:     #F1E9DA;            /* warm sand containers     */
+  --fg:          #1C1A16;            /* warm near-black text     */
+  --heading:     #1C1A16;
+  --subtitle:    var(--green);       /* kickers, labels          */
+  --accent:      var(--green);       /* page links               */
+  --muted:       #6E6659;            /* warm grey secondary text */
+  --rule:        #E2D7C3;            /* warm hairlines           */
+  --accent-soft: #F7E8CC;            /* pale amber hover tint    */
 
-  /* Typography — families */
-  --font-heading: "Inter", system-ui, sans-serif;
+  /* Typography — families: serif display titles, Inter everywhere else */
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
   /* Typography — weights */
-  --heading-weight: 330;
+  --heading-weight: 620;
   --body-weight:    350;
 
   /* Typography — tracking (letter-spacing, em) */
-  --heading-tracking: -0.05em;
+  --heading-tracking: -0.02em;
   --body-tracking:    -0.03em;
 
   /* Typography — sizing */
-  --heading-scale: 1.6;     /* multiplier over all heading sizes */
+  --heading-scale: 1.15;    /* multiplier over all heading sizes */
   --body-size:     0.85rem;
   --line-height:   1.34;
 
@@ -113,8 +120,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .site-head {
   border-bottom: 1px solid var(--rule);
   position: sticky; top: 0; z-index: 10;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: saturate(140%) blur(8px);
+  background: var(--bg);
 }
 .site-head .wrap {
   display: flex; align-items: center; justify-content: space-between;
@@ -149,7 +155,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- INSIGHT BLOCK (the brand signature) ------------------------------ */
 .insight {
-  background: color-mix(in srgb, var(--subtitle) 5%, var(--surface));
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-left: 4px solid var(--subtitle);
   border-radius: 4px;
@@ -197,9 +203,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     var(--surface);
 }
 
-/* ---- AUTHOR HEAD (projects-page intro blurb, FT columnist style) ------ */
-/* full-bleed sand band behind the intro; the content stays constrained by .wrap */
+/* ---- AUTHOR HEAD (projects-page intro blurb) -------------------------- */
+/* full-bleed feature band: supporting grey ground, standard text roles */
 .author-band { background: var(--surface); }
+.author-band .pull-quote::before { color: var(--amber); }
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
 }
@@ -218,25 +225,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .author-head .bio { max-width: 60ch; }
 .author-portrait {
-  aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden;
-  border: 1px solid var(--rule); background: var(--surface);
+  aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden;
+  border: 3px solid var(--amber); background: var(--surface);
   display: flex; align-items: center; justify-content: center; text-align: center;
-  color: var(--muted); font-size: 0.76rem; padding: 0;
-  position: relative; margin: 0;   /* anchor the gradient wash */
-  background:
-    repeating-linear-gradient(45deg, var(--bg) 0 10px, transparent 10px 20px),
-    var(--surface);
+  color: var(--muted); font-size: 0.76rem; padding: 0; margin: 0;
 }
-/* mono portrait; tone carries through the wash below */
+/* full-colour portrait, no wash */
 .author-portrait img {
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block;
-  filter: grayscale(1);
-}
-/* red multiply wash: clear at the top, --portrait-wash at the foot */
-.author-portrait::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 30%, var(--portrait-wash) 100%);
-  mix-blend-mode: multiply; pointer-events: none;
 }
 
 /* mantras column — FT-style pull-quotes to the right of the portrait,
@@ -289,7 +285,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .article-thumb:has(img) { padding: 0; }
 .article-thumb img { width: 100%; height: 100%; object-fit: cover; }
 /* icon thumb (e.g. the batteries editorial) — clean fill, centred glyph */
-.article-thumb--icon { background: #fff7ef; padding: 0.6rem 1rem; }
+.article-thumb--icon { background: var(--surface); padding: 0.6rem 1rem; }
 .article-thumb--icon svg { width: 72%; height: auto; }
 .article-cat { font-weight: 700; color: var(--accent); font-size: 0.95rem; margin: 0 0 0.35rem; }
 .article-cat a { color: var(--accent); }
@@ -318,17 +314,21 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .split-col + .split-col { border-left: 1px solid var(--rule); padding-left: clamp(2rem, 4vw, 3.5rem); }
 }
 .split-col .kicker { margin-bottom: 0.6rem; }
-/* compact article row: small thumb + tight body */
+/* compact article CARD: neutral container, category colour on the spine */
 .mini-row {
   display: grid; grid-template-columns: 92px 1fr; gap: 1.1rem;
-  padding: 1.15rem 0; border-top: 1px solid var(--rule); align-items: start;
+  padding: 1.1rem; margin-top: 1rem; align-items: start;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 12px;
+  /* offset accent block: amber with a thin text-colour rim */
+  box-shadow: 8px 8px 0 -1px var(--amber), 8px 8px 0 0 var(--fg);
 }
 .mini-thumb {
-  aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden;
+  aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden;
   border: 1px solid var(--rule);
 }
 .mini-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.mini-thumb--icon { background: #fff7ef; display: flex; align-items: center; justify-content: center; }
+.mini-thumb--icon { background: var(--bg); display: flex; align-items: center; justify-content: center; }
 .mini-thumb--icon svg { width: 68%; height: auto; }
 .mini-meta {
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
@@ -382,10 +382,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   border-radius: 4px; padding: 0.1em 0.4em; font-size: 0.85em;
 }
 
-/* ---- FOOTER ------------------------------------------------------------ */
-.site-foot { border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.9rem; }
+/* ---- FOOTER (supporting ground, teal links) ---------------------------- */
+.site-foot { background: var(--surface); color: var(--muted); font-size: 0.9rem; }
 .site-foot .wrap { padding-top: 2.5rem; padding-bottom: 2.5rem; display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
-.site-foot a { color: var(--fg); }
+.site-foot a { color: var(--accent); }
 .contact-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 
 /* ---- UTIL -------------------------------------------------------------- */
@@ -401,7 +401,7 @@ sup.fn a:hover { text-decoration: underline; }
 /* the gas-price chart artefact */
 .gas-chart { margin: 1.8rem 0; }
 .gas-chart #gas-chart, .gas-chart #transit-chart {
-  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
   padding: 0.6rem 0.4rem;
 }
 .gas-chart #gas-chart svg, .gas-chart #transit-chart svg { width: 100%; height: auto; display: block;
@@ -428,7 +428,7 @@ sup.fn a:hover { text-decoration: underline; }
 }
 /* monochrome chart boxes, on the darker times_sand ground */
 .battery-fig #solar-profile, .battery-fig #battery-anim, .battery-fig #supplier-chart {
-  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px; padding: 0.6rem 0.4rem;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 0.6rem 0.4rem;
 }
 .battery-fig #solar-profile svg, .battery-fig #battery-anim svg, .battery-fig #supplier-chart svg {
   width: 100%; height: auto; display: block; font-family: var(--font-body);
@@ -436,7 +436,7 @@ sup.fn a:hover { text-decoration: underline; }
 /* ---- TECHNICAL DIAGRAMS (inline SVG, e.g. token / local-stack notes) --- */
 .diagram { margin: 1.8rem 0; }
 .diagram .diagram-box {
-  background: #f2dfce; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
   padding: 1rem 0.8rem;
 }
 .diagram svg { width: 100%; height: auto; display: block; font-family: var(--font-body); }

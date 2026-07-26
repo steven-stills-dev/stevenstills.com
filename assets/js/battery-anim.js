@@ -95,7 +95,7 @@
     // sweeping dotted marker + dot on the price line
     s += '<line x1="' + mx.toFixed(1) + '" y1="' + TY0 + '" x2="' + mx.toFixed(1) + '" y2="' + TY1 +
          '" stroke="' + COAL + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>';
-    s += '<circle cx="' + mx.toFixed(1) + '" cy="' + PY(price).toFixed(1) + '" r="4.5" fill="#fff1e5" stroke="' + COAL + '" stroke-width="2"/>';
+    s += '<circle cx="' + mx.toFixed(1) + '" cy="' + PY(price).toFixed(1) + '" r="4.5" fill="#CDCDC4" stroke="' + COAL + '" stroke-width="2"/>';
 
     // battery body
     s += '<g transform="translate(42,196)">';

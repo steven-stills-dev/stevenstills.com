@@ -52,41 +52,41 @@
           <div class="diagram-box">
             <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tokens billed on each call as a conversation grows">
               <!-- legend -->
-              <rect x="360" y="18" width="14" height="14" fill="#333333"/>
-              <text x="380" y="30" font-size="13" fill="#66605c">new message</text>
-              <rect x="490" y="18" width="14" height="14" fill="#990f3d" opacity="0.20"/>
-              <text x="510" y="30" font-size="13" fill="#66605c">old context, re-sent</text>
+              <rect x="360" y="18" width="14" height="14" fill="#1C1A16"/>
+              <text x="380" y="30" font-size="13" fill="#1C1A16">new message</text>
+              <rect x="490" y="18" width="14" height="14" fill="#B4441F" opacity="0.20"/>
+              <text x="510" y="30" font-size="13" fill="#1C1A16">old context, re-sent</text>
               <!-- baseline -->
-              <line x1="46" y1="250" x2="606" y2="250" stroke="#333333" stroke-width="1.5"/>
+              <line x1="46" y1="250" x2="606" y2="250" stroke="#1C1A16" stroke-width="1.5"/>
               <!-- bars: prior context (red tint, bottom) + new turn (coal, top) -->
               <!-- turn 1 -->
-              <rect x="60"  y="222" width="58" height="28"  fill="#333333"/>
+              <rect x="60"  y="222" width="58" height="28"  fill="#1C1A16"/>
               <!-- turn 2 -->
-              <rect x="150" y="194" width="58" height="28"  fill="#333333"/>
-              <rect x="150" y="222" width="58" height="28"  fill="#990f3d" opacity="0.20"/>
+              <rect x="150" y="194" width="58" height="28"  fill="#1C1A16"/>
+              <rect x="150" y="222" width="58" height="28"  fill="#B4441F" opacity="0.20"/>
               <!-- turn 3 -->
-              <rect x="240" y="166" width="58" height="28"  fill="#333333"/>
-              <rect x="240" y="194" width="58" height="56"  fill="#990f3d" opacity="0.20"/>
+              <rect x="240" y="166" width="58" height="28"  fill="#1C1A16"/>
+              <rect x="240" y="194" width="58" height="56"  fill="#B4441F" opacity="0.20"/>
               <!-- turn 4 -->
-              <rect x="330" y="138" width="58" height="28"  fill="#333333"/>
-              <rect x="330" y="166" width="58" height="84"  fill="#990f3d" opacity="0.20"/>
+              <rect x="330" y="138" width="58" height="28"  fill="#1C1A16"/>
+              <rect x="330" y="166" width="58" height="84"  fill="#B4441F" opacity="0.20"/>
               <!-- turn 5 -->
-              <rect x="420" y="110" width="58" height="28"  fill="#333333"/>
-              <rect x="420" y="138" width="58" height="112" fill="#990f3d" opacity="0.20"/>
+              <rect x="420" y="110" width="58" height="28"  fill="#1C1A16"/>
+              <rect x="420" y="138" width="58" height="112" fill="#B4441F" opacity="0.20"/>
               <!-- turn 6 -->
-              <rect x="510" y="82"  width="58" height="28"  fill="#333333"/>
-              <rect x="510" y="110" width="58" height="140" fill="#990f3d" opacity="0.20"/>
+              <rect x="510" y="82"  width="58" height="28"  fill="#1C1A16"/>
+              <rect x="510" y="110" width="58" height="140" fill="#B4441F" opacity="0.20"/>
               <!-- callout -->
-              <text x="539" y="72" font-size="12.5" fill="#990f3d" font-weight="700" text-anchor="middle">call 6 pays</text>
-              <text x="539" y="72" font-size="12.5" fill="#990f3d" font-weight="700" text-anchor="middle" dy="15">for all 6 turns</text>
+              <text x="539" y="72" font-size="12.5" fill="#B4441F" font-weight="700" text-anchor="middle">call 6 pays</text>
+              <text x="539" y="72" font-size="12.5" fill="#B4441F" font-weight="700" text-anchor="middle" dy="15">for all 6 turns</text>
               <!-- turn labels -->
-              <text x="89"  y="270" font-size="13" fill="#66605c" text-anchor="middle">1</text>
-              <text x="179" y="270" font-size="13" fill="#66605c" text-anchor="middle">2</text>
-              <text x="269" y="270" font-size="13" fill="#66605c" text-anchor="middle">3</text>
-              <text x="359" y="270" font-size="13" fill="#66605c" text-anchor="middle">4</text>
-              <text x="449" y="270" font-size="13" fill="#66605c" text-anchor="middle">5</text>
-              <text x="539" y="270" font-size="13" fill="#66605c" text-anchor="middle">6</text>
-              <text x="326" y="290" font-size="12.5" fill="#66605c" text-anchor="middle">turn number</text>
+              <text x="89"  y="270" font-size="13" fill="#1C1A16" text-anchor="middle">1</text>
+              <text x="179" y="270" font-size="13" fill="#1C1A16" text-anchor="middle">2</text>
+              <text x="269" y="270" font-size="13" fill="#1C1A16" text-anchor="middle">3</text>
+              <text x="359" y="270" font-size="13" fill="#1C1A16" text-anchor="middle">4</text>
+              <text x="449" y="270" font-size="13" fill="#1C1A16" text-anchor="middle">5</text>
+              <text x="539" y="270" font-size="13" fill="#1C1A16" text-anchor="middle">6</text>
+              <text x="326" y="290" font-size="12.5" fill="#1C1A16" text-anchor="middle">turn number</text>
             </svg>
           </div>
           <figcaption>Tokens billed on each call as the conversation grows. The coal block is your new message; the shaded block is the earlier context re-sent with it. By turn six you are paying to re-send five turns of history every time. Illustrative.</figcaption>
@@ -110,8 +110,16 @@
         </ul>
         <p>Same 10th place, a fraction of the tokens. The structure was the saving, not the hardware.</p>
 
-        <!-- 4. CHEAPER MODELS + LOCAL -->
-        <h2>4. Cheaper models, and running your own</h2>
+        <!-- 4. THE CURATED CONTEXT LAYER -->
+        <h2>4. The curated context layer</h2>
+        <p class="summary">Don't feed the model the history. Feed it a briefing.</p>
+        <p>Most of the fixes above are one idea wearing different hats, and it deserves its own name: a curated context layer. A deliberate stage that sits between the raw material — transcripts, tool output, research dumps — and the model's context window, so only a distilled version of the truth ever gets in. Anthropic's engineering team calls the wider discipline context engineering, and their framing is the right one: context is a finite budget you're curating on every single call, not a bin that fills up on its own.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup></p>
+        <p>In practice the layer has two mechanics. Compaction: when a conversation gets long, summarise it and restart the window from the summary, carrying the decisions forward and dropping the noise. And distillation at the boundary: let sub-agents burn tens of thousands of tokens exploring, but only ever let a short structured note back through — Anthropic's multi-agent systems hand back one to two thousand tokens from searches that cost far more. Their published evaluations put a number on the whole approach: on a hundred-turn task, context management cut token consumption by roughly 84%, while letting runs finish that would otherwise have died of context exhaustion.<sup class="fn"><a href="#fn-2" id="ref-2b">2</a></sup> My World Cup run was the control group. Nobody curated anything, and the bill shows it.</p>
+        <p>The part that surprised me reading further: the curated layer isn't just cheaper, it's smarter. Chroma's "context rot" research tested eighteen frontier models and found accuracy falls as input grows — even on trivially simple retrieval, and well before the advertised window limit.<sup class="fn"><a href="#fn-3" id="ref-3">3</a></sup> A model reading a two-page briefing genuinely outperforms the same model reading the two hundred pages the briefing came from. A long context window is a capacity, not an instruction to fill it.</p>
+        <p>If you've built data platforms, this should feel familiar, because it's the oldest pattern we have: raw data lands, a staging layer cleans it, a curated layer serves it, and nobody points the CEO's dashboard at the landing tables. The context window is the dashboard. Stop pointing it at the raw feed.</p>
+
+        <!-- 5. CHEAPER MODELS + LOCAL -->
+        <h2>5. Cheaper models, and running your own</h2>
         <p class="summary">Not every step needs a frontier model. Many need no API at all.</p>
         <p>Once the structure is sound, the next lever is not paying premium rates for cheap work. Most steps in an agent — reformat this, extract those fields, summarise that page — are easily handled by a small model. Reserve the flagship for the hard reasoning at the end. And for a lot of that routine work you can drop the API bill to zero by running a model on your own machine.</p>
         <p>This is where people tangle two different things, so it's worth being precise: the <strong>engine</strong> is the software that runs a model; the <strong>model</strong> is the downloaded intelligence it runs. They're chosen separately, and the same engine will run many different models.</p>
@@ -120,48 +128,48 @@
           <div class="diagram-box">
             <svg viewBox="0 0 660 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Local AI stack: models loaded into engines, run on a laptop or a team server">
               <!-- MODELS row -->
-              <text x="30" y="26" font-size="13" font-weight="700" fill="#990f3d" letter-spacing="0.5">MODELS — the downloaded intelligence (swap freely)</text>
-              <g font-size="14" fill="#333333" text-anchor="middle">
-                <rect x="30"  y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+              <text x="30" y="26" font-size="13" font-weight="700" fill="#B4441F" letter-spacing="0.5">MODELS — the downloaded intelligence (swap freely)</text>
+              <g font-size="14" fill="#1C1A16" text-anchor="middle">
+                <rect x="30"  y="38" width="140" height="40" rx="20" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
                 <text x="100" y="63">Gemma</text>
-                <rect x="188" y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <rect x="188" y="38" width="140" height="40" rx="20" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
                 <text x="258" y="63">Llama</text>
-                <rect x="346" y="38" width="140" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <rect x="346" y="38" width="140" height="40" rx="20" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
                 <text x="416" y="63">Qwen</text>
-                <rect x="504" y="38" width="126" height="40" rx="20" fill="none" stroke="#333333" stroke-width="1.5"/>
+                <rect x="504" y="38" width="126" height="40" rx="20" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
                 <text x="567" y="63">Mistral</text>
               </g>
               <!-- feed-in arrows -->
-              <g stroke="#66605c" stroke-width="1.5" fill="none">
+              <g stroke="#1C1A16" stroke-width="1.5" fill="none">
                 <line x1="220" y1="86" x2="220" y2="150"/>
                 <line x1="520" y1="86" x2="520" y2="150"/>
               </g>
-              <g fill="#66605c">
+              <g fill="#1C1A16">
                 <path d="M220 152 l-4 -8 l8 0 z"/>
                 <path d="M520 152 l-4 -8 l8 0 z"/>
               </g>
-              <text x="336" y="108" font-size="12.5" fill="#66605c" font-style="italic">loaded into an engine ↓</text>
+              <text x="336" y="108" font-size="12.5" fill="#1C1A16" font-style="italic">loaded into an engine ↓</text>
 
               <!-- ENGINES: personal group -->
-              <rect x="20" y="156" width="404" height="176" rx="8" fill="none" stroke="#333333" stroke-width="1.5"/>
-              <text x="36" y="178" font-size="13" font-weight="700" fill="#333333">Your laptop / desktop — one user</text>
-              <rect x="40"  y="192" width="170" height="46" rx="6" fill="#fff7ef" stroke="#333333" stroke-width="1.5"/>
-              <text x="125" y="220" font-size="14.5" fill="#333333" text-anchor="middle">Ollama</text>
-              <rect x="234" y="192" width="170" height="46" rx="6" fill="#fff7ef" stroke="#333333" stroke-width="1.5"/>
-              <text x="319" y="220" font-size="14.5" fill="#333333" text-anchor="middle">LM Studio</text>
-              <rect x="40"  y="254" width="364" height="58" rx="6" fill="#990f3d" opacity="0.10" stroke="#990f3d" stroke-width="1.5"/>
-              <text x="222" y="279" font-size="14.5" fill="#990f3d" text-anchor="middle" font-weight="700">llama.cpp</text>
-              <text x="222" y="299" font-size="12" fill="#66605c" text-anchor="middle">the inference core underneath both</text>
+              <rect x="20" y="156" width="404" height="176" rx="8" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
+              <text x="36" y="178" font-size="13" font-weight="700" fill="#1C1A16">Your laptop / desktop — one user</text>
+              <rect x="40"  y="192" width="170" height="46" rx="6" fill="#FBF7EF" stroke="#1C1A16" stroke-width="1.5"/>
+              <text x="125" y="220" font-size="14.5" fill="#1C1A16" text-anchor="middle">Ollama</text>
+              <rect x="234" y="192" width="170" height="46" rx="6" fill="#FBF7EF" stroke="#1C1A16" stroke-width="1.5"/>
+              <text x="319" y="220" font-size="14.5" fill="#1C1A16" text-anchor="middle">LM Studio</text>
+              <rect x="40"  y="254" width="364" height="58" rx="6" fill="#B4441F" opacity="0.10" stroke="#B4441F" stroke-width="1.5"/>
+              <text x="222" y="279" font-size="14.5" fill="#B4441F" text-anchor="middle" font-weight="700">llama.cpp</text>
+              <text x="222" y="299" font-size="12" fill="#1C1A16" text-anchor="middle">the inference core underneath both</text>
 
               <!-- ENGINES: team group -->
-              <rect x="440" y="156" width="200" height="176" rx="8" fill="none" stroke="#333333" stroke-width="1.5"/>
-              <text x="456" y="178" font-size="13" font-weight="700" fill="#333333">One GPU server</text>
-              <rect x="460" y="192" width="160" height="120" rx="6" fill="#0f5499" opacity="0.09" stroke="#0f5499" stroke-width="1.5"/>
-              <text x="540" y="248" font-size="15" fill="#0f5499" text-anchor="middle" font-weight="700">vLLM</text>
-              <text x="540" y="270" font-size="12" fill="#66605c" text-anchor="middle">serves the whole</text>
-              <text x="540" y="286" font-size="12" fill="#66605c" text-anchor="middle">team at once</text>
+              <rect x="440" y="156" width="200" height="176" rx="8" fill="none" stroke="#1C1A16" stroke-width="1.5"/>
+              <text x="456" y="178" font-size="13" font-weight="700" fill="#1C1A16">One GPU server</text>
+              <rect x="460" y="192" width="160" height="120" rx="6" fill="#1C1A16" opacity="0.09" stroke="#1C1A16" stroke-width="1.5"/>
+              <text x="540" y="248" font-size="15" fill="#1C1A16" text-anchor="middle" font-weight="700">vLLM</text>
+              <text x="540" y="270" font-size="12" fill="#1C1A16" text-anchor="middle">serves the whole</text>
+              <text x="540" y="286" font-size="12" fill="#1C1A16" text-anchor="middle">team at once</text>
 
-              <text x="222" y="352" font-size="12.5" fill="#66605c" text-anchor="middle">ENGINES — the software that loads a model and runs it</text>
+              <text x="222" y="352" font-size="12.5" fill="#1C1A16" text-anchor="middle">ENGINES — the software that loads a model and runs it</text>
             </svg>
           </div>
           <figcaption>The local stack. Any model (top) loads into an engine (bottom). Ollama and LM Studio are friendly front ends both built on llama.cpp, the core that does the actual inference. vLLM is a separate, heavier engine for serving many people from one GPU server.</figcaption>
@@ -190,14 +198,14 @@
           </div>
         </div>
 
-        <!-- 5. KIMI K3 -->
-        <h2>5. Kimi K3, and paying once instead of per token</h2>
+        <!-- 6. KIMI K3 -->
+        <h2>6. Kimi K3, and paying once instead of per token</h2>
         <p class="summary">Downloadable weights turn a metered bill into a fixed cost.</p>
-        <p>This is what makes Kimi K3 interesting beyond the benchmark noise. Alongside the hosted API, you can download the model and run it yourself, which removes the per-token charge entirely.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup> For a workload heavy enough that the API bill hurts, that changes the maths: instead of paying for every token forever, you pay once for the hardware to serve it.</p>
+        <p>This is what makes Kimi K3 interesting beyond the benchmark noise. Alongside the hosted API, you can download the model and run it yourself, which removes the per-token charge entirely.<sup class="fn"><a href="#fn-4" id="ref-4">4</a></sup> For a workload heavy enough that the API bill hurts, that changes the maths: instead of paying for every token forever, you pay once for the hardware to serve it.</p>
         <p>The honest caveat is that a frontier-scale model is nothing like a 7B on a laptop — it wants serious GPU capacity, which is why vLLM on a real server exists. So "eliminate API cost" is true, but you're trading a metered bill for an infrastructure one. Whether that's cheaper depends entirely on your volume. It's the same call as owning versus renting, and the answer is a spreadsheet, not a headline.</p>
 
-        <!-- 6. CLOSE -->
-        <h2>6. The part that never changed</h2>
+        <!-- 7. CLOSE -->
+        <h2>7. The part that never changed</h2>
         <p>Strip away the launch noise and the advice is dull, which is how you know it's right. Decide the method before you run the model. Keep the context lean and structured. Send small models the small jobs, and save the expensive one for the decision that needs it. Run locally when the work is routine and the volume is high. Every one of those is a front-loaded structure choice, the same discipline that separated a good data project from an expensive one long before any of this. New models, same habit: sort the structure out first, and the bill takes care of itself.</p>
 
         <!-- SOURCES -->
@@ -205,7 +213,9 @@
           <h3>Notes &amp; sources</h3>
           <ol>
             <li id="fn-1">The World Cup prediction run and its 10th-of-300 result are described in my post on catching AI getting things wrong. <a href="https://www.linkedin.com/posts/steven-stills_do-you-also-catch-ai-getting-things-wrong-activity-7471156959866646530-1qsY" target="_blank" rel="noopener">LinkedIn, on the Fable 5 run</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
-            <li id="fn-2">Kimi K3 is offered both as a hosted API and as downloadable open weights you can self-host, which removes the per-token API charge in favour of running the model on your own hardware. Framing per the recent Kimi K3 release; check the model card for the current licence and weight availability. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-2">Context engineering, compaction and sub-agent distillation — including agents returning 1,000–2,000-token summaries from far larger searches, and context management cutting token consumption by roughly 84% on a hundred-turn agent task. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic, "Effective context engineering for AI agents"</a>. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-3">"Context rot": across 18 frontier models, output accuracy degrades as input length grows, even on simple retrieval tasks, well before the advertised context limit. <a href="https://www.trychroma.com/research/context-rot" target="_blank" rel="noopener">Chroma, "Context Rot: How Increasing Input Tokens Impacts LLM Performance"</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-4">Kimi K3 is offered both as a hosted API and as downloadable open weights you can self-host, which removes the per-token API charge in favour of running the model on your own hardware. Framing per the recent Kimi K3 release; check the model card for the current licence and weight availability. <a href="#ref-4" aria-label="Back to text">&#8617;</a></li>
           </ol>
         </section>
 

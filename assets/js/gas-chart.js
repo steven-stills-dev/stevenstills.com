@@ -6,9 +6,9 @@
    the price move lines up with the tanker collapse below.
 
    Plots the FIXED August-2026 NBP contract, not rolling front month, so the
-   product does not change under the series. Risk prices in from the day
-   transits stop (day 28, 1 Mar); the 27 Mar breakout (day 54) carries the
-   dashed marker; the series ends on the 149p peak day (16 Apr). Daily line
+   product does not change under the series. The red dashed marker sits
+   on 1 Mar (day 28), where tanker transits collapse in the chart below; the
+   series ends on the 149p peak day (16 Apr). Daily line
    is an INDICATIVE RECONSTRUCTION shaped by the reported levels in the page
    footnotes (notes 3 and 4), not a verified daily market series.
    ========================================================================= */
@@ -27,7 +27,7 @@
     [71, 144], [74, 149]
   ];
   var DAYS = 75;                      // 1 Feb (0) -> 16 Apr (74)
-  var SPIKE_IDX = 54;                 // 27 Mar 2026, the breakout
+  var SPIKE_IDX = 28;                 // 1 Mar 2026, tanker transits collapse
   var PEAK_IDX = 74;                  // 16 Apr peak, ~149p
   var MONTHS = [[0, "Feb"], [28, "Mar"], [59, "Apr"]];
   var Y_TICKS = [80, 100, 120, 140, 160];
@@ -53,10 +53,12 @@
 
   /* ---- build the chart SVG as a string ---------------------------------- */
   function chartSVG() {
-    var RED  = cssVar("--times-red",  "#990f3d");
-    var COAL = cssVar("--times-coal", "#333333");
-    var LINE = cssVar("--times-line", "#e7d3c1");
-    var GREY = cssVar("--times-grey", "#66605c");
+    // sand card: green data line, warm gridlines, rust = the signal
+    var GREEN = cssVar("--green", "#1F6B52");
+    var MUTED = cssVar("--muted", "#6E6659");
+    var GRID  = cssVar("--rule",  "#E2D7C3");
+    var SIG   = cssVar("--rust",  "#B4441F");
+    var COAL = GREEN, LINE = GRID, GREY = MUTED, RED = SIG, ROSE = SIG;
 
     // geometry mirrors transit-chart.js so the two x-axes align
     var W = 560, H = 280, padL = 34, padR = 12, padT = 22, padB = 34;
@@ -81,10 +83,10 @@
            'dominant-baseline="middle" font-size="11" fill="' + GREY + '">' + t + '</text>';
     });
 
-    // dashed red marker on 27 Mar, aligned with the transit chart below
+    // red signal marker on 1 Mar, aligned with the transit chart below
     var sx = x(SPIKE_IDX).toFixed(1);
     s += '<line x1="' + sx + '" y1="' + padT + '" x2="' + sx + '" y2="' + base +
-         '" stroke="' + RED + '" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>';
+         '" stroke="' + ROSE + '" stroke-width="1.5" stroke-dasharray="3 3"/>';
 
     // the daily price line
     var d = data.map(function (v, i) {
