@@ -56,6 +56,7 @@
 
   /* ---- Controlled tokens ------------------------------------------------ */
   var COLORS = [
+    ["--highlight", "Highlight (master)"],
     ["--bg", "Paper (bg)"], ["--surface", "Sand (cards)"], ["--fg", "Body — coal"],
     ["--heading", "Headers — coal"], ["--subtitle", "Subtitles — red"],
     ["--accent", "Links — blue"], ["--muted", "Muted text"],

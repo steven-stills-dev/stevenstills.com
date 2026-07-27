@@ -25,7 +25,8 @@
      Warm paper grounds keyed to the portrait; deep green = renewables,
      amber = the energy highlight, rust = the sparing signal.               */
   --green: #1F6B52; /* renewables brand — links, kickers, chart data */
-  --amber: #E9A13B; /* energy highlight — card accents, borders      */
+  --highlight: #F06C9B; /* MASTER highlight — portrait border, quote marks,
+                           card accent shadows, icon accents. Tray-editable. */
   --rust:  #B4441F; /* signal — chart event markers, sparing         */
 
   /* ---- SEMANTIC TOKENS (what the rules below actually use) ------------- */
@@ -206,7 +207,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- AUTHOR HEAD (projects-page intro blurb) -------------------------- */
 /* full-bleed feature band: supporting grey ground, standard text roles */
 .author-band { background: var(--surface); }
-.author-band .pull-quote::before { color: var(--amber); }
+.author-band .pull-quote::before { color: var(--highlight); }
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
 }
@@ -226,7 +227,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .author-head .bio { max-width: 60ch; }
 .author-portrait {
   aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden;
-  border: 3px solid var(--amber); background: var(--surface);
+  border: 3px solid var(--highlight); background: var(--surface);
   display: flex; align-items: center; justify-content: center; text-align: center;
   color: var(--muted); font-size: 0.76rem; padding: 0; margin: 0;
 }
@@ -320,8 +321,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding: 1.1rem; margin-top: 1rem; align-items: start;
   background: var(--surface); border: 1px solid var(--rule);
   border-radius: 12px;
-  /* offset accent block: amber with a thin text-colour rim */
-  box-shadow: 8px 8px 0 -1px var(--amber), 8px 8px 0 0 var(--fg);
+  /* offset accent block: highlight colour with a thin text-colour rim */
+  box-shadow: 8px 8px 0 -1px var(--highlight), 8px 8px 0 0 var(--fg);
 }
 .mini-thumb {
   aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden;
@@ -329,6 +330,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .mini-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mini-thumb--icon { background: var(--bg); display: flex; align-items: center; justify-content: center; }
+/* icon strokes that follow the master highlight */
+.mini-thumb--icon .hl-stroke { stroke: var(--highlight); }
 .mini-thumb--icon svg { width: 68%; height: auto; }
 .mini-meta {
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
