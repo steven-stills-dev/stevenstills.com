@@ -15,7 +15,7 @@
   /* chart aliases — kept for the chart scripts, remapped to the palette */
   --times-coal:  var(--fg);         /* chart axes / dark lines  */
   --times-red:   var(--rust);       /* chart signal / markers   */
-  --times-blue:  var(--green);      /* chart secondary series   */
+  --times-blue:  var(--berry);      /* chart secondary series   */
   --times-paper: var(--bg);
   --times-sand:  var(--surface);
   --times-grey:  var(--muted);      /* chart labels             */
@@ -24,7 +24,7 @@
   /* ---- BRAND PALETTE (warm energy) --------------------------------------
      Warm paper grounds keyed to the portrait; deep green = renewables,
      amber = the energy highlight, rust = the sparing signal.               */
-  --green: #1F6B52; /* renewables brand — links, kickers, chart data */
+  --berry: #8E3B60; /* deep berry — links, kickers, chart data       */
   --highlight: #F06C9B; /* MASTER highlight — portrait border, quote marks,
                            card accent shadows, icon accents. Tray-editable. */
   --rust:  #B4441F; /* signal — chart event markers, sparing         */
@@ -34,11 +34,11 @@
   --surface:     #F1E9DA;            /* warm sand containers     */
   --fg:          #1C1A16;            /* warm near-black text     */
   --heading:     #1C1A16;
-  --subtitle:    var(--green);       /* kickers, labels          */
-  --accent:      var(--green);       /* page links               */
+  --subtitle:    var(--berry);       /* kickers, labels          */
+  --accent:      var(--berry);       /* page links               */
   --muted:       #6E6659;            /* warm grey secondary text */
   --rule:        #E2D7C3;            /* warm hairlines           */
-  --accent-soft: #F7E8CC;            /* pale amber hover tint    */
+  --accent-soft: #FBE3EC;            /* pale rose hover tint     */
 
   /* Typography — families: serif display titles, Inter everywhere else */
   --font-heading: "Fraunces", Georgia, "Times New Roman", serif;

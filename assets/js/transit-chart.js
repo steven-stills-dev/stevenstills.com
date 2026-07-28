@@ -19,7 +19,7 @@
   var SPIKE_IDX = 28;                 // 1 Mar 2026, transits collapse
   var MONTHS = [[0,"Feb"],[28,"Mar"],[59,"Apr"]];
   var Y_MAX = 75, Y_TICKS = [0, 25, 50, 75];
-  var BAR = "#1F6B52", SPIKE = "#B4441F";   // green data bars, rust = the signal
+  var BAR = "#8E3B60", SPIKE = "#B4441F";   // berry data bars, rust = the signal
 
   function cssVar(name, fallback) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();

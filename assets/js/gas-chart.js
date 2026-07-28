@@ -53,12 +53,12 @@
 
   /* ---- build the chart SVG as a string ---------------------------------- */
   function chartSVG() {
-    // sand card: green data line, warm gridlines, rust = the signal
-    var GREEN = cssVar("--green", "#1F6B52");
+    // sand card: berry data line, warm gridlines, rust = the signal
+    var BERRY = cssVar("--berry", "#8E3B60");
     var MUTED = cssVar("--muted", "#6E6659");
     var GRID  = cssVar("--rule",  "#E2D7C3");
     var SIG   = cssVar("--rust",  "#B4441F");
-    var COAL = GREEN, LINE = GRID, GREY = MUTED, RED = SIG, ROSE = SIG;
+    var COAL = BERRY, LINE = GRID, GREY = MUTED, RED = SIG, ROSE = SIG;
 
     // geometry mirrors transit-chart.js so the two x-axes align
     var W = 560, H = 280, padL = 34, padR = 12, padT = 22, padB = 34;
