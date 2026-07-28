@@ -208,6 +208,15 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- AUTHOR HEAD (projects-page intro blurb) -------------------------- */
 /* full-bleed feature band: supporting grey ground, standard text roles */
 .author-band { background: var(--surface); }
+/* prominent About call-to-action in the hero */
+.about-cta {
+  display: inline-block; margin-top: 0.5rem;
+  background: var(--accent); color: var(--bg);
+  font-weight: 600; font-size: 1.02rem;
+  padding: 0.7rem 1.5rem; border-radius: 10px;
+  box-shadow: 5px 5px 0 -1px var(--highlight), 5px 5px 0 0 var(--fg);
+}
+.about-cta:hover { text-decoration: none; background: var(--fg); color: var(--bg); }
 .author-band .pull-quote::before { color: var(--highlight); }
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
