@@ -25,8 +25,9 @@
      Warm paper grounds keyed to the portrait; deep green = renewables,
      amber = the energy highlight, rust = the sparing signal.               */
   --berry: #8E3B60; /* deep berry — links, kickers, chart data       */
-  --highlight: #F06C9B; /* MASTER highlight — portrait border, quote marks,
-                           card accent shadows, icon accents. Tray-editable. */
+  --highlight: #8E3B60; /* MASTER highlight — portrait border, quote marks,
+                           card accent shadows, icon accents. Tray-editable.
+                           Matches --berry for a single-hue page.            */
   --rust:  #B4441F; /* signal — chart event markers, sparing         */
 
   /* ---- SEMANTIC TOKENS (what the rules below actually use) ------------- */
