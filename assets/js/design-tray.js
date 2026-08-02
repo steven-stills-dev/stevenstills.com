@@ -19,7 +19,7 @@
 (function () {
   "use strict";
 
-  var STORE_KEY = "ss-design-tray-v2";  /* bump to discard stale saved overrides */
+  var STORE_KEY = "ss-design-tray-v3";  /* bump to discard stale saved overrides */
 
   /* ---- Font catalogue: 2 UI-leading, 8 serif, 8 sans, 4 wildcard -------- */
   var FONTS = [
@@ -57,9 +57,11 @@
   /* ---- Controlled tokens ------------------------------------------------ */
   var COLORS = [
     ["--highlight", "Highlight (master)"],
-    ["--bg", "Paper (bg)"], ["--surface", "Sand (cards)"], ["--fg", "Body — coal"],
+    ["--bg", "Paper (bg)"], ["--surface", "Sand (containers)"],
+    ["--surface-lite", "Card (articles)"], ["--fg", "Body — coal"],
     ["--heading", "Headers — coal"], ["--subtitle", "Subtitles — red"],
-    ["--accent", "Links — blue"], ["--muted", "Muted text"],
+    ["--accent", "Links — blue"], ["--signal", "Signal / retired"],
+    ["--muted", "Muted text"],
     ["--accent-soft", "Accent tint"], ["--rule", "Rule / borders"]
   ];
   // [var, label, min, max, step, unit]
@@ -91,7 +93,7 @@
 
   var root = document.documentElement;
   var DEFAULTS = {};          // captured from style.css at load
-  var DEFAULT_FONTS = { heading: "Fraunces", body: "Inter", quote: "Inter" };
+  var DEFAULT_FONTS = { heading: "Fraunces", body: "Inter", quote: "Fraunces" };
   var FONT_VAR = { heading: "--font-heading", body: "--font-body", quote: "--font-quote" };
   var FONT_TARGETS = ["heading", "body", "quote"];
   var loadedFonts = {};       // q -> true

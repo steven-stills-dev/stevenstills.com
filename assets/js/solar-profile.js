@@ -16,7 +16,7 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var COAL = cssVar("--times-coal", "#333333");
+  var COAL = cssVar("--times-coal", "#231F20");
   var GREY = cssVar("--times-grey", "#66605c");
   var LINE = cssVar("--times-line", "#e7d3c1");
   var BLUE = cssVar("--times-blue", "#0f5499"), RED = cssVar("--times-red", "#990f3d");
