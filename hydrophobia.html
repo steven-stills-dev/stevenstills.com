@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hydrophobia · Steven Stills</title>
+  <title>Heatwaves and Hydrophobia · Steven Stills</title>
   <meta name="description" content="Four heatwaves before August, every one of the last 12 months above the 30-year normal, and the flood maps just redrawn upward. Meanwhile Britain is switching record wind off." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +28,7 @@
     <section class="section">
       <div class="wrap">
         <p class="kicker">Analysis · Climate &amp; water</p>
-        <h1>Hydrophobia</h1>
+        <h1>Heatwaves and Hydrophobia</h1>
         <p class="lede">Four heatwaves before August, and the flood maps have just been redrawn upward. The write-ups are short this time. The data speaks volumes.</p>
       </div>
     </section>
@@ -42,16 +42,16 @@
         <figure class="diagram">
           <div class="diagram-box">
             <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monthly mean temperature: 30-, 10- and 5-year normals against the last 12 months">
-              <!-- legend -->
+              <!-- legend: swatch + label, widths measured so the row centres on the plot -->
               <g font-size="12.5">
-                <line x1="64" y1="24" x2="92" y2="24" stroke="#231F20" stroke-width="1.8"/>
-                <text x="98" y="28" fill="#231F20">30-yr normal</text>
-                <line x1="196" y1="24" x2="224" y2="24" stroke="#66605C" stroke-width="1.8" stroke-dasharray="6 4"/>
-                <text x="230" y="28" fill="#231F20">10-yr</text>
-                <line x1="286" y1="24" x2="314" y2="24" stroke="#0F5499" stroke-width="1.8" stroke-dasharray="2 3"/>
-                <text x="320" y="28" fill="#231F20">5-yr</text>
-                <line x1="368" y1="24" x2="396" y2="24" stroke="#990F3D" stroke-width="3"/>
-                <text x="402" y="28" fill="#990F3D" font-weight="700">Last 12 months</text>
+                <rect x="167.0" y="18.5" width="11" height="11" fill="#9FB2C7"/>
+                <text x="184.0" y="28" fill="#231F20">30-yr normal</text>
+                <rect x="278.9" y="18.5" width="11" height="11" fill="#DEA9AF"/>
+                <text x="295.9" y="28" fill="#231F20">10-yr</text>
+                <rect x="347.0" y="18.5" width="11" height="11" fill="#0F5499"/>
+                <text x="364.0" y="28" fill="#231F20">5-yr</text>
+                <rect x="410.0" y="18.5" width="11" height="11" fill="#990F3D"/>
+                <text x="427.0" y="28" fill="#990F3D" font-weight="700">Last 12 months</text>
               </g>
               <!-- y gridlines + ticks -->
               <g stroke="#E7D3C1" stroke-width="1">
@@ -72,53 +72,63 @@
               <text x="30" y="54" font-size="12" fill="#66605C">°C</text>
               <!-- baseline -->
               <line x1="64" y1="285" x2="616" y2="285" stroke="#231F20" stroke-width="1.5"/>
-              <!-- series -->
-              <polyline points="64.0,239.7 114.2,238.3 164.4,220.6 214.5,197.6 264.7,166.7 314.9,138.5 365.1,118.3 415.3,121.2 465.5,145.3 515.6,177.0 565.8,212.4 616.0,235.7" fill="none" stroke="#231F20" stroke-width="1.8"/>
-              <polyline points="64.0,241.0 114.2,227.9 164.4,214.6 214.5,194.9 264.7,159.9 314.9,126.8 365.1,109.6 415.3,113.7 465.5,137.5 515.6,170.1 565.8,208.8 616.0,223.8" fill="none" stroke="#66605C" stroke-width="1.8" stroke-dasharray="6 4"/>
-              <polyline points="64.0,243.5 114.2,223.8 164.4,211.3 214.5,195.7 264.7,160.1 314.9,122.8 365.1,109.3 415.3,112.6 465.5,134.7 515.6,165.0 565.8,204.7 616.0,220.3" fill="none" stroke="#0F5499" stroke-width="1.8" stroke-dasharray="2 3"/>
-              <polyline points="64.0,235.8 114.2,210.0 164.4,201.4 214.5,171.4 264.7,131.1 314.9,102.8 365.1,73.1 415.3,105.5 465.5,143.3 515.6,169.4 565.8,196.6 616.0,212.1" fill="none" stroke="#990F3D" stroke-width="3"/>
-              <!-- month ticks -->
+              <!-- series: four columns per month, 46px slot -->
+              <g fill="#9FB2C7">
+                <rect x="71.2" y="239.7" width="7.5" height="45.3"/><rect x="117.2" y="238.3" width="7.5" height="46.7"/><rect x="163.2" y="220.6" width="7.5" height="64.4"/><rect x="209.2" y="197.6" width="7.5" height="87.4"/><rect x="255.2" y="166.7" width="7.5" height="118.3"/><rect x="301.2" y="138.5" width="7.5" height="146.5"/>
+                <rect x="347.2" y="118.3" width="7.5" height="166.7"/><rect x="393.2" y="121.2" width="7.5" height="163.8"/><rect x="439.2" y="145.3" width="7.5" height="139.7"/><rect x="485.2" y="177.0" width="7.5" height="108.0"/><rect x="531.2" y="212.4" width="7.5" height="72.6"/><rect x="577.2" y="235.7" width="7.5" height="49.3"/>
+              </g>
+              <g fill="#DEA9AF">
+                <rect x="79.2" y="241.0" width="7.5" height="44.0"/><rect x="125.2" y="227.9" width="7.5" height="57.1"/><rect x="171.2" y="214.6" width="7.5" height="70.4"/><rect x="217.2" y="194.9" width="7.5" height="90.1"/><rect x="263.2" y="159.9" width="7.5" height="125.1"/><rect x="309.2" y="126.8" width="7.5" height="158.2"/>
+                <rect x="355.2" y="109.6" width="7.5" height="175.4"/><rect x="401.2" y="113.7" width="7.5" height="171.3"/><rect x="447.2" y="137.5" width="7.5" height="147.5"/><rect x="493.2" y="170.1" width="7.5" height="114.9"/><rect x="539.2" y="208.8" width="7.5" height="76.2"/><rect x="585.2" y="223.8" width="7.5" height="61.2"/>
+              </g>
+              <g fill="#0F5499">
+                <rect x="87.2" y="243.5" width="7.5" height="41.5"/><rect x="133.2" y="223.8" width="7.5" height="61.2"/><rect x="179.2" y="211.3" width="7.5" height="73.7"/><rect x="225.2" y="195.7" width="7.5" height="89.3"/><rect x="271.2" y="160.1" width="7.5" height="124.9"/><rect x="317.2" y="122.8" width="7.5" height="162.2"/>
+                <rect x="363.2" y="109.3" width="7.5" height="175.7"/><rect x="409.2" y="112.6" width="7.5" height="172.4"/><rect x="455.2" y="134.7" width="7.5" height="150.3"/><rect x="501.2" y="165.0" width="7.5" height="120.0"/><rect x="547.2" y="204.7" width="7.5" height="80.3"/><rect x="593.2" y="220.3" width="7.5" height="64.7"/>
+              </g>
+              <g fill="#990F3D">
+                <rect x="95.2" y="235.8" width="7.5" height="49.2"/><rect x="141.2" y="210.0" width="7.5" height="75.0"/><rect x="187.2" y="201.4" width="7.5" height="83.6"/><rect x="233.2" y="171.4" width="7.5" height="113.6"/><rect x="279.2" y="131.1" width="7.5" height="153.9"/><rect x="325.2" y="102.8" width="7.5" height="182.2"/>
+                <rect x="371.2" y="73.1" width="7.5" height="211.9"/><rect x="417.2" y="105.5" width="7.5" height="179.5"/><rect x="463.2" y="143.3" width="7.5" height="141.7"/><rect x="509.2" y="169.4" width="7.5" height="115.6"/><rect x="555.2" y="196.6" width="7.5" height="88.4"/><rect x="601.2" y="212.1" width="7.5" height="72.9"/>
+              </g>
+              <!-- month ticks, centred on each slot -->
               <g font-size="12" fill="#231F20" text-anchor="middle">
-                <text x="64" y="305">J</text><text x="114" y="305">F</text><text x="164" y="305">M</text>
-                <text x="215" y="305">A</text><text x="265" y="305">M</text><text x="315" y="305">J</text>
-                <text x="365" y="305">J</text><text x="415" y="305">A</text><text x="466" y="305">S</text>
-                <text x="516" y="305">O</text><text x="566" y="305">N</text><text x="616" y="305">D</text>
+                <text x="87" y="305">J</text><text x="133" y="305">F</text><text x="179" y="305">M</text>
+                <text x="225" y="305">A</text><text x="271" y="305">M</text><text x="317" y="305">J</text>
+                <text x="363" y="305">J</text><text x="409" y="305">A</text><text x="455" y="305">S</text>
+                <text x="501" y="305">O</text><text x="547" y="305">N</text><text x="593" y="305">D</text>
               </g>
             </svg>
           </div>
-          <figcaption>Monthly mean temperature, London grid point, ERA5 reanalysis via Open-Meteo. Normals: 30-year 1991–2020, 10-year 2016–2025, 5-year 2021–2025. Last 12 months = August 2025 to July 2026, placed by calendar month.</figcaption>
+          <figcaption>Monthly mean temperature, London grid point, ERA5 reanalysis via Open-Meteo. Normals: 30-year 1991–2020, 10-year 2016–2025, 5-year 2021–2025. Last 12 months = August 2025 to July 2026.</figcaption>
         </figure>
 
         <!-- 2. OUR SITUATION -->
-        <p>This year has been another of dangerous heatwaves. By late July the UK was in its fourth of 2026. It's the first year on record to hit 35&nbsp;°C in three separate months, with a provisional 37.3&nbsp;°C hottest June day and amber heat-health alerts across most of England.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup> So what do we have next? Heat dries the ground out, and dry ground sheds rain instead of absorbing it. The Environment Agency's new national assessment puts 6.3&nbsp;million properties in England at flood risk. The biggest element isn't rivers or the coast, it's surface-water flooding from summer downpours, up 43% on the previous mapping.<sup class="fn"><a href="#fn-3" id="ref-3">3</a></sup></p>
+        <p>By late July this year the UK was in its fourth heatwave. It's the first year on record to hit 35&nbsp;°C in three separate months, with a provisional 37.3&nbsp;°C hottest June day and amber heat-health alerts across most of England.<sup class="fn"><a href="#fn-2" id="ref-2">2</a></sup> So what do we have next? Heat dries the ground out, and dry ground sheds rain instead of absorbing it. The Environment Agency's new national assessment puts 6.3&nbsp;million properties in England at flood risk. The biggest element isn't rivers or the coast, it's surface-water flooding from summer downpours, up 43% on the previous mapping.<sup class="fn"><a href="#fn-3" id="ref-3">3</a></sup></p>
 
         <figure class="diagram">
-          <div class="diagram-box">
-            <div style="border: 2px dashed var(--rule); border-radius: var(--radius); padding: 3rem 1.5rem; text-align: center;">
-              <p class="todo" style="margin: 0 auto; max-width: 34rem;">PLACEHOLDER: UK map, summer 2026 heatwaves: peak temperatures / UKHSA heat-health alert regions. Intended source: Met Office &amp; UKHSA.</p>
-            </div>
-          </div>
-          <figcaption>Summer 2026 heatwaves across the UK. Map to follow.</figcaption>
+          <div class="diagram-box"><div id="heat-map"></div></div>
+          <figcaption>UKHSA heat-health alert level by English region, 9am 3 August to 9am 5 August 2026.<sup class="fn"><a href="#fn-9" id="ref-9">9</a></sup> Amber covers London, the South East, the East and the East Midlands. Only the North East is clear. Levels are shown as steps of one colour, not traffic lights.</figcaption>
         </figure>
 
+        <p>Surface-water risk isn't spread evenly. It concentrates in cities, where the ground is sealed and the drains can't take intense rain. In London, 12.6% of all properties sit in areas at high or medium surface-water risk, twice the national rate of 6.3%.<sup class="fn"><a href="#fn-10" id="ref-10">10</a></sup> Only London and the East of England beat that rate, and both are on amber heat this week. Below them the two maps stop matching. The North West and the North East both carry more surface-water risk than the South East, which is on amber while they aren't. Heat and water rank the country differently.</p>
+
         <figure class="diagram">
-          <div class="diagram-box">
-            <div style="border: 2px dashed var(--rule); border-radius: var(--radius); padding: 3rem 1.5rem; text-align: center;">
-              <p class="todo" style="margin: 0 auto; max-width: 34rem;">PLACEHOLDER: UK map, flood likelihood (% annual chance bands) from the Environment Agency's NaFRA2 assessment / check-your-flood-risk mapping.</p>
-            </div>
-          </div>
-          <figcaption>Flood likelihood, % annual chance. Map to follow.</figcaption>
+          <div class="diagram-box"><div id="flood-map"></div></div>
+          <figcaption>Properties in areas at high or medium risk of surface-water flooding, as a percentage of all properties in each region. Environment Agency, NaFRA2, present day without climate change.<sup class="fn"><a href="#fn-10" id="ref-10b">10</a></sup></figcaption>
+        </figure>
+
+        <p>Relief isn't coming where it's needed. Over the fourteen days from 2 August the average daily chance of rain is 46% in the North West and 20% in London and the South East, against an England mean of 30%.<sup class="fn"><a href="#fn-11" id="ref-11">11</a></sup> The two regions carrying the most surface-water risk are the two driest in the forecast, and more than half of England is already in drought.<sup class="fn"><a href="#fn-12" id="ref-12">12</a></sup> The rain is landing on the wrong half of the country. For now, I don't know enough about water infrastructure to know if that's okay yet.</p>
+
+        <figure class="diagram">
+          <div class="diagram-box"><div id="rain-map"></div></div>
+          <figcaption>Mean daily chance of rain, 2 to 15 August 2026, by English region. Open-Meteo forecast, three points per region.<sup class="fn"><a href="#fn-11" id="ref-11b">11</a></sup></figcaption>
         </figure>
 
         <!-- 3. THE RESOLUTIONS -->
-        <p>And then, what can we do to fix it, in a country currently curtailing renewable generation because the grid isn't fit to use it? Britain switched off a record ~10&nbsp;TWh of wind in 2025, enough to power every home in London, and paid close to £1.5&nbsp;billion for it once the replacement gas is counted.<sup class="fn"><a href="#fn-4" id="ref-4">4</a></sup> Hopefully, initiatives like these start to close the gap:</p>
-        <ul>
-          <li><strong>Wires:</strong> the Eastern Green Link subsea HVDC cables between Scotland and England, both due around 2029 under the accelerated transmission programme.<sup class="fn"><a href="#fn-5" id="ref-5">5</a></sup></li>
-          <li><strong>Queue:</strong> Ofgem's connections reform (April 2025) reorders the grid queue so "ready and needed" projects connect first, aligned to Clean Power 2030.<sup class="fn"><a href="#fn-6" id="ref-6">6</a></sup></li>
-          <li><strong>Market:</strong> the REMA decision (July 2025) dropped zonal pricing for reformed national pricing: locational signals without a seven-year market rebuild.<sup class="fn"><a href="#fn-7" id="ref-7">7</a></sup></li>
-          <li><strong>Demand:</strong> NESO's Local Constraint Market pays Scottish consumers to turn demand <em>up</em> during constraint events, instead of paying wind farms to turn off.<sup class="fn"><a href="#fn-8" id="ref-8">8</a></sup></li>
-        </ul>
-        <p>I'll be keeping an eye on these, and chiming in when I can help.</p>
+        <p>And then, what can we do to fix it, in a country currently curtailing renewable generation because the grid isn't fit to use it? Britain switched off a record ~10&nbsp;TWh of wind in 2025, enough to power every home in London, and paid close to £1.5&nbsp;billion for it once the replacement gas is counted.<sup class="fn"><a href="#fn-4" id="ref-4">4</a></sup> </p>
+
+        <p>I'm keeping my eyes on some initiatives that could prevent the worst of this through system reform, to see if any have impact. The Eastern Green Links are two subsea HVDC cables between Scotland and England, both due around 2029 under the accelerated transmission programme.<sup class="fn"><a href="#fn-5" id="ref-5">5</a></sup> Ofgem reordered the grid queue in April 2025 so projects that are ready and needed connect first, in line with Clean Power 2030.<sup class="fn"><a href="#fn-6" id="ref-6">6</a></sup> The REMA decision last July dropped zonal pricing for reformed national pricing, so we get locational signals without a seven-year market rebuild.<sup class="fn"><a href="#fn-7" id="ref-7">7</a></sup> And NESO's Local Constraint Market now pays Scottish consumers to turn demand <em>up</em> when the grid is constrained, instead of paying wind farms to turn off.<sup class="fn"><a href="#fn-8" id="ref-8">8</a></sup></p>
+
+        <p>I'll chime in where I can help.</p>
 
         <!-- SOURCES -->
         <section class="footnotes">
@@ -132,7 +142,12 @@
             <li id="fn-6">Ofgem approved the TMO4+ connections reform package on 15 April 2025; Gate 2 offers give "ready and needed" projects confirmed dates and queue positions. <a href="https://www.freeths.co.uk/insights-events/legal-articles/2025/ofgem-approves-grid-connection-reform-package/" target="_blank" rel="noopener">Freeths, on the connections reform package</a>. <a href="#ref-6" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-7">The REMA Summer Update, 10 July 2025: zonal pricing ruled out, reformed national pricing adopted, partly on a seven-year implementation estimate. <a href="https://www.nortonrosefulbright.com/en/knowledge/publications/4399413b/rema-summer-update-no-to-zonal-pricing-yes-to-reformed-national-pricing" target="_blank" rel="noopener">Norton Rose Fulbright, REMA Summer Update</a>. <a href="#ref-7" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-8">NESO's Local Constraint Market pays Scottish consumers (around 20p/kWh in the trial) to increase consumption during constraint events. <a href="https://modoenergy.com/research/en/gb-great-britain-battery-energy-storage-curtailment-wind-constraint-scotland-costs" target="_blank" rel="noopener">Modo Energy, on GB constraints</a>. <a href="#ref-8" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-9">Amber alerts for the East Midlands, East of England, South East and London, and yellow alerts for the North West, Yorkshire and The Humber, West Midlands and South West, from 9am on 3 August to 9am on 5 August 2026. No alert for the North East. <a href="https://www.gov.uk/government/news/ukhsa-updates-heat-health-alerts-across-england" target="_blank" rel="noopener">UKHSA, updates heat health alerts across England</a>. <a href="#ref-9" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-10">Environment Agency, <em>National assessment of flood and coastal erosion risk in England 2024</em>, Table 13: properties in areas at high or medium risk of surface water flooding, as a percentage of all properties in each region. London 12.6%, East of England 7.6%, North West 5.8%, North East 5.1%, East Midlands 5.0%, West Midlands 4.9%, South East 4.7%, South West 4.6%, Yorkshire and The Humber 4.3%, England 6.3%. <a href="https://www.gov.uk/government/publications/national-assessment-of-flood-and-coastal-erosion-risk-in-england-2024" target="_blank" rel="noopener">GOV.UK, the 2024 national assessment</a>. <a href="#ref-10" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-11">Daily maximum precipitation probability, 2 to 15 August 2026, from the <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo forecast API</a>, run 2 August 2026. Three representative points per region, averaged over the points and the fourteen days. North West 46%, North East 40%, Yorkshire and The Humber 34%, West Midlands 28%, South West 28%, East Midlands 27%, East of England 26%, London 20%, South East 20%; England mean 30%. Forecast totals over the same window run from 38.8&nbsp;mm in the North West to 3.3&nbsp;mm in the South East. <a href="#ref-11" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-12">More than half of England formally in drought as of late July 2026. <a href="https://www.bbc.co.uk/news/articles/ckg35n7yny3o" target="_blank" rel="noopener">BBC News, "More than half of England in drought, Environment Agency declares", 29 July 2026</a>. <a href="#ref-12" aria-label="Back to text">&#8617;</a></li>
           </ol>
+          <p class="muted" style="font-size:0.86rem; margin-top:1rem;">Map boundaries are the ONS International Territorial Level 1 regions, January 2025, ultra generalised. Contains OS data &copy; Crown copyright and database right 2025; contains National Statistics data &copy; Crown copyright and database right 2025. <a href="https://geoportal.statistics.gov.uk/" target="_blank" rel="noopener">ONS Open Geography Portal</a>.</p>
         </section>
 
         <p style="margin-top:2rem;"><a href="index.html">← Home</a></p>
@@ -149,6 +164,10 @@
       </nav>
     </div>
   </footer>
+
+  <script src="assets/js/uk-geo.js" defer></script>
+  <script src="assets/js/uk-map.js" defer></script>
+  <script src="assets/js/hydrophobia-maps.js" defer></script>
 
   <!-- TEMPORARY design tool: remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
   <script src="assets/js/design-tray.js" defer></script>

@@ -31,7 +31,7 @@
         <h1>Heatwave Tracker &amp; Impact</h1>
         <div class="retired-bar">
           <strong>Retired</strong>
-          <span>The live tracker was taken offline in August 2026. This page stays up as the write-up.</span>
+          <span>The live tracker was taken offline in August 2026.</span>
         </div>
         <p class="lede">How much UK heat actually moves demand and price, and the risk a heatwave poses to retail suppliers.</p>
       </div>
@@ -44,7 +44,7 @@
         <div class="edit-note">
           <span class="edit-label">Edit</span>
           <p>Thank you to everyone who used my heatwave detector through July. It was a difficult year, statistically and emotionally. I've ordered a heat pump to prepare my family for what's coming, and I'm now doing the research on what we can achieve professionally, as I'm sure many good people are doing ahead of me.</p>
-          <p>Please read my new opinion piece, <a href="hydrophobia.html">Hydrophobia</a>, on what to expect next from weather in the UK. Sadly we understand what follows a heatwave much better now, a small consolation prize during a <a href="https://www.bbc.co.uk/news/articles/ckg35n7yny3o" target="_blank" rel="noopener">drought</a>.</p>
+          <p>Please read my new opinion piece, <a href="hydrophobia.html">Heatwaves and Hydrophobia</a>, on what to expect next from weather in the UK. Sadly we understand what follows a heatwave much better now, a small consolation prize during a <a href="https://www.bbc.co.uk/news/articles/ckg35n7yny3o" target="_blank" rel="noopener">drought</a>.</p>
         </div>
 
         <!-- THE INSIGHT -->
@@ -53,21 +53,19 @@
 
         <p>A cold snap hits a retail supplier in a way everyone in the industry already prices for. Heat is the less-rehearsed direction: the demand response is smaller and later than people assume, but it lands on a system with thin summer margins and plant on outage, so the price response arrives first, and harder. The tracker put those two lines side by side, day by day.</p>
 
-        <p class="todo">TODO: drop the headline number in here, the peak day's demand uplift against the same day's price move, from the tracker's own record. The insight block should open with that figure, not with the framing.</p>
-
         <figure class="shot-fig">
           <div class="shot shot--retired">
             <img src="assets/img/heatwave_1.jpg" alt="850hPa temperature across the UK and western Europe on the tracker's final run" />
           </div>
-          <figcaption>850hPa temperature, final model run — 2 August 2026.</figcaption>
+          <figcaption>Final model run, 2 August 2026.</figcaption>
         </figure>
 
-        <!-- WHAT IT WAS -->
-        <h2>What it was</h2>
+        <!-- WHAT I DID -->
+        <h2>What I did</h2>
 
-        <p>A web app that tracked UK temperature against electricity demand and wholesale price through the summer of 2026, and reported the relationship as it developed rather than after the season closed. It ran from late June until the end of July, through the four heatwaves recorded that summer.</p>
+        <p>I hosted a web app using Docker that tracked UK temperature against the imbalance price through the summer of 2026. It ran from late June to the end of July, through the four heatwaves that summer.</p>
 
-        <p>The map showed the forecast. The panels showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage. All on one screen, scrubable forward through the forecast.</p>
+        <p>I put the forecast on a map. The panels showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage. All on one screen, scrubable forward through the forecast.</p>
 
         <figure class="shot-fig">
           <div class="shot">
@@ -76,11 +74,11 @@
           <figcaption>The Heatwave Reporter interface on its last day, 2 August 2026.</figcaption>
         </figure>
 
-        <p class="todo">TODO: one short paragraph on the stack and the data sources, matching the level of detail on the Hormuz page.</p>
+        <p>I ran FastAPI behind Caddy, in Docker on a GCP VM built with Terraform. SQLite for the store, vanilla JS on the front end. Temperature and the 1991–2020 climatology came from Open-Meteo, the imbalance prices from Elexon's BMRS system-prices endpoint.</p>
 
         <h2>Why it's retired</h2>
 
-        <p>The season it was built to watch is over. What matters now is what follows the heat: baked ground, surface-water flooding, and a grid still switching clean supply off. That work continues in <a href="hydrophobia.html">Hydrophobia</a>.</p>
+        <p>The season it was built to watch is over. What matters now is what follows the heat: baked ground, surface-water flooding, and a grid still switching clean supply off. That work continues in <a href="hydrophobia.html">Heatwaves and Hydrophobia</a>.</p>
 
         <!-- SOURCES -->
         <section class="footnotes">
