@@ -330,12 +330,29 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   font-size: 0.72rem; font-weight: 700;
 }
 
-/* ---- SPLIT LISTS (projects · reflections, two-up) ---------------------- */
+/* ---- SPLIT LISTS (projects · analysis · opinions) ---------------------- */
 .split-lists { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 0.5rem; }
 @media (min-width: 52rem) {
   .split-lists { grid-template-columns: 1fr 1fr; gap: 0 clamp(2rem, 4vw, 3.5rem); align-items: start; }
-  /* column rule between the two lists */
+  /* column rule between the lists */
   .split-col + .split-col { border-left: 1px solid var(--rule); padding-left: clamp(2rem, 4vw, 3.5rem); }
+}
+/* below three-up width, stack — two columns would orphan the third list */
+@media (min-width: 52rem) and (max-width: 67.99rem) {
+  .split-lists--three { grid-template-columns: 1fr; gap: 2.5rem; }
+  .split-lists--three .split-col + .split-col { border-left: 0; padding-left: 0; }
+}
+/* three-up needs the room; tighten the gutter to keep columns readable */
+@media (min-width: 68rem) {
+  .split-lists--three { grid-template-columns: repeat(3, 1fr); gap: 0 clamp(1.5rem, 2.6vw, 2.25rem); }
+  /* stretch so the column rules run to an even depth */
+  .split-lists--three { align-items: stretch; }
+  .split-lists--three .split-col + .split-col { padding-left: clamp(1.5rem, 2.6vw, 2.25rem); }
+  /* stack the thumb above the copy — no width for a side-by-side card */
+  .split-lists--three .mini-row { grid-template-columns: 1fr; gap: 0.9rem; }
+  /* icons get a shallow band, not a tall empty frame */
+  .split-lists--three .mini-thumb--icon { aspect-ratio: 5 / 2; }
+  .split-lists--three .mini-thumb--icon svg { width: 38%; }
 }
 .split-col .kicker { margin-bottom: 0.6rem; }
 /* compact article CARD: neutral container, category colour on the spine */
