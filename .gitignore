@@ -21,3 +21,6 @@ desktop.ini
 /*.jpg
 /*.jpeg
 /*.webp
+
+# Local map preview lab (dev only, never ships)
+/map-lab.html
