@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heatwave Tracker &amp; Impact (retired) · Steven Stills</title>
+  <meta name="description" content="The Heatwave Tracker is retired. What it measured (how much UK heat actually moves demand and price, and the risk that carries for retail suppliers) and where the work goes next." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter:wght@100..900&display=swap" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-head">
+    <div class="wrap">
+      <div class="brand"><a href="index.html">Steven Stills</a></div>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- TITLE -->
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Project · energy markets &amp; climate</p>
+        <h1>Heatwave Tracker &amp; Impact</h1>
+        <div class="retired-bar">
+          <strong>Retired</strong>
+          <span>The live tracker was taken offline in August 2026. This page stays up as the write-up.</span>
+        </div>
+        <p class="lede">How much UK heat actually moves demand and price, and the risk a heatwave poses to retail suppliers.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap prose">
+
+        <!-- CLOSING NOTE -->
+        <div class="edit-note">
+          <span class="edit-label">Edit</span>
+          <p>Thank you to everyone who used my heatwave detector through July. It was a difficult year, statistically and emotionally. I've ordered a heat pump to prepare my family for what's coming, and I'm now doing the research on what we can achieve professionally, as I'm sure many good people are doing ahead of me.</p>
+          <p>Please read my new opinion piece, <a href="hydrophobia.html">Hydrophobia</a>, on what to expect next from weather in the UK. Sadly we understand what follows a heatwave much better now, a small consolation prize during a <a href="https://www.bbc.co.uk/news/articles/ckg35n7yny3o" target="_blank" rel="noopener">drought</a>.</p>
+        </div>
+
+        <!-- THE INSIGHT -->
+        <p class="kicker">The insight</p>
+        <h2>Heat moves price before it moves demand</h2>
+
+        <p>A cold snap hits a retail supplier in a way everyone in the industry already prices for. Heat is the less-rehearsed direction: the demand response is smaller and later than people assume, but it lands on a system with thin summer margins and plant on outage, so the price response arrives first, and harder. The tracker put those two lines side by side, day by day.</p>
+
+        <p class="todo">TODO: drop the headline number in here, the peak day's demand uplift against the same day's price move, from the tracker's own record. The insight block should open with that figure, not with the framing.</p>
+
+        <figure class="shot-fig">
+          <div class="shot shot--retired">
+            <img src="assets/img/heatwave_1.jpg" alt="850hPa temperature across the UK and western Europe on the tracker's final run" />
+          </div>
+          <figcaption>850hPa temperature, final model run — 2 August 2026.</figcaption>
+        </figure>
+
+        <!-- WHAT IT WAS -->
+        <h2>What it was</h2>
+
+        <p>A web app that tracked UK temperature against electricity demand and wholesale price through the summer of 2026, and reported the relationship as it developed rather than after the season closed. It ran from late June until the end of July, through the four heatwaves recorded that summer.</p>
+
+        <p>The map showed the forecast. The panels showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage. All on one screen, scrubable forward through the forecast.</p>
+
+        <figure class="shot-fig">
+          <div class="shot">
+            <img src="assets/img/heatwave_2.jpg" alt="Heatwave Reporter interface: heat and alert probabilities, latest news, imbalance price profile, and a scrubable forecast map" />
+          </div>
+          <figcaption>The Heatwave Reporter interface on its last day, 2 August 2026.</figcaption>
+        </figure>
+
+        <p class="todo">TODO: one short paragraph on the stack and the data sources, matching the level of detail on the Hormuz page.</p>
+
+        <h2>Why it's retired</h2>
+
+        <p>The season it was built to watch is over. What matters now is what follows the heat: baked ground, surface-water flooding, and a grid still switching clean supply off. That work continues in <a href="hydrophobia.html">Hydrophobia</a>.</p>
+
+        <!-- SOURCES -->
+        <section class="footnotes">
+          <h3>Notes &amp; sources</h3>
+          <ol>
+            <li id="fn-1">More than half of England formally in drought as of late July 2026. <a href="https://www.bbc.co.uk/news/articles/ckg35n7yny3o" target="_blank" rel="noopener">BBC News, "More than half of England in drought, Environment Agency declares", 29 July 2026</a>.</li>
+          </ol>
+        </section>
+
+        <p style="margin-top:2rem;"><a href="index.html">← Home</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>© 2026 Steven Stills</span>
+      <nav class="contact-links" aria-label="Contact">
+        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- TEMPORARY design tool: remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
+  <script src="assets/js/design-tray.js" defer></script>
+</body>
+</html>

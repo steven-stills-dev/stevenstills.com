@@ -10,36 +10,32 @@
 :root {
   /* Colour scheme */
   /* ---- NAMED BRAND COLOURS (refer to these by name) -------------------
-     Financial Times-inspired. Full reference + chart palette:
+     Financial Times palette. Full reference + chart notes:
      .claude/DESIGN.md (local design notes, not in the repo)              */
-  /* chart aliases — kept for the chart scripts, remapped to the palette */
-  --times-coal:  var(--fg);         /* chart axes / dark lines  */
-  --times-red:   var(--rust);       /* chart signal / markers   */
-  --times-blue:  var(--berry);      /* chart secondary series   */
-  --times-paper: var(--bg);
-  --times-sand:  var(--surface);
-  --times-grey:  var(--muted);      /* chart labels             */
-  --times-line:  var(--rule);       /* chart gridlines          */
-
-  /* ---- BRAND PALETTE (warm energy) --------------------------------------
-     Warm paper grounds keyed to the portrait; deep green = renewables,
-     amber = the energy highlight, rust = the sparing signal.               */
-  --berry: #8E3B60; /* deep berry — links, kickers, chart data       */
-  --highlight: #8E3B60; /* MASTER highlight — portrait border, quote marks,
-                           card accent shadows, icon accents. Tray-editable.
-                           Matches --berry for a single-hue page.            */
-  --rust:  #B4441F; /* signal — chart event markers, sparing         */
+  --times-coal:  #231F20;  /* headers + body text · chart axes  */
+  --times-red:   #990F3D;  /* subtitles / kickers · chart signal */
+  --times-blue:  #0F5499;  /* links, quote marks · chart data    */
+  --times-paper: #FFF1E5;  /* page ground                        */
+  --times-sand:  #F2DFCE;  /* tiles, bands, containers           */
+  --times-card:  #FFF7EF;  /* lighter ground for article cards   */
+  --times-grey:  #66605C;  /* muted text · chart labels          */
+  --times-line:  #E7D3C1;  /* hairlines · chart gridlines        */
 
   /* ---- SEMANTIC TOKENS (what the rules below actually use) ------------- */
-  --bg:          #FBF7EF;            /* warm paper ground        */
-  --surface:     #F1E9DA;            /* warm sand containers     */
-  --fg:          #1C1A16;            /* warm near-black text     */
-  --heading:     #1C1A16;
-  --subtitle:    var(--berry);       /* kickers, labels          */
-  --accent:      var(--berry);       /* page links               */
-  --muted:       #6E6659;            /* warm grey secondary text */
-  --rule:        #E2D7C3;            /* warm hairlines           */
-  --accent-soft: #FBE3EC;            /* pale rose hover tint     */
+  --bg:           var(--times-paper);
+  --surface:      var(--times-sand);   /* darker containers        */
+  --surface-lite: var(--times-card);   /* article card containers  */
+  --fg:           var(--times-coal);
+  --heading:      var(--times-coal);
+  --subtitle:     var(--times-red);    /* kickers, labels          */
+  --signal:       var(--times-red);    /* sparing alert / retired  */
+  --accent:       var(--times-blue);   /* page links               */
+  --highlight:    var(--times-blue);   /* MASTER highlight — portrait border,
+                                          quote marks, card accent shadows,
+                                          icon accents. Tray-editable.      */
+  --muted:        var(--times-grey);
+  --rule:         var(--times-line);
+  --accent-soft:  #E9EFF6;             /* pale blue hover tint     */
 
   /* Typography — families: serif display titles, Inter everywhere else */
   --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
@@ -63,15 +59,21 @@
   --heading-mb: 0.35em;     /* bottom margin on headings */
 
   /* Typography — quotations (mantra pull-quotes) */
-  --font-quote:     "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --quote-weight:   730;
-  --quote-tracking: -0.045em;
-  --quote-size:     0.85rem;
-  --quote-line:     1.34;
+  --font-quote:     "Fraunces", Georgia, "Times New Roman", serif;
+  --quote-weight:   600;
+  --quote-tracking: -0.005em;
+  --quote-size:     1.08rem;
+  --quote-line:     1.16;
+
+  /* Quote mark — a fixed-size object, sized apart from the quote text */
+  --quote-mark-w:   22px;
+  --quote-mark-h:   15px;
+  --quote-mark-gap: 5px;
 
   /* Layout */
   --maxw: 64rem;
   --gutter: clamp(1.25rem, 5vw, 3rem);
+  --radius: 0;              /* corner rounding on every UI rectangle */
 }
 
 /* ---- RESET ------------------------------------------------------------- */
@@ -160,7 +162,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   background: var(--surface);
   border: 1px solid var(--rule);
   border-left: 4px solid var(--subtitle);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: clamp(1.25rem, 3vw, 2rem);
 }
 .insight .label {
@@ -193,7 +195,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- SCREENSHOT PLACEHOLDER ------------------------------------------- */
 .shot, .shot-placeholder {
-  border: 1px solid var(--rule); border-radius: 6px; background: var(--surface);
+  border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface);
   overflow: hidden;
 }
 .shot-placeholder {
@@ -211,13 +213,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* prominent About call-to-action in the hero */
 .about-cta {
   display: inline-block; margin-top: 0.5rem;
-  background: var(--accent); color: var(--bg);
+  /* coal fill so the blue offset block stays visible */
+  background: var(--times-coal); color: var(--bg);
   font-weight: 600; font-size: 1.02rem;
-  padding: 0.7rem 1.5rem; border-radius: 10px;
-  box-shadow: 5px 5px 0 -1px var(--highlight), 5px 5px 0 0 var(--fg);
+  padding: 0.7rem 1.5rem; border-radius: var(--radius);
 }
-.about-cta:hover { text-decoration: none; background: var(--fg); color: var(--bg); }
-.author-band .pull-quote::before { color: var(--highlight); }
+/* hover swaps fill and shadow — blue comes forward */
+.about-cta:hover { text-decoration: none; background: var(--accent); color: var(--bg); }
+.author-band .pull-quote p::before { background-color: var(--highlight); }
 .author-head {
   display: grid; gap: 2rem; grid-template-columns: 1fr;
 }
@@ -236,8 +239,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .author-head .bio { max-width: 60ch; }
 .author-portrait {
-  aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden;
-  border: 3px solid var(--highlight); background: var(--surface);
+  aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
+  border: 3px solid var(--times-red); background: var(--surface);
   display: flex; align-items: center; justify-content: center; text-align: center;
   color: var(--muted); font-size: 0.76rem; padding: 0; margin: 0;
 }
@@ -256,18 +259,28 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .pull-quote { margin: 0; }
 .pull-quote + .pull-quote {
-  border-top: 1px solid var(--rule); margin-top: 1.4rem; padding-top: 1.4rem;
-}
-.pull-quote::before {
-  content: "\201C"; display: block;
-  font-family: var(--font-heading); font-size: 1.9rem; line-height: 0.7;
-  color: var(--times-blue); margin-bottom: 0.3rem;   /* FT-style blue quote mark */
+  border-top: 1px solid var(--rule); margin-top: 1.6rem; padding-top: 1.6rem;
 }
 /* quote text — own decoupled "quotations" token group */
 .pull-quote p {
   margin: 0; font-family: var(--font-quote); font-weight: var(--quote-weight);
   font-size: var(--quote-size); line-height: var(--quote-line);
   letter-spacing: var(--quote-tracking); color: var(--heading);
+  font-optical-sizing: auto;
+}
+/* opening mark — a drawn object, not a font glyph, so it keeps its
+   weight and size whatever the quote face is. Masked, so the token
+   colour still drives it. */
+.pull-quote p::before {
+  content: ""; display: inline-block;
+  width: var(--quote-mark-w); height: var(--quote-mark-h);
+  margin-right: var(--quote-mark-gap);
+  vertical-align: baseline;
+  background-color: var(--times-blue);
+  -webkit-mask: var(--quote-mark) no-repeat center / contain;
+          mask: var(--quote-mark) no-repeat center / contain;
+  /* fat ball, short branch — the round FT proportion */
+  --quote-mark: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 17"><circle cx="5.2" cy="11.8" r="5.2"/><path d="M9 2.6 C5.88 5.36 0.26 6.34 1.46 9.62 L2.89 8.58 C3.9 4.78 7.28 5.73 11.6 4.47 Z"/><circle cx="17.2" cy="11.8" r="5.2"/><path d="M21 2.6 C17.88 5.36 12.26 6.34 13.46 9.62 L14.89 8.58 C15.9 4.78 19.28 5.73 23.6 4.47 Z"/></svg>');
 }
 
 /* ---- ARTICLE LIST (FT-style project list) ----------------------------- */
@@ -285,7 +298,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   font-size: 0.8rem; white-space: nowrap;
 }
 .article-thumb {
-  aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden;
+  aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden;
   border: 1px solid var(--rule); display: flex; align-items: center;
   justify-content: center; text-align: center; color: var(--muted);
   font-size: 0.72rem; padding: 0.5rem;
@@ -329,13 +342,11 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .mini-row {
   display: grid; grid-template-columns: 92px 1fr; gap: 1.1rem;
   padding: 1.1rem; margin-top: 1rem; align-items: start;
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 12px;
-  /* offset accent block: highlight colour with a thin text-colour rim */
-  box-shadow: 8px 8px 0 -1px var(--highlight), 8px 8px 0 0 var(--fg);
+  background: var(--surface-lite); border: 1px solid var(--rule);
+  border-radius: var(--radius);
 }
 .mini-thumb {
-  aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden;
+  aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden;
   border: 1px solid var(--rule);
 }
 .mini-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -361,7 +372,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .about-grid .portrait { height: 100%; aspect-ratio: auto; }
 }
 .portrait-placeholder {
-  aspect-ratio: 4 / 5; border-radius: 6px; border: 1px solid var(--rule);
+  aspect-ratio: 4 / 5; border-radius: var(--radius); border: 1px solid var(--rule);
   display: flex; align-items: center; justify-content: center; text-align: center;
   color: var(--muted); font-size: 0.8rem; padding: 1rem;
   background:
@@ -369,7 +380,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     var(--surface);
 }
 .portrait {
-  aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden;
+  aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
   border: 1px solid var(--rule); background: var(--surface);
 }
 .portrait img {
@@ -386,13 +397,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .tech-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tech-list li {
   font-size: 0.82rem; color: var(--muted);
-  border: 1px solid var(--rule); border-radius: 999px; padding: 0.25rem 0.75rem;
+  border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.25rem 0.75rem;
 }
 
 /* ---- PLACEHOLDER MARKER (for unsupplied copy/images) ------------------ */
 .todo {
   background: #fff6d6; color: #6b5a00; border: 1px dashed #d9c45a;
-  border-radius: 4px; padding: 0.1em 0.4em; font-size: 0.85em;
+  border-radius: var(--radius); padding: 0.1em 0.4em; font-size: 0.85em;
 }
 
 /* ---- FOOTER (supporting ground, teal links) ---------------------------- */
@@ -414,7 +425,7 @@ sup.fn a:hover { text-decoration: underline; }
 /* the gas-price chart artefact */
 .gas-chart { margin: 1.8rem 0; }
 .gas-chart #gas-chart, .gas-chart #transit-chart {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);
   padding: 0.6rem 0.4rem;
 }
 .gas-chart #gas-chart svg, .gas-chart #transit-chart svg { width: 100%; height: auto; display: block;
@@ -441,7 +452,7 @@ sup.fn a:hover { text-decoration: underline; }
 }
 /* monochrome chart boxes, on the darker times_sand ground */
 .battery-fig #solar-profile, .battery-fig #battery-anim, .battery-fig #supplier-chart {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 0.6rem 0.4rem;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.6rem 0.4rem;
 }
 .battery-fig #solar-profile svg, .battery-fig #battery-anim svg, .battery-fig #supplier-chart svg {
   width: 100%; height: auto; display: block; font-family: var(--font-body);
@@ -449,12 +460,76 @@ sup.fn a:hover { text-decoration: underline; }
 /* ---- TECHNICAL DIAGRAMS (inline SVG, e.g. token / local-stack notes) --- */
 .diagram { margin: 1.8rem 0; }
 .diagram .diagram-box {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);
   padding: 1rem 0.8rem;
 }
 .diagram svg { width: 100%; height: auto; display: block; font-family: var(--font-body); }
 .diagram figcaption {
   color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin-top: 0.6rem;
+}
+
+/* ---- RETIRED PROJECT TREATMENT ----------------------------------------
+   Red is the sparing signal colour — used here to mark a dead project.   */
+
+/* status bar under a retired project title */
+.retired-bar {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem 0.9rem;
+  background: var(--signal); color: var(--times-paper);
+  border-radius: var(--radius); padding: 0.7rem 1rem; margin: 0.4rem 0 1.3rem;
+}
+.retired-bar strong {
+  font-family: var(--font-heading); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  font-size: 0.95rem; line-height: 1;
+}
+.retired-bar span { font-size: 0.88rem; opacity: 0.9; }
+
+/* captioned screenshot — caption sits below the bordered box */
+.shot-fig { margin: 1.8rem 0; }
+.shot-fig figcaption {
+  color: var(--muted); font-size: 0.8rem; line-height: 1.4; margin-top: 0.6rem;
+}
+
+/* screenshot of the dead app — drained, stamped across the middle */
+.shot--retired { position: relative; }
+.shot--retired img { filter: grayscale(1) contrast(0.85); opacity: 0.55; }
+.shot--retired::after {
+  content: "Retired";
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+  background: var(--signal); color: var(--times-paper);
+  font-family: var(--font-heading); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3em; text-align: center;
+  font-size: clamp(1rem, 3.4vw, 1.7rem); padding: 0.5rem 0;
+}
+
+/* project card thumb on the homepage — same stamp, scaled down */
+.mini-thumb--retired { position: relative; }
+.mini-thumb--retired img { filter: grayscale(1); opacity: 0.5; }
+.mini-thumb--retired::after {
+  content: "Retired";
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+  background: var(--signal); color: var(--times-paper);
+  font-family: var(--font-heading); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; text-align: center;
+  font-size: 0.6rem; padding: 0.15rem 0;
+}
+
+/* inline tag beside a retired card's date line */
+.retired-tag {
+  color: var(--signal); font-weight: 700; letter-spacing: 0.08em;
+}
+
+/* the EDIT note that opens a retired write-up */
+.edit-note {
+  background: var(--surface); border-left: 3px solid var(--signal);
+  border-radius: var(--radius); padding: 1.1rem 1.3rem; margin: 0 0 1.8rem;
+}
+.edit-note p { margin: 0 0 0.7rem; }
+.edit-note p:last-child { margin-bottom: 0; }
+.edit-note .edit-label {
+  color: var(--signal); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem;
+  display: block; margin-bottom: 0.5rem;
 }
 
 /* big-number stat callouts */

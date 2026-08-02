@@ -19,7 +19,7 @@
   var SPIKE_IDX = 28;                 // 1 Mar 2026, transits collapse
   var MONTHS = [[0,"Feb"],[28,"Mar"],[59,"Apr"]];
   var Y_MAX = 75, Y_TICKS = [0, 25, 50, 75];
-  var BAR = "#8E3B60", SPIKE = "#B4441F";   // berry data bars, rust = the signal
+  var BAR = "#0F5499", SPIKE = "#990F3D";   // blue data bars, red = the signal
 
   function cssVar(name, fallback) {
     var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -28,8 +28,8 @@
 
   function chartSVG() {
     // sand card: warm gridlines, muted labels
-    var LINE = cssVar("--rule",  "#E2D7C3");
-    var GREY = cssVar("--muted", "#6E6659");
+    var LINE = cssVar("--rule",  "#E7D3C1");
+    var GREY = cssVar("--muted", "#66605C");
 
     var W = 560, H = 280, padL = 34, padR = 12, padT = 22, padB = 34;
     var plotW = W - padL - padR, plotH = H - padT - padB;
