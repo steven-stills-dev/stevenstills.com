@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data centre demand is the grid's next big challenge. Is now the right time? · Steven Stills</title>
-  <meta name="description" content="Data centres want 50GW of grid connections, about Britain's entire peak demand. I think the worry is mostly backwards: with onshore wind unblocked and MHHS going nationwide, this demand may be the push that finally decouples gas from the power price." />
+  <title>Data centres: the grid's next big challenge · Steven Stills</title>
+  <meta name="description" content="Data centres want 50GW of connections, about Britain's whole peak demand. I think the worry is backwards: this may be what decouples gas from the power price." />
+
+  <link rel="canonical" href="https://stevenstills.com/data-centre-demand.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Steven Stills" />
+  <meta property="og:title" content="Data centres: the grid's next big challenge · Steven Stills" />
+  <meta property="og:description" content="Data centres want 50GW of connections, about Britain's whole peak demand. I think the worry is backwards: this may be what decouples gas from the power price." />
+  <meta property="og:url" content="https://stevenstills.com/data-centre-demand.html" />
+  <meta name="twitter:card" content="summary" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,7 +34,7 @@
   <main>
     <!-- TITLE -->
     <section class="section">
-      <div class="wrap">
+      <div class="wrap prose">
         <p class="kicker">Opinion · energy markets &amp; AI</p>
         <h1>Data centre demand is the grid's next big challenge. Is now the right time?</h1>
         <!-- Lede parked with the article draft below until the research lands -->
@@ -43,6 +51,30 @@
         <p>I'm currently researching the impact and scale of planned data centres in the UK, and pairing them against renewable curtailment, to see if there's a positive narrative being avoided in most discussions and if further progressive conversation can happen. This is taking longer to research than anticipated, so enjoy this placeholder instead for now.</p>
         <p>Back soon,<br />Steven</p>
         <p style="text-align:center; margin-top:2.5rem;"><img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMjFqM29jeWxvNGl5em5zcnR1MWo4ZjhibjE5bm91YTJqZ2Q3ZXFhZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/nKaohB56quHgVg369U/200.gif" alt="Back soon" style="width:200px; max-width:100%;" /></p>
+
+        <!-- WHILE YOU WAIT — early renderings ahead of the full article -->
+        <h2>While you wait</h2>
+        <p>Here's an early rendering of the images I'll be showing you, for housing data centres against UK average curtailment.</p>
+
+        <figure class="diagram">
+          <div class="diagram-box"><div id="dc-map"></div></div>
+          <figcaption>Announced data centre campuses and existing clusters.<sup class="fn"><a href="#fn-w1" id="ref-w1">a</a></sup></figcaption>
+        </figure>
+
+        <figure class="diagram">
+          <div class="diagram-box"><div id="wind-map"></div></div>
+          <figcaption>Operational onshore wind capacity by region.<sup class="fn"><a href="#fn-w2" id="ref-w2">b</a></sup></figcaption>
+        </figure>
+
+        <p>Scotland holds 9,994&nbsp;MW of operational onshore wind against 2,862&nbsp;MW for all of England, and the load wants to be in the Thames Valley. That gap is why we pay to switch turbines off. Cambois and Ravenscraig are the two that interest me most: the first big loads proposed on the right side of the constraint.</p>
+
+        <section class="footnotes">
+          <h3>Notes &amp; sources</h3>
+          <ol style="list-style:lower-alpha;">
+            <li id="fn-w1">Northumberland County Council consented the first phase of the QTS/Blackstone Cambois campus on 2 December 2025, a scheme that could scale to 720&nbsp;MW across up to ten buildings. Culham is the UK's first designated AI Growth Zone, with roughly 100&nbsp;MW of initial dual-resilient power and stated plans to scale beyond. North Lanarkshire was designated in January 2026, reported as unlocking around 500&nbsp;MW at Ravenscraig. Sites are plotted at town level, and dot size follows those published megawatts. <a href="https://www.datacenterdynamics.com/en/news/blackstone-gets-green-light-for-10bn-qts-data-center-in-northumberland-uk/" target="_blank" rel="noopener">DCD, on the Northumberland consent</a>; <a href="https://culham.org.uk/invest-at-culham-campus/expression-of-interest/" target="_blank" rel="noopener">Culham Campus</a>; <a href="https://www.datacenterdynamics.com/en/news/new-ai-growth-zone-in-north-lanarkshire-scotland-could-unlock-500mw-of-data-center-capacity/" target="_blank" rel="noopener">DCD, on North Lanarkshire</a>. <a href="#ref-w1" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-w2">Renewable Energy Planning Database, Q1 2026 extract, operational sites only, summed by the database's own region field. Offshore wind, another 15,129&nbsp;MW, is excluded because the database files it as offshore rather than to a land region. <a href="https://www.gov.uk/government/publications/renewable-energy-planning-database-monthly-extract" target="_blank" rel="noopener">DESNZ, Renewable Energy Planning Database</a>. Map boundaries are the ONS ITL1 regions, January 2025; contains OS and National Statistics data &copy; Crown copyright and database right 2025. <a href="#ref-w2" aria-label="Back to text">&#8617;</a></li>
+          </ol>
+        </section>
 
         <!-- ARTICLE PARKED: full draft hidden below until the research lands. Delete the div hidden wrapper to restore. -->
         <div hidden>
@@ -97,7 +129,7 @@
         <section class="footnotes">
           <h3>Notes &amp; sources</h3>
           <ol>
-            <li id="fn-1">NESO counts ~140 data centre proposals seeking around 50GW of grid connections, roughly equal to GB peak demand; some two-thirds of existing data centres sit within 20 miles of London, and spare capacity claims there famously stalled new housing in west London. <a href="https://reports.electricinsights.co.uk/?p=2687" target="_blank" rel="noopener">Drax Electric Insights Q1 2026, "Britain's AI ambitions depend on the grid"</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-1">NESO counts ~140 data centre proposals seeking around 50GW of grid connections, roughly equal to GB peak demand; some two-thirds of existing data centres sit within 20 miles of London, and spare capacity claims there stalled new housing in west London. <a href="https://reports.electricinsights.co.uk/?p=2687" target="_blank" rel="noopener">Drax Electric Insights Q1 2026, "Britain's AI ambitions depend on the grid"</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-2">NESO's central analysis points to ~5.2GW of connected data centre capacity and just over 20TWh of demand by 2030, with connection requests far exceeding that; Future Energy Scenarios 2025 models data centre demand rising from 7.6TWh (2024) to 20–41TWh by 2035. <a href="https://www.datacenterdynamics.com/en/news/uk-grid-operator-high-uncertainty-on-data-center-growth-makes-forecasting-hard-could-range-from-30-71twh-by-2050/" target="_blank" rel="noopener">Data Center Dynamics, on NESO's forecasts</a>. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-3">The UK Compute Roadmap targets AI Growth Zones each serving at least 500MW of demand by 2030, with at least one scaling beyond 1GW. <a href="https://committees.parliament.uk/writtenevidence/166090/html/" target="_blank" rel="noopener">Written evidence to Parliament, DCU0081</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-4">England's de facto onshore wind ban (in place since 2015) was lifted in July 2024 via reform of the National Planning Policy Framework; the first Onshore Wind Strategy, published 4 July 2025, sets out 40+ actions to reach up to 29GW by 2030. <a href="https://www.osborneclarke.com/insights/wind-change-labour-government-lifts-de-facto-ban-onshore-wind-uk" target="_blank" rel="noopener">Osborne Clarke, on lifting the ban</a>; <a href="https://www.trowers.com/insights/2025/july/onshore-wind-strategy-addressing-the-challenges" target="_blank" rel="noopener">Trowers &amp; Hamlins, on the strategy</a>. <a href="#ref-4" aria-label="Back to text">&#8617;</a></li>
@@ -121,11 +153,15 @@
     <div class="wrap">
       <span>© 2026 Steven Stills</span>
       <nav class="contact-links" aria-label="Contact">
-        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
         <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
       </nav>
     </div>
   </footer>
+
+  <script src="assets/js/uk-geo.js" defer></script>
+  <script src="assets/js/uk-map.js" defer></script>
+  <script src="assets/js/data-centre-maps.js" defer></script>
 
   <!-- TEMPORARY design tool: remove this line + assets/js/design-tray.js before go-live. Ctrl+B -->
   <script src="assets/js/design-tray.js" defer></script>

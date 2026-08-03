@@ -4,7 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heatwave Tracker &amp; Impact (retired) · Steven Stills</title>
-  <meta name="description" content="The Heatwave Tracker is retired. What it measured (how much UK heat actually moves demand and price, and the risk that carries for retail suppliers) and where the work goes next." />
+  <meta name="description" content="I retired the Heatwave Tracker in August 2026. What I found tracking UK heat against demand and the imbalance price, and what it means for a retail supplier." />
+
+  <link rel="canonical" href="https://stevenstills.com/heatwave.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Steven Stills" />
+  <meta property="og:title" content="Heatwave Tracker &amp; Impact (retired) · Steven Stills" />
+  <meta property="og:description" content="I retired the Heatwave Tracker in August 2026. What I found tracking UK heat against demand and the imbalance price, and what it means for a retail supplier." />
+  <meta property="og:url" content="https://stevenstills.com/heatwave.html" />
+  <meta name="twitter:card" content="summary" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,14 +34,14 @@
   <main>
     <!-- TITLE -->
     <section class="section">
-      <div class="wrap">
+      <div class="wrap prose">
         <p class="kicker">Project · energy markets &amp; climate</p>
         <h1>Heatwave Tracker &amp; Impact</h1>
         <div class="retired-bar">
           <strong>Retired</strong>
-          <span>The live tracker was taken offline in August 2026.</span>
+          <span>I took the live tracker offline in August 2026.</span>
         </div>
-        <p class="lede">How much UK heat actually moves demand and price, and the risk a heatwave poses to retail suppliers.</p>
+        <p class="lede">What I found tracking UK heat against demand and price, and what it means for a retail supplier.</p>
       </div>
     </section>
 
@@ -51,7 +59,7 @@
         <p class="kicker">The insight</p>
         <h2>Heat moves price before it moves demand</h2>
 
-        <p>A cold snap hits a retail supplier in a way everyone in the industry already prices for. Heat is the less-rehearsed direction: the demand response is smaller and later than people assume, but it lands on a system with thin summer margins and plant on outage, so the price response arrives first, and harder. The tracker put those two lines side by side, day by day.</p>
+        <p>I tracked heat against demand and against the imbalance price. Demand moved late, and not by much. Price moved first and moved more, because summer margins are thin and plant is on outage. That's the risk I'd want a retail supplier to see.</p>
 
         <figure class="shot-fig">
           <div class="shot shot--retired">
@@ -65,7 +73,7 @@
 
         <p>I hosted a web app using Docker that tracked UK temperature against the imbalance price through the summer of 2026. It ran from late June to the end of July, through the four heatwaves that summer.</p>
 
-        <p>I put the forecast on a map. The panels showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage. All on one screen, scrubable forward through the forecast.</p>
+        <p>I put the forecast on a map. Around it I showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage. I could scrub the whole screen forward through the forecast.</p>
 
         <figure class="shot-fig">
           <div class="shot">
@@ -76,9 +84,9 @@
 
         <p>I ran FastAPI behind Caddy, in Docker on a GCP VM built with Terraform. SQLite for the store, vanilla JS on the front end. Temperature and the 1991–2020 climatology came from Open-Meteo, the imbalance prices from Elexon's BMRS system-prices endpoint.</p>
 
-        <h2>Why it's retired</h2>
+        <h2>Why I retired it</h2>
 
-        <p>The season it was built to watch is over. What matters now is what follows the heat: baked ground, surface-water flooding, and a grid still switching clean supply off. That work continues in <a href="hydrophobia.html">Heatwaves and Hydrophobia</a>.</p>
+        <p>I built it to watch one summer, and that summer is over. I'm more interested now in what comes after the heat: dry ground sheds rain instead of absorbing it, and the flooding starts. I've carried that on in <a href="hydrophobia.html">Heatwaves and Hydrophobia</a>.</p>
 
         <!-- SOURCES -->
         <section class="footnotes">
@@ -97,7 +105,7 @@
     <div class="wrap">
       <span>© 2026 Steven Stills</span>
       <nav class="contact-links" aria-label="Contact">
-        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
         <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
       </nav>
     </div>
