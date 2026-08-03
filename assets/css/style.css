@@ -528,9 +528,11 @@ sup.fn a:hover { text-decoration: underline; }
 
 /* ---- EDITORIAL EXTRAS (batteries opinion page) ------------------------ */
 /* short summary line that sits under a section heading */
+/* block axis only — a margin shorthand here would reset margin-inline and
+   drop this line off the centred measure every other child sits on */
 .prose .summary {
   color: var(--muted); font-style: italic;
-  margin: -0.2rem 0 1.1rem; font-size: 1.05rem;
+  margin-block: -0.2rem 1.1rem; font-size: 1.05rem;
 }
 /* monochrome chart boxes, on the darker times_sand ground */
 .battery-fig #solar-profile, .battery-fig #battery-anim, .battery-fig #supplier-chart {
