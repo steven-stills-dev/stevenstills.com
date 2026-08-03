@@ -6,6 +6,14 @@
   <title>End-to-End Battery Optimisation · Steven Stills</title>
   <meta name="description" content="Home batteries followed through to settlement: what a fleet of them does to the shape of metered demand, modelled and priced at real Elexon cash-out prices." />
 
+  <link rel="canonical" href="https://stevenstills.com/batteries.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Steven Stills" />
+  <meta property="og:title" content="End-to-End Battery Optimisation · Steven Stills" />
+  <meta property="og:description" content="Home batteries followed through to settlement: what a fleet of them does to the shape of metered demand, modelled and priced at real Elexon cash-out prices." />
+  <meta property="og:url" content="https://stevenstills.com/batteries.html" />
+  <meta name="twitter:card" content="summary" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter:wght@100..900&display=swap" />
@@ -26,7 +34,7 @@
   <main>
     <!-- TITLE -->
     <section class="section">
-      <div class="wrap">
+      <div class="wrap prose">
         <p class="kicker">Opinion · energy markets</p>
         <h1>End-to-End Battery Optimisation</h1>
         <p class="lede">Following a decent product and demand flexibility through to what it means for settlement risk.</p>
@@ -47,14 +55,14 @@
 
         <figure class="gas-chart battery-fig">
           <div id="solar-profile"></div>
-          <figcaption>A clear summer day, solar generation against demand. Illustrative daily profiles.</figcaption>
+          <figcaption>Solar generation against demand.</figcaption>
         </figure>
 
         <p>A battery sits between that surplus and the evening peak: it charges through the cheap midday and overnight hours, holds the energy, and discharges it back into the dear evening. A modern pack returns roughly 85 to 92% of what it takes in, so the round-trip loss is close to the only cost of the trade. The battery earns the gap between the price it charged at and the price it later displaced.</p>
 
         <figure class="gas-chart battery-fig">
           <div id="battery-anim"></div>
-          <figcaption>A battery on one day: it charges (cells fill) through the cheap half-hours and discharges (cells drain) into the expensive evening, with charge periods shaded blue and discharge periods red. Illustrative half-hourly shape.</figcaption>
+          <figcaption>A battery charging and discharging across one day.</figcaption>
         </figure>
 
         <p>And the savings are real money. The day-ahead peak-to-trough spread a two-hour GB battery could capture ran from under £40/MWh in February 2024 to about £70 that August,<sup class="fn"><a href="#fn-4" id="ref-4">4</a></sup> and stacked across day-ahead arbitrage, imbalance avoidance and the Balancing Mechanism, GB batteries benchmarked near £50k per MW per year in 2024 and about £73k over the twelve months to April 2026.<sup class="fn"><a href="#fn-5" id="ref-5">5</a></sup> None of that is in dispute, and it isn't my subject here. The front of the business has done its sums, and the sums work.</p>
@@ -77,7 +85,7 @@
 
         <figure class="gas-chart battery-fig">
           <div id="supplier-chart"></div>
-          <figcaption>Day-ahead price against imbalance price across a winter day. The shaded gap is the spread mistimed volume lands on the wrong side of: a £139 day-ahead peak against £150 imbalance at 20:30. Levels from Elexon and day-ahead data via a live half-hourly dashboard I run.<sup class="fn"><a href="#fn-6">6</a></sup></figcaption>
+          <figcaption>Day-ahead price against imbalance price.<sup class="fn"><a href="#fn-6">6</a></sup></figcaption>
         </figure>
 
         <p>So the question that matters to the back office is: how far can a home battery actually move a household's metered volume? The observed evidence is early, but it isn't nothing. In Australia (years ahead of Britain on rooftop solar, and now on home batteries) data from 20,000 homes shows battery households drawing an average of about 0.3&nbsp;kW from the grid across the 4–9pm evening window, against about 1.0&nbsp;kW for otherwise-similar solar-only homes: roughly 70% of the evening draw moved to other hours of the day.<sup class="fn"><a href="#fn-7" id="ref-7">7</a></sup> At system level, AEMO reported daytime charging across its battery fleet up 166% year on year in Q3 2025, and evening discharge up 177%.<sup class="fn"><a href="#fn-8" id="ref-8">8</a></sup> Britain is behind that curve but accelerating: MCS certified more than 40,000 home battery installations in 2025, almost double the previous record, and battery storage went into 2026 as the fastest-growing segment of the domestic renewables market.<sup class="fn"><a href="#fn-9" id="ref-9">9</a></sup></p>
@@ -86,20 +94,20 @@
 
         <figure class="gas-chart battery-fig">
           <div id="demand-shift-summer"></div>
-          <figcaption>Modelled summer day: average grid import per home for a plain home, a solar-only home, and a solar-plus-battery home. The shaded band is the P10–P90 range across fleet draws. The battery profile is not a shifted curve. It is flat against the floor.</figcaption>
+          <figcaption>Modelled summer day, average grid import per home.<sup class="fn"><a href="#fn-11" id="ref-11b">11</a></sup></figcaption>
         </figure>
 
         <p>In summer, the answer isn't an hour or two, it's the whole day. The plain home imports with the familiar domestic double peak, and a solar-only home still puts about 35% of its (much smaller) import through the 4–9pm window. Add the battery and the modelled evening share collapses to about 4%, with the median half-hour of import moving from 18:30 into the small hours. Winter splits into two very different stories, and this is where I'd push back on my own summer chart. If the battery only does self-consumption, winter barely moves anything: there isn't enough solar to store, so the modelled evening share edges from 43% to 42% and the median import half-hour drifts by about thirty minutes, the "one to two hours at best" end of the range. But put the same battery on a cheap overnight tariff and the picture inverts: total grid import actually <em>rises</em> about 15%, round-trip losses plus charging from the grid, while relocating almost entirely into a synchronised overnight block. The modelled fleet draws a peak of about 3.5&nbsp;kW per home at 3am, roughly sixteen times the natural overnight draw, and the evening peak is gone.</p>
 
         <figure class="gas-chart battery-fig">
           <div id="demand-shift-winter"></div>
-          <figcaption>Modelled winter day: the same homes with the battery charging on a cheap overnight tariff. The day's volume reappears as a synchronised overnight block, larger than the evening peak it replaced. Shaded band is the P10–P90 range across fleet draws.</figcaption>
+          <figcaption>Modelled winter day, average grid import per home.<sup class="fn"><a href="#fn-11" id="ref-11c">11</a></sup></figcaption>
         </figure>
 
         <p>Priced at settlement, the per-home numbers start small. If a supplier kept forecasting a battery home on a solar-only shape, my summer model puts about 1.8&nbsp;kWh per home per day in the wrong half-hours: roughly 26p a day per home at July 2026 average cash-out prices, or about 89&nbsp;MWh a day of misplaced volume across a 50,000-home book.<sup class="fn"><a href="#fn-11">11</a></sup> I don't think the pennies are the point. The error is one-directional, tariff-synchronised and weather-correlated: whole cohorts of homes move together, overnight blocks switch on and off with tariff changes, and a forecasting model still trained on last year's book shape is wrong the same way in every half-hour at once. That is how small per-meter errors become balancing swings.</p>
 
         <!-- 3. CONCLUSION -->
-        <h2>3. Early days — but watch the shape</h2>
+        <h2>3. Early days: but watch the shape</h2>
         <p class="summary">I expect a third category of demand profile to emerge, and forecasting teams to need rebuilding around it.</p>
         <p>It's early days, and this note is an opinion backed by a toy model, not a settled result. But I expect the data to show a third category of domestic demand profile emerging: a battery home that is flat against the floor all summer and a synchronised overnight mountain all winter. The industry grew up profiling the classic double-peak home and, lately, the solar household that vanishes at noon and comes back for dinner. Neither looks anything like this.</p>
         <p>The timing matters because settlement itself is mid-rebuild. Market-wide Half-Hourly Settlement has been migrating meters since October 2025 (more than two million by February 2026, with around 80% expected by October 2026 and full cutover in 2027<sup class="fn"><a href="#fn-12" id="ref-12">12</a></sup>), so every one of these battery homes will shortly be settled on its own metered half-hours rather than an assumed profile. That cuts both ways: the real half-hourly shapes finally become visible in settlement, and every assumption built on the old profiles stops working at the same time.</p>
@@ -111,15 +119,15 @@
           <ol>
             <li id="fn-1">Twenty-nine GB energy suppliers failed between July 2021 and May 2022, affecting nearly four million households. <a href="https://www.icaew.com/insights/viewpoints-on-the-news/2022/aug-2022/energy-supplier-collapses-highlight-bigger-sector-crisis" target="_blank" rel="noopener">ICAEW, on the supplier collapses</a>. <a href="#ref-1" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-2">UK daytime power prices fell below overnight prices for the first time on record in Q2 2025, after a record-sunny spring lifted solar output. <a href="https://reports.electricinsights.co.uk/" target="_blank" rel="noopener">Drax Electric Insights, Q2 2025</a>. <a href="#ref-2" aria-label="Back to text">&#8617;</a></li>
-            <li id="fn-3">On the duck curve and negative prices: abundant midday solar drives a midday price trough, and at extremes the wholesale price turns negative, so generators pay to export. <a href="https://en.wikipedia.org/wiki/Duck_curve" target="_blank" rel="noopener">Duck curve, overview</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-3">Abundant midday solar drives a midday price trough; at extremes the wholesale price turns negative, so generators pay to export. <a href="https://en.wikipedia.org/wiki/Duck_curve" target="_blank" rel="noopener">Duck curve, overview</a>. <a href="#ref-3" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-4">The day-ahead peak-to-trough spread a two-hour GB battery could capture ran from under £40/MWh (Feb 2024) to about £70/MWh (Aug 2024). <a href="https://timera-energy.com/" target="_blank" rel="noopener">Timera Energy</a>. <a href="#ref-4" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-5">Two-hour GB BESS revenues benchmarked near £50k/MW/year in 2024 and about £73k/MW/year over the twelve months to April 2026. <a href="https://modoenergy.com/research/en/how-does-battery-energy-storage-make-money" target="_blank" rel="noopener">Modo Energy, GB BESS benchmarks</a>. <a href="#ref-5" aria-label="Back to text">&#8617;</a></li>
-            <li id="fn-6">System (imbalance) prices are published per settlement period by <a href="https://www.elexon.co.uk/" target="_blank" rel="noopener">Elexon</a> on the open Insights API. The £78–£158/MWh range is my average by half-hour across fifteen settlement days, 6–24 July 2026, from that API. The day-ahead and imbalance series and the 20:30 example come from Elexon system prices and day-ahead (APX) wholesale data via a live half-hourly dashboard I run; the chart shape is illustrative, the annotated levels are from that data. <a href="#ref-6" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-6">System (imbalance) prices are published per settlement period by <a href="https://www.elexon.co.uk/" target="_blank" rel="noopener">Elexon</a> on the open Insights API. The £78–£158/MWh range is my average by half-hour across fifteen settlement days, 6–24 July 2026, from that API. The chart's 20:30 example is a £139/MWh day-ahead peak against a £150/MWh imbalance price, and the shaded gap is the spread mistimed volume lands on the wrong side of. The imbalance and day-ahead (APX) wholesale series come from a live half-hourly dashboard I run; the chart shape is illustrative, the annotated levels are from that data. <a href="#ref-6" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-7">Comparing 10,000 Australian battery-plus-solar homes with 10,000 similar solar-only homes: average grid draw of ~0.3&nbsp;kW against ~1.0&nbsp;kW across the 4–9pm window. This is power draw shifted in time, not energy saved. <a href="https://www.solarquotes.com.au/blog/20000-homes-home-batteries/" target="_blank" rel="noopener">SolarQuotes, what 20,000 homes reveal</a>. <a href="#ref-7" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-8">AEMO reported battery charging in the 10:00–16:00 window up 388&nbsp;MW (+166%) and evening-peak discharge up 463&nbsp;MW (+177%) year on year, NEM-wide across the battery fleet. <a href="https://www.aemo.com.au/-/media/files/major-publications/qed/2025/qed-q3-2025.pdf" target="_blank" rel="noopener">AEMO, Quarterly Energy Dynamics Q3 2025</a>. <a href="#ref-8" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-9">MCS certified over 40,000 domestic battery-storage installations in 2025, almost double the previous record, with the growth continuing into 2026. <a href="https://mcscertified.com/uk-homes-installing-a-small-scale-renewable-every-90-seconds/" target="_blank" rel="noopener">MCS, 2025 installation records</a>. <a href="#ref-9" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-10">Ofgem's Typical Domestic Consumption Value for a medium electricity user is around 2,700&nbsp;kWh a year; values were revised down slightly from July 2026. <a href="https://www.energy-uk.org.uk/publications/euk-explains-typical-domestic-consumption-values-2/" target="_blank" rel="noopener">Energy UK, on TDCVs</a>. <a href="#ref-10" aria-label="Back to text">&#8617;</a></li>
-            <li id="fn-11">My model, so treat accordingly: 300 Monte&nbsp;Carlo draws of 400-home fleets; stylised double-peak domestic shape; consumption ~8&nbsp;kWh/day (winter +25%); solar 2.5–5&nbsp;kWp with beta-distributed cloud; usable capacity 5.2–13.5&nbsp;kWh at 3–5&nbsp;kW; 85% round trip; greedy self-consumption dispatch, with a staggered 00:00–05:00 grid-charging window in the smart-tariff case. Drift is priced at the July 2026 average cash-out prices in note 6. Modelled estimates, not observed data. <a href="#ref-11" aria-label="Back to text">&#8617;</a></li>
+            <li id="fn-11">My model, so treat accordingly. The shaded band on both modelled-day charts is the P10&ndash;P90 range across fleet draws. 300 Monte&nbsp;Carlo draws of 400-home fleets; stylised double-peak domestic shape; consumption ~8&nbsp;kWh/day (winter +25%); solar 2.5–5&nbsp;kWp with beta-distributed cloud; usable capacity 5.2–13.5&nbsp;kWh at 3–5&nbsp;kW; 85% round trip; greedy self-consumption dispatch, with a staggered 00:00–05:00 grid-charging window in the smart-tariff case. Drift is priced at the July 2026 average cash-out prices in note 6. Modelled estimates, not observed data. <a href="#ref-11" aria-label="Back to text">&#8617;</a></li>
             <li id="fn-12">Market-wide Half-Hourly Settlement began migrating meters in October 2025, passed two million by February 2026, and targets ~80% by October 2026 with full cutover in 2027. <a href="https://www.elexon.co.uk/2026/02/16/more-than-two-million-meters-have-now-transitioned-to-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, migration progress</a>; <a href="https://www.elexon.co.uk/bsc/operational/market-wide-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, MHHS</a>. <a href="#ref-12" aria-label="Back to text">&#8617;</a></li>
           </ol>
         </section>
@@ -133,7 +141,7 @@
     <div class="wrap">
       <span>© 2026 Steven Stills</span>
       <nav class="contact-links" aria-label="Contact">
-        <a href="mailto:steven@stevenstills.com">steven@stevenstills.com</a>
+        <a href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
         <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
       </nav>
     </div>

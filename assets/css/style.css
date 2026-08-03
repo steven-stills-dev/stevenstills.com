@@ -71,7 +71,8 @@
   --quote-mark-gap: 5px;
 
   /* Layout */
-  --maxw: 64rem;
+  --maxw: 76rem;
+  --measure: 38rem;         /* long-form column: every article and the about page */
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --radius: 0;              /* corner rounding on every UI rectangle */
 }
@@ -161,7 +162,6 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .insight {
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-left: 4px solid var(--subtitle);
   border-radius: var(--radius);
   padding: clamp(1.25rem, 3vw, 2rem);
 }
@@ -229,8 +229,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
      scales with the band; minmax(0,..) lets a long mantra wrap rather than
      force the layout wider. */
   .author-head { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.8fr); align-items: start; }
-  /* portrait runs the full band height, matching the mantra column rule */
-  .author-head .author-portrait { aspect-ratio: auto; align-self: stretch; height: 100%; }
+  /* portrait keeps the 4:5 box so the crop matches the About page */
+  .author-head .author-portrait { align-self: start; }
 }
 .author-head h1 { margin: 0; }
 .author-head .role {
@@ -240,13 +240,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .author-head .bio { max-width: 60ch; }
 .author-portrait {
   aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
-  border: 3px solid var(--times-red); background: var(--surface);
+  background: var(--surface);
   display: flex; align-items: center; justify-content: center; text-align: center;
   color: var(--muted); font-size: 0.76rem; padding: 0; margin: 0;
 }
 /* full-colour portrait, no wash */
 .author-portrait img {
-  width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; display: block;
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block;
 }
 
 /* mantras column — FT-style pull-quotes to the right of the portrait,
@@ -258,6 +258,12 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   padding-left: clamp(1.25rem, 2vw, 2rem);
 }
 .pull-quote { margin: 0; }
+/* attribution under a quote — the site's label treatment, not italic */
+.pull-quote cite {
+  display: block; margin-top: 0.7rem; font-style: normal;
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+}
 .pull-quote + .pull-quote {
   border-top: 1px solid var(--rule); margin-top: 1.6rem; padding-top: 1.6rem;
 }
@@ -355,16 +361,18 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .split-lists--three .mini-thumb--icon svg { width: 38%; }
 }
 .split-col .kicker { margin-bottom: 0.6rem; }
-/* compact article CARD: neutral container, category colour on the spine */
+/* article card — no tile, no frame. Content sits on the page ground and rows
+   are told apart by a hairline, the way the broadsheets do it. */
 .mini-row {
   display: grid; grid-template-columns: 92px 1fr; gap: 1.1rem;
-  padding: 1.1rem; margin-top: 1rem; align-items: start;
-  background: var(--surface-lite); border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  margin-top: 1.4rem; align-items: start;
+}
+/* hairline between stacked cards in a column */
+.mini-row + .mini-row {
+  border-top: 1px solid var(--rule); padding-top: 1.4rem;
 }
 .mini-thumb {
-  aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden;
-  border: 1px solid var(--rule);
+  aspect-ratio: 16 / 10; overflow: hidden;
 }
 .mini-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mini-thumb--icon { background: var(--bg); display: flex; align-items: center; justify-content: center; }
@@ -374,11 +382,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* icon strokes that follow the master highlight */
 .mini-thumb--icon .hl-stroke { stroke: var(--highlight); }
 .mini-thumb--icon svg { width: 68%; height: auto; }
+/* label above the headline — sentence case, no tracking, subtitle red */
 .mini-meta {
-  color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
-  font-size: 0.7rem; margin: 0 0 0.25rem;
+  color: var(--subtitle); font-weight: 600;
+  font-size: 0.8rem; margin: 0 0 0.2rem;
 }
-.mini-row h3 { font-size: 1.12rem; margin: 0 0 0.3rem; }
+/* headline carries the card, so it outweighs the label */
+.mini-row h3 { font-size: 1.32rem; line-height: 1.14; margin: 0 0 0.45rem; }
 .mini-row h3 a { color: var(--heading); }
 .mini-row h3 a:hover { color: var(--accent); text-decoration: none; }
 .mini-standfirst { color: var(--muted); font-size: 0.92rem; margin: 0 0 0.35rem; }
@@ -407,9 +417,61 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%;
   display: block;
 }
+/* ---- ABOUT PAGE -------------------------------------------------------- */
+/* One column, one measure. Every paragraph, heading and photo block is
+   exactly --measure wide, so no text wraps around a photo and no two edges
+   disagree. Photos vary by how many sit in a block, never by width.
+   Nothing on this page floats. */
+.about-col { max-width: var(--measure); margin-inline: auto; }
+
+/* subtitle line under a name */
+.role {
+  font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.75rem; font-weight: 700; color: var(--subtitle); margin: 0.5rem 0 1.4rem;
+}
+/* opening statement, sits above the body copy */
+.about-lede {
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem); line-height: 1.25;
+  letter-spacing: var(--heading-tracking);
+  margin: 0 0 1.4rem;
+}
+
+/* photo block — always the full column */
+.photo { margin: 2.2rem 0; }
+.photo img {
+  width: 100%; height: auto;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--surface);
+}
+.photo figcaption {
+  color: var(--muted); font-size: 0.78rem; line-height: 1.4; margin-top: 0.5rem;
+}
+
+/* 2-up: portrait shots share one crop so the pair lines up top and bottom */
+.photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 2.2rem 0; }
+.photo-pair .photo { margin: 0; }
+.photo-pair img { aspect-ratio: 4 / 5; object-fit: cover; }
+
+/* 1-up: landscape shot, same column width */
+.photo-wide img { aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* hairline before the work section */
+.about-turn { border-top: 1px solid var(--rule); padding-top: 2.4rem; margin-top: 2.6rem; }
 
 /* ---- PROSE (write-ups) ------------------------------------------------- */
-.prose { max-width: 68ch; }
+.prose { max-width: var(--measure); }
+/* `wrap prose` is one element doing two jobs. The wrap keeps its width, the
+   children hold the measure, and each child centres itself so headline, body
+   and figures all sit on the same middle column as the about page. */
+.wrap.prose { max-width: var(--maxw); }
+.wrap.prose > * { max-width: var(--measure); margin-inline: auto; }
+
+/* justified body text — hyphenation on, or the narrow measure opens rivers.
+   Classed paragraphs (kickers, ledes, standfirsts, small print) stay ragged. */
+.prose p:not([class]), .about-col p:not([class]) {
+  text-align: justify; -webkit-hyphens: auto; hyphens: auto;
+}
 .prose h2 { margin-top: 2.2rem; }
 .prose h3 { margin-top: 1.6rem; }
 .prose ul { padding-left: 1.2rem; }
@@ -539,9 +601,10 @@ sup.fn a:hover { text-decoration: underline; }
   color: var(--signal); font-weight: 700; letter-spacing: 0.08em;
 }
 
-/* the EDIT note that opens a retired write-up */
+/* the EDIT note that opens a retired write-up.
+   Set off by the ground change and the caps label, never a left accent bar. */
 .edit-note {
-  background: var(--surface); border-left: 3px solid var(--signal);
+  background: var(--surface); border: 1px solid var(--rule);
   border-radius: var(--radius); padding: 1.1rem 1.3rem; margin: 0 0 1.8rem;
 }
 .edit-note p { margin: 0 0 0.7rem; }

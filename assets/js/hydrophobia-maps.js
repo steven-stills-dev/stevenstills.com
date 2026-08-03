@@ -45,8 +45,7 @@
     ],
     legend: {
       title: "Heat-health alert",
-      items: [{ swatch: UNASSESSED, label: "Not assessed" }],
-      note: "UKHSA issues heat-health alerts for the nine English regions only."
+      items: [{ swatch: UNASSESSED, label: "Not assessed" }]
     },
     title: "UKHSA heat-health alert level by English region, 3 to 5 August 2026"
   });
@@ -71,7 +70,7 @@
       title: "Properties at risk",
       format: function (v) { return v + "%"; },
       items: [{ swatch: UNASSESSED, label: "Not assessed" }],
-      note: "England only. The national figure is 6.3%."
+      note: "The England average is 6.3% of all properties."
     },
     title: "Properties at high or medium surface water flood risk by English region"
   });
