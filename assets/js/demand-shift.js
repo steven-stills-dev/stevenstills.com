@@ -14,10 +14,10 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var COAL = cssVar("--times-coal", "#231F20");
-  var GREY = cssVar("--times-grey", "#66605c");
-  var LINE = cssVar("--times-line", "#e7d3c1");
-  var RED = cssVar("--times-red", "#990f3d");
+  var COAL = cssVar("--graphite", "#16171A");
+  var GREY = cssVar("--slate", "#6B6E76");
+  var LINE = cssVar("--hairline", "#E4E4E0");
+  var RED = cssVar("--vermilion", "#B4241A");
 
   // modelled mean import, avg kW per home, 48 half-hours from 00:00
   var S_PLAIN = [0.169, 0.169, 0.169, 0.169, 0.169, 0.17, 0.17, 0.171, 0.173, 0.179, 0.195, 0.229, 0.288, 0.366, 0.437, 0.471, 0.451, 0.392, 0.328, 0.281, 0.26, 0.255, 0.26, 0.266, 0.273, 0.278, 0.282, 0.287, 0.295, 0.308, 0.332, 0.368, 0.418, 0.48, 0.548, 0.612, 0.661, 0.683, 0.674, 0.633, 0.569, 0.49, 0.411, 0.339, 0.28, 0.237, 0.208, 0.19];
