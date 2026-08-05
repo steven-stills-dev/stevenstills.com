@@ -19,11 +19,12 @@
 (function () {
   "use strict";
 
-  var STORE_KEY = "ss-design-tray-v3";  /* bump to discard stale saved overrides */
+  var STORE_KEY = "ss-design-tray-v4";  /* bump to discard stale saved overrides */
 
-  /* ---- Font catalogue: 2 UI-leading, 8 serif, 8 sans, 4 wildcard -------- */
+  /* ---- Font catalogue: 3 UI-leading, 8 serif, 8 sans, 4 wildcard -------- */
   var FONTS = [
     // UI-leading
+    { name: "Instrument Sans",  cat: "ui",    q: "Instrument+Sans:ital,wght@0,400..700;1,400..700",  fb: "system-ui, sans-serif" },
     { name: "Inter",            cat: "ui",    q: "Inter:wght@300..800",                              fb: "system-ui, sans-serif" },
     { name: "IBM Plex Sans",    cat: "ui",    q: "IBM+Plex+Sans:wght@300;400;500;600;700",           fb: "system-ui, sans-serif" },
     // Serif
@@ -57,10 +58,10 @@
   /* ---- Controlled tokens ------------------------------------------------ */
   var COLORS = [
     ["--highlight", "Highlight (master)"],
-    ["--bg", "Paper (bg)"], ["--surface", "Sand (containers)"],
-    ["--surface-lite", "Card (articles)"], ["--fg", "Body — coal"],
-    ["--heading", "Headers — coal"], ["--subtitle", "Subtitles — red"],
-    ["--accent", "Links — blue"], ["--signal", "Signal / retired"],
+    ["--bg", "Paper (bg)"], ["--surface", "Mist (containers)"],
+    ["--surface-lite", "Chalk (articles)"], ["--fg", "Body — graphite"],
+    ["--heading", "Headers — graphite"], ["--subtitle", "Subtitles — slate"],
+    ["--accent", "Links — cobalt"], ["--signal", "Signal / retired"],
     ["--muted", "Muted text"],
     ["--accent-soft", "Accent tint"], ["--rule", "Rule / borders"]
   ];
@@ -93,7 +94,7 @@
 
   var root = document.documentElement;
   var DEFAULTS = {};          // captured from style.css at load
-  var DEFAULT_FONTS = { heading: "Fraunces", body: "Inter", quote: "Fraunces" };
+  var DEFAULT_FONTS = { heading: "Instrument Sans", body: "Instrument Sans", quote: "Instrument Sans" };
   var FONT_VAR = { heading: "--font-heading", body: "--font-body", quote: "--font-quote" };
   var FONT_TARGETS = ["heading", "body", "quote"];
   var loadedFonts = {};       // q -> true

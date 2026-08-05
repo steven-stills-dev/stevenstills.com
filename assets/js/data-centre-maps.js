@@ -17,10 +17,10 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var PAPER = tok("--times-paper", "#FFF1E5");
-  var RED = tok("--times-red", "#990F3D");
-  var BLUE = tok("--times-blue", "#0F5499");
-  var COAL = tok("--times-coal", "#231F20");
+  var PAPER = tok("--paper", "#FCFCFA");
+  var RED = tok("--vermilion", "#B4241A");
+  var BLUE = tok("--cobalt", "#1C51D6");
+  var COAL = tok("--graphite", "#16171A");
 
   /* ---- one: existing clusters and announced campuses ------------------- */
 

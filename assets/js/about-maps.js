@@ -18,8 +18,8 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var PAPER = tok("--times-paper", "#FFF1E5");
-  var RED = tok("--times-red", "#990F3D");
+  var PAPER = tok("--paper", "#FCFCFA");
+  var RED = tok("--vermilion", "#B4241A");
 
   // London is not reported separately, so it carries the South East figure
   var GRASS = {

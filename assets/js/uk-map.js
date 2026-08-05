@@ -11,8 +11,8 @@
    Options:
      height          rendered height in pixels, default 520
      shetland        false frames the map without Shetland
-     sea land        fills, default times_sand and times_paper
-     coast border    line colours, default times_line
+     sea land        fills, default mist and paper
+     coast border    line colours, default hairline
      internalBorders false hides the region divisions
      values          { regionKey: number }, shades the regions
      ramp domain     two colours and the range they span
@@ -163,12 +163,12 @@
     var geo = window.UK_GEO;
     var o = opts || {};
 
-    var PAPER = cssVar("--times-paper", "#FFF1E5");
-    var SAND = cssVar("--times-sand", "#F2DFCE");
-    var LINE = cssVar("--times-line", "#E7D3C1");
-    var COAL = cssVar("--times-coal", "#231F20");
-    var GREY = cssVar("--times-grey", "#66605C");
-    var RED = cssVar("--times-red", "#990F3D");
+    var PAPER = cssVar("--paper", "#FCFCFA");
+    var SAND = cssVar("--mist", "#F1F1EE");
+    var LINE = cssVar("--hairline", "#E4E4E0");
+    var COAL = cssVar("--graphite", "#16171A");
+    var GREY = cssVar("--slate", "#6B6E76");
+    var RED = cssVar("--vermilion", "#B4241A");
 
     var cfg = {
       shetland: o.shetland !== false,

@@ -10,60 +10,60 @@
 :root {
   /* Colour scheme */
   /* ---- NAMED BRAND COLOURS (refer to these by name) -------------------
-     Financial Times palette. Full reference + chart notes:
-     .claude/DESIGN.md (local design notes, not in the repo)              */
-  --times-coal:  #231F20;  /* headers + body text · chart axes  */
-  --times-red:   #990F3D;  /* subtitles / kickers · chart signal */
-  --times-blue:  #0F5499;  /* links, quote marks · chart data    */
-  --times-paper: #FFF1E5;  /* page ground                        */
-  --times-sand:  #F2DFCE;  /* tiles, bands, containers           */
-  --times-card:  #FFF7EF;  /* lighter ground for article cards   */
-  --times-grey:  #66605C;  /* muted text · chart labels          */
-  --times-line:  #E7D3C1;  /* hairlines · chart gridlines        */
+     Monochrome technical palette. Near-white ground, near-black ink, one
+     accent. Colour is the charts' job, not the chrome's.                 */
+  --graphite:  #16171A;  /* headers + body text · chart axes    */
+  --slate:     #6B6E76;  /* muted text · chart labels           */
+  --hairline:  #E4E4E0;  /* rules, borders · chart gridlines    */
+  --paper:     #FCFCFA;  /* page ground                         */
+  --mist:      #F1F1EE;  /* tiles, bands, containers            */
+  --chalk:     #FFFFFF;  /* lighter ground for article cards    */
+  --cobalt:    #1C51D6;  /* links · chart primary               */
+  --vermilion: #B4241A;  /* alerts, retired · chart signal      */
 
   /* ---- SEMANTIC TOKENS (what the rules below actually use) ------------- */
-  --bg:           var(--times-paper);
-  --surface:      var(--times-sand);   /* darker containers        */
-  --surface-lite: var(--times-card);   /* article card containers  */
-  --fg:           var(--times-coal);
-  --heading:      var(--times-coal);
-  --subtitle:     var(--times-red);    /* kickers, labels          */
-  --signal:       var(--times-red);    /* sparing alert / retired  */
-  --accent:       var(--times-blue);   /* page links               */
-  --highlight:    var(--times-blue);   /* MASTER highlight — portrait border,
+  --bg:           var(--paper);
+  --surface:      var(--mist);         /* darker containers        */
+  --surface-lite: var(--chalk);        /* article card containers  */
+  --fg:           var(--graphite);
+  --heading:      var(--graphite);
+  --subtitle:     var(--slate);        /* kickers, labels          */
+  --signal:       var(--vermilion);    /* sparing alert / retired  */
+  --accent:       var(--cobalt);       /* page links               */
+  --highlight:    var(--cobalt);       /* MASTER highlight — portrait border,
                                           quote marks, card accent shadows,
                                           icon accents. Tray-editable.      */
-  --muted:        var(--times-grey);
-  --rule:         var(--times-line);
-  --accent-soft:  #E9EFF6;             /* pale blue hover tint     */
+  --muted:        var(--slate);
+  --rule:         var(--hairline);
+  --accent-soft:  #EEF2FD;             /* pale blue hover tint     */
 
-  /* Typography — families: serif display titles, Inter everywhere else */
-  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body:    "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  /* Typography — one sans family across headings, body and quotes */
+  --font-heading: "Instrument Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-body:    "Instrument Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
-  /* Typography — weights */
-  --heading-weight: 620;
-  --body-weight:    350;
+  /* Typography — weights (Instrument Sans ships 400–700) */
+  --heading-weight: 600;
+  --body-weight:    400;
 
   /* Typography — tracking (letter-spacing, em) */
-  --heading-tracking: -0.02em;
-  --body-tracking:    -0.03em;
+  --heading-tracking: -0.015em;
+  --body-tracking:    0em;
 
   /* Typography — sizing */
-  --heading-scale: 1.15;    /* multiplier over all heading sizes */
-  --body-size:     0.85rem;
-  --line-height:   1.34;
+  --heading-scale: 1;       /* multiplier over all heading sizes */
+  --body-size:     1rem;
+  --line-height:   1.6;
 
   /* Typography — heading vertical rhythm */
   --heading-mt: 0em;        /* top margin on headings */
   --heading-mb: 0.35em;     /* bottom margin on headings */
 
   /* Typography — quotations (mantra pull-quotes) */
-  --font-quote:     "Fraunces", Georgia, "Times New Roman", serif;
+  --font-quote:     "Instrument Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --quote-weight:   600;
-  --quote-tracking: -0.005em;
-  --quote-size:     1.08rem;
-  --quote-line:     1.16;
+  --quote-tracking: -0.02em;
+  --quote-size:     1.25rem;
+  --quote-line:     1.3;
 
   /* Quote mark — a fixed-size object, sized apart from the quote text */
   --quote-mark-w:   22px;
@@ -72,7 +72,7 @@
 
   /* Layout */
   --maxw: 76rem;
-  --measure: 38rem;         /* long-form column: every article and the about page */
+  --measure: 36rem;         /* long-form column: every article and the about page */
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --radius: 0;              /* corner rounding on every UI rectangle */
 }
@@ -214,7 +214,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .about-cta {
   display: inline-block; margin-top: 0.5rem;
   /* coal fill so the blue offset block stays visible */
-  background: var(--times-coal); color: var(--bg);
+  background: var(--graphite); color: var(--bg);
   font-weight: 600; font-size: 1.02rem;
   padding: 0.7rem 1.5rem; border-radius: var(--radius);
 }
@@ -282,7 +282,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   width: var(--quote-mark-w); height: var(--quote-mark-h);
   margin-right: var(--quote-mark-gap);
   vertical-align: baseline;
-  background-color: var(--times-blue);
+  background-color: var(--cobalt);
   -webkit-mask: var(--quote-mark) no-repeat center / contain;
           mask: var(--quote-mark) no-repeat center / contain;
   /* fat ball, short branch — the round FT proportion */
@@ -326,7 +326,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .byline { display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; color: var(--fg); }
 .avatar {
   width: 34px; height: 34px; border-radius: 50%; flex: 0 0 auto;
-  background: var(--times-coal); color: var(--times-paper);
+  background: var(--graphite); color: var(--paper);
   display: flex; align-items: center; justify-content: center;
   font-weight: 600; font-size: 0.78rem; letter-spacing: 0.02em;
 }
@@ -534,7 +534,7 @@ sup.fn a:hover { text-decoration: underline; }
   color: var(--muted); font-style: italic;
   margin-block: -0.2rem 1.1rem; font-size: 1.05rem;
 }
-/* monochrome chart boxes, on the darker times_sand ground */
+/* monochrome chart boxes, on the darker mist ground */
 .battery-fig #solar-profile, .battery-fig #battery-anim, .battery-fig #supplier-chart {
   background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.6rem 0.4rem;
 }
@@ -558,7 +558,7 @@ sup.fn a:hover { text-decoration: underline; }
 /* status bar under a retired project title */
 .retired-bar {
   display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.5rem 0.9rem;
-  background: var(--signal); color: var(--times-paper);
+  background: var(--signal); color: var(--paper);
   border-radius: var(--radius); padding: 0.7rem 1rem; margin: 0.4rem 0 1.3rem;
 }
 .retired-bar strong {
@@ -580,7 +580,7 @@ sup.fn a:hover { text-decoration: underline; }
 .shot--retired::after {
   content: "Retired";
   position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
-  background: var(--signal); color: var(--times-paper);
+  background: var(--signal); color: var(--paper);
   font-family: var(--font-heading); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.3em; text-align: center;
   font-size: clamp(1rem, 3.4vw, 1.7rem); padding: 0.5rem 0;
@@ -592,7 +592,7 @@ sup.fn a:hover { text-decoration: underline; }
 .mini-thumb--retired::after {
   content: "Retired";
   position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
-  background: var(--signal); color: var(--times-paper);
+  background: var(--signal); color: var(--paper);
   font-family: var(--font-heading); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.1em; text-align: center;
   font-size: 0.6rem; padding: 0.15rem 0;

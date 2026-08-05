@@ -16,10 +16,10 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var COAL = cssVar("--times-coal", "#231F20");
-  var GREY = cssVar("--times-grey", "#66605c");
-  var LINE = cssVar("--times-line", "#e7d3c1");
-  var BLUE = cssVar("--times-blue", "#0f5499"), RED = cssVar("--times-red", "#990f3d");
+  var COAL = cssVar("--graphite", "#16171A");
+  var GREY = cssVar("--slate", "#6B6E76");
+  var LINE = cssVar("--hairline", "#E4E4E0");
+  var BLUE = cssVar("--cobalt", "#1C51D6"), RED = cssVar("--vermilion", "#B4241A");
 
   // hourly profiles, 00:00 -> 24:00 (arbitrary MW). Summer solar hump peaks
   // midday; demand is low midday and peaks in the evening.

@@ -5,7 +5,7 @@
    the map draws, so nothing is interpolated. Scotland, Wales and Northern
    Ireland sit outside both remits and are drawn as not assessed.
 
-   Alert levels are shown as steps of times_red rather than traffic lights,
+   Alert levels are shown as steps of vermilion rather than traffic lights,
    so the page keeps one hue. The label carries the official level.
    ========================================================================= */
 (function () {
@@ -17,10 +17,10 @@
     var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
     return v || f;
   }
-  var PAPER = tok("--times-paper", "#FFF1E5");
-  var RED = tok("--times-red", "#990F3D");
-  var BLUE = tok("--times-blue", "#0F5499");
-  var GREY = tok("--times-grey", "#66605C");
+  var PAPER = tok("--paper", "#FCFCFA");
+  var RED = tok("--vermilion", "#B4241A");
+  var BLUE = tok("--cobalt", "#1C51D6");
+  var GREY = tok("--slate", "#6B6E76");
   // kept faint so the English regions carry the signal
   var UNASSESSED = UKMap.mix(PAPER, GREY, 0.1);
 
