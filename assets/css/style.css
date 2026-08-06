@@ -225,12 +225,18 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   display: grid; gap: 2rem; grid-template-columns: 1fr;
 }
 @media (min-width: 62rem) {
-  /* FT three-up: text · portrait · mantras. Fractional tracks so the portrait
+  /* three-up: text · portrait · mantras. Fractional tracks so the portrait
      scales with the band; minmax(0,..) lets a long mantra wrap rather than
      force the layout wider. */
   .author-head { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.8fr); align-items: start; }
-  /* portrait keeps the 4:5 box so the crop matches the About page */
-  .author-head .author-portrait { align-self: start; }
+  /* portrait fills the row, so its foot lands on the About link's baseline.
+     aspect-ratio must go, or the 4:5 box wins and the photo falls short. */
+  .author-head .author-portrait {
+    align-self: stretch; aspect-ratio: auto; position: relative;
+  }
+  /* lift the photo out of flow, or it sets the row height and overshoots.
+     the text column alone decides the depth; the crop follows it. */
+  .author-head .author-portrait img { position: absolute; inset: 0; }
 }
 .author-head h1 { margin: 0; }
 .author-head .role {
