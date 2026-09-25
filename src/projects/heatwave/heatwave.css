@@ -1,0 +1,6 @@
+/* Heatwave Tracker & Impact: retired-project treatment. */
+.hw-status { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hw-status .chip { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 600; cursor: default; opacity: 1; }
+.hw-status-text { font-family: var(--t-kpilabel-font, inherit); font-size: var(--t-kpilabel-size, 13px); font-weight: var(--t-kpilabel-weight, 400);
+  letter-spacing: var(--t-kpilabel-tracking, 0); text-transform: var(--t-kpilabel-case, none); color: var(--ste-night); opacity: .72; }
+.hw-retired img { filter: grayscale(1); opacity: .82; }

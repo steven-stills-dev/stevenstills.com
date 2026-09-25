@@ -1,0 +1,12 @@
+.ml-demo { display: flex; flex-direction: column; gap: 14px; height: 100%; min-height: 0; }
+.ml-demo > .chart-fill { flex: 1 1 0; min-height: 0; }
+.ml-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 12px; color: var(--ste-dusk); }
+.ml-controls input[type="range"] { flex: 1 1 160px; accent-color: var(--ste-primary); cursor: pointer; }
+.ml-controls .ml-chips { display: flex; gap: 6px; }
+.ml-stat { font-variant-numeric: tabular-nums; min-width: 6.5em; }
+.ml-trees { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ml-tree-label { text-align: center; font-size: 12px; color: var(--ste-dusk); margin-top: 6px; }
+.ml-diagram svg, .ml-trees svg { display: block; width: 100%; height: auto; }
+.ml-diagram > .ml-controls { margin-bottom: 14px; }
+.ml-eq { font-variant-numeric: tabular-nums; text-align: center; background: var(--panel); border-radius: 24px; padding: 14px 18px; overflow-x: auto; white-space: nowrap; }
+.ml-head { display: flex; justify-content: flex-end; margin-bottom: 10px; }

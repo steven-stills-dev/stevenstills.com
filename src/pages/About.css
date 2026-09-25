@@ -1,0 +1,23 @@
+/* About page: hero panel and map attribution. Tokens come from styles.css. */
+.about .article-head { display: none; }
+.box.about-hero-box { padding: 0; }
+.about-hero { display: grid; grid-template-columns: minmax(260px, 5fr) 7fr; gap: 0 48px; align-items: center; width: 100%; }
+.about-hero-portrait { display: flex; justify-content: center; padding: 56px 0 56px 56px; line-height: 0; }
+/* mounted circle: thick white ring, then a thin Night line */
+.about-hero-portrait img {
+  width: min(100%, 380px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: 52% 22%;
+  box-shadow: 0 0 0 14px var(--ste-midday), 0 0 0 15.5px var(--ste-night);
+}
+.about-hero-text { align-self: center; padding: 56px 56px 56px 0; }
+.about-hero-text .kicker { margin-bottom: 16px; }
+.about-role { margin-top: 14px; font-size: 1.05rem; font-weight: 500; color: var(--ste-night); opacity: .72; line-height: 1.4; }
+.about-hero-text .lede { max-width: 34rem; }
+.about-attribution { font-size: .86rem; color: var(--ste-dusk); line-height: 1.45; }
+.about-attribution a { color: var(--ste-night); }
+
+@media (max-width: 760px) {
+  .about-hero { grid-template-columns: 1fr; gap: 0; }
+  .about-hero-text { order: 1; padding: 32px 24px 8px; }
+  .about-hero-portrait { order: 2; padding: 24px 24px 40px; }
+  .about-hero-portrait img { width: min(100%, 260px); }
+}

@@ -1,0 +1,10 @@
+/* Hormuz Tracker page. Shared article, panel and chart styles live in styles.css. */
+
+/* Tracker link sits directly under the lede; the article gap already separates them. */
+.hz-links { margin-top: 0; }
+
+/* App-view screenshot fills the map panel. */
+.hz-shot { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Live/app toggle under the map panel. */
+.hz-chips { display: flex; gap: 6px; margin-top: 12px; }
