@@ -81,7 +81,8 @@ img { max-width: 100%; display: block; }
 .highlight { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 24px; align-items: center; margin-top: 16px; animation: fadein .35s ease; }
 .highlight-title { font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; color: var(--ste-night); line-height: 1.3; text-wrap: balance; }
 .highlight-line { grid-column: 1; font-size: .9375rem; line-height: 1.55; color: var(--ste-night); }
-.highlight .links-row { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; flex-wrap: nowrap; }
+.highlight .links-row { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; flex-wrap: nowrap; flex-direction: column; }
+.highlight .links-row a { text-align: center; }
 .links-row a.ghost { background: var(--panel); color: var(--ste-night); }
 @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .home-h { font-size: 1.125rem; font-weight: 700; color: var(--ste-midnight); margin: 0 0 12px; }
@@ -246,7 +247,7 @@ sup.fn a:hover { text-decoration: underline; }
   .home-intro .links-row a { padding: 10px 22px; font-size: 14px; }
   .carousel { height: 42vh; }
   .highlight { grid-template-columns: 1fr; }
-  .highlight .links-row { grid-column: 1; grid-row: auto; margin-top: 8px; }
+  .highlight .links-row { grid-column: 1; grid-row: auto; margin-top: 8px; flex-direction: row; }
   .brand-mark { height: 36px; width: 36px; font-size: 13px; }
   .wrap > .brandcell { margin-bottom: 32px; }
   .photo-pair { grid-template-columns: 1fr; }
