@@ -187,26 +187,26 @@ export default function BellCurvePage() {
           <Box icon="activity" title="Average Temperature by Day" sub="°C" h={400}>
             <YearLines lines={data.temp} years={data.years} unit="°C" digits={1} hover={dayHover} onHover={setDayHover} />
           </Box>
-          <Box icon="activity" title="Gas Demand by Day" sub="mcm" h={400}>
-            <YearLines lines={data.gas} years={data.years} unit="mcm" digits={0} hover={dayHover} onHover={setDayHover} />
+          <Box icon="activity" title="Gas Demand by Day" sub="GWh" h={400}>
+            <YearLines lines={data.gas} years={data.years} unit="GWh" digits={0} hover={dayHover} onHover={setDayHover} />
           </Box>
         </Wide>
       )}
       <Prose>
         <p>Laid out by date, 2022 to 2025 ran warmer than 2015 to 2017 through spring, summer and autumn, by 0.7 to 0.9°C a season, while winter barely moved, 5.6°C against 5.7°C.<Fn n={2} k="d" /></p>
-        <p>The gas carried into the local distribution zones, the regional networks that supply homes and small businesses, averaged 132 mcm (million cubic metres) a day over 2015 to 2017 and 112 mcm over 2022 to 2025, some 15% less.<Fn n={5} /> Winter demand fell 11% even though winters were barely warmer, and summer demand, which carries little space heating, fell 18%.<Fn n={5} k="b" /></p>
+        <p>The gas carried into the local distribution zones, the regional networks that supply homes and small businesses, held between 1,410 and 1,490 GWh a day from 2015 to 2021. It fell to 1,270 GWh in 2022 and has stayed between 1,210 and 1,230 GWh since.<Fn n={5} /> Over 2022 to 2025 winter demand ran about 10% below 2015 to 2017 even though winters were barely warmer, and summer demand, which carries little space heating, ran 17% below.<Fn n={5} k="b" /></p>
       </Prose>
 
       <Section title="Less gas at the same temperature" />
       {data && (
         <Wide>
-          <Box icon="activity" title="Gas Demand Against Temperature" sub="mcm" h={440}>
-            <YearScatter groups={data.scatter} years={data.years} xUnit="°C" yUnit="mcm" />
+          <Box icon="activity" title="Gas Demand Against Temperature" sub="GWh" h={440}>
+            <YearScatter groups={data.scatter} years={data.years} xUnit="°C" yUnit="GWh" />
           </Box>
         </Wide>
       )}
       <Prose>
-        <p>On days averaging 4 to 6°C, the networks took 205 mcm in 2015 to 2017 and 188 mcm in 2022 to 2025. The gap holds in every 2°C band from 0 to 20°C, at 8% to 15%, so most of the fall is not the weather.<Fn n={5} k="c" /></p>
+        <p>On days averaging 4 to 6°C, the networks took 2,240 GWh in 2015 to 2017 and 2,060 GWh in 2022 to 2025. The gap holds in every 2°C band from 0 to 20°C, at 8% to 14%, so most of the fall is not the weather.<Fn n={5} k="c" /></p>
         <p>The weather still plays a part. Heating degree days, the running total of how far each day falls below 15.5°C, dropped 8% between the two periods.<Fn n={2} k="e" /> When Ofgem cut its typical household gas figure from 11,500 to 9,500 kWh a year in May 2026, it put the fall down to efficiency, "evolving patterns of energy use within the home", climate and "more recent behavioural responses to affordability pressures".<Fn n={6} /></p>
       </Prose>
 
@@ -226,7 +226,7 @@ export default function BellCurvePage() {
         <>My calculations from HadCET daily data for 1961 to 1990 and 2015 to 27 September 2026. Each day's anomaly is its temperature minus a three-harmonic fit of the 1961 to 1990 average for its date, and σ is the 1961 to 1990 spread of those anomalies, smoothed over 31 days. Curves are kernel density estimates with a 0.3σ bandwidth. Periods use complete years, and lines by date are smoothed over 31 days. Winter is December to February, and heating degree days add up 15.5°C minus the daily mean on every day below it. The daily mean equals the average of maximum and minimum to within 0.3°C. Script in <code>scripts/tempanddemand/build.py</code>.</>,
         <>"For the purposes of historical comparison and climate change monitoring, WMO still recommends the continuation of the 1961-1990 period for the computation and tracking global climate anomalies." <a href="https://wmo.int/media/news/updated-30-year-reference-period-reflects-changing-climate" target="_blank" rel="noopener">WMO, 5 May 2021</a>.</>,
         <>Hansen, J., Sato, M. and Ruedy, R. (2012), Perception of climate change, PNAS 109, E2415, which scored summers against 1951 to 1980. <a href="https://doi.org/10.1073/pnas.1205276109" target="_blank" rel="noopener">PNAS</a>. The animated form follows the global version at <a href="https://celsius.earth/motion/bell-curve" target="_blank" rel="noopener">celsius.earth</a>.</>,
-        <>My calculations from National Gas Transmission's NTS Volume Offtaken, LDZ Offtake Total, daily from 27 September 2021, from the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, which keeps five rolling years. 2015 to 2017 is the sum of the 121 LDZ offtake sites in National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">Supply and Demand Data 2015-2017</a> workbook. Neither source has daily LDZ figures for 2018 to September 2021. Periods use complete calendar years, winter is December to February, summer is June to August, and lines by date are smoothed over 31 days.</>,
+        <>My calculations from National Gas Transmission's NTS Energy Offtaken, LDZ Offtake Total. 2015 to 2019 is from Grant Wilson and Noah Godfrey's extract of National Grid's MIPI data on <a href="https://zenodo.org/records/4913872" target="_blank" rel="noopener">Zenodo</a> (CC BY-NC 4.0). 19 January 2020 to 26 September 2021 is from an archived portal export in the <a href="https://github.com/benmcwilliams/gas-demand" target="_blank" rel="noopener">gas-demand repository</a> on GitHub. From 27 September 2021 it is from the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, which keeps five rolling years. 1 to 18 January 2020 is converted from the LDZ volumes in National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">Gas Winter Review and Consultation 2020</a> datasheet at 10.96 kWh per cubic metre. Periods use complete calendar years, winter is December to February, summer is June to August, and lines by date are smoothed over 31 days.</>,
         <>"Long-term trends in energy efficiency, evolving patterns of energy use within the home, climatic changes and more recent behavioural responses to affordability pressures have likely all contributed to sustained reductions in typical household demand." Medium gas use falls from 11,500 to 9,500 kWh a year. <a href="https://www.ofgem.gov.uk/sites/default/files/2026-05/Review%20of%20typical%20domestic%20consumption%20values%20decision.pdf" target="_blank" rel="noopener">Ofgem, Review of typical domestic consumption values: decision, 27 May 2026</a>.</>,
         <>ECMWF ERA5 reanalysis, daily mean 2 m temperature at Birmingham (52.48°N, 1.89°W), 1991 to 23 September 2026, from the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener">Open-Meteo historical weather API</a>. My calculations: normals are monthly means over 1991 to 2020, 2016 to 2025 and 2021 to 2025, and the last 12 months run from 23 September 2025. Contains modified Copernicus Climate Change Service information.</>,
       ]} />

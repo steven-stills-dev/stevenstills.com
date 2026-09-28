@@ -33,9 +33,9 @@ export interface BellData {
   modes: Record<Mode, ModeData>;
   /** daily mean temperature by year, °C */
   temp: Line[];
-  /** LDZ offtake by year, mcm, for the years with public daily data */
+  /** LDZ offtake by year, GWh */
   gas: Line[];
-  /** days with both series, by year: [°C, mcm, day of year] */
+  /** days with both series, by year: [°C, GWh, day of year] */
   scatter: { name: string; points: [number, number, number][] }[];
   normals: Normals;
 }

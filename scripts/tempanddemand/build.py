@@ -1,7 +1,7 @@
 """Build public/data/tempanddemand/bell.json from HadCET daily temperature and National Gas LDZ demand.
 
 Run: uv run --with pandas --with numpy --with openpyxl scripts/tempanddemand/build.py
-LDZ offtake is cached in ldz_mcm.csv because the gas portal only keeps five rolling years.
+LDZ offtake is cached in ldz_gwh.csv because the gas portal only keeps five rolling years.
 """
 import io
 import json
@@ -21,17 +21,22 @@ GRID = np.round(np.arange(-5, 6.01, 0.1), 1)
 BW = 0.3  # KDE bandwidth, sigma units
 SMOOTH = 31  # days, centred and wrapped round the year
 PORTAL = "https://data.nationalgas.com/api/find-gas-data-download"
-SHEET = "https://www.nationalgas.com/sites/default/files/documents/Supply%20and%20Demand%20Data%202015-2017.xlsx"
-LDZ = "PUBOBJ1015"  # NTS Volume Offtaken, LDZ Offtake Total, mcm
-LDZ_CACHE = Path(__file__).with_name("ldz_mcm.csv")
+LDZ = "PUBOBJ1023"  # NTS Energy Offtaken, LDZ Offtake Total, kWh; the portal keeps five rolling years
+LDZ_ITEM = "NTS Energy Offtaken, LDZ Offtake Total"
+ZENODO = "https://zenodo.org/records/4913872/files/dailyheat_from_GB_ldz_natural_gas.csv"  # 2015-2019, CC BY-NC 4.0
+BRUEGEL = ("https://raw.githubusercontent.com/benmcwilliams/gas-demand/28da8b4d04b22a3a8fa1ecf551eed2d6ff95777d/"
+           "src/data/raw/uk/UK_gas_data_2019_2024.csv")  # portal export, Jan 2020 to 2024
+WINTER = "https://www.nationalgas.com/sites/default/files/documents/Gas%20Winter%20Review%20and%20Consultation%20Datasheet.xlsx"
+KWH_PER_M3 = 10.96  # energy over volume on overlapping days; converts the Winter Review's 1-18 Jan 2020 only
+LDZ_CACHE = Path(__file__).with_name("ldz_gwh.csv")
 GAS = [(2015, 2017), (2022, 2025)]  # complete years in the public daily data
 ERA5 = "https://archive-api.open-meteo.com/v1/archive"  # ECMWF ERA5 via Open-Meteo, as the forecasting dashboard uses
 ERA5_POINT = (52.48, -1.89)  # Birmingham, the dashboard's central England proxy
 
 
-def fetch(url: str) -> bytes:
-    """Download a URL with a browser user agent, which the gas portal requires."""
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+def fetch(url: str, browser: bool = True) -> bytes:
+    """Download a URL, with a browser user agent unless told otherwise (the gas portal needs one, Zenodo refuses one)."""
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"} if browser else {})
     with urllib.request.urlopen(req, timeout=180) as r:
         return r.read()
 
@@ -117,38 +122,50 @@ def by_year(s: pd.Series, digits: int) -> list[dict]:
     return out
 
 
-def sheet() -> pd.Series:
-    """Daily LDZ offtake for 2015-2017, summed over every LDZ offtake site in National Gas's archive workbook."""
-    d = pd.read_excel(io.BytesIO(fetch(SHEET)), sheet_name="Demand").set_index("Gas Day")
-    cols = [c for c in d.columns if c.lower().endswith("ldz offtake")]
-    return d[cols].dropna().sum(axis=1)
+def portal_items(raw: bytes) -> pd.Series:
+    """LDZ offtake energy (kWh) by gas day from a National Gas portal CSV export."""
+    d = pd.read_csv(io.BytesIO(raw), encoding="utf-8-sig")
+    d = d[d["Data Item"] == LDZ_ITEM]
+    return d.set_index(pd.to_datetime(d["Applicable For"], format="%d/%m/%Y")).Value.sort_index()
+
+
+def static_history() -> list[pd.Series]:
+    """Public LDZ offtake before the portal window, lowest priority first: Winter Review volumes, Zenodo, Bruegel."""
+    w = pd.read_excel(io.BytesIO(fetch(WINTER)), sheet_name="Figure 11", header=1)
+    winter = w.set_index(pd.to_datetime(w["Gas Day"]))["LDZ Offtake"].dropna() * KWH_PER_M3 * 1e6
+    z = pd.read_csv(io.BytesIO(fetch(ZENODO, browser=False)), index_col=0, parse_dates=True).GB_ldz_natural_gas_kWh
+    return [winter.rename("winter_review"), z.rename("zenodo"), portal_items(fetch(BRUEGEL)).rename("bruegel")]
 
 
 def portal() -> pd.Series:
-    """Daily LDZ offtake from the National Gas data portal, which keeps five rolling years."""
+    """Daily LDZ offtake energy from the National Gas data portal."""
     q = urllib.parse.urlencode({"applicableFor": "Y", "dateFrom": "2021-01-01", "dateTo": date.today().isoformat(),
                                 "dateType": "GASDAY", "latestFlag": "Y", "ids": LDZ, "type": "CSV"})
-    d = pd.read_csv(io.BytesIO(fetch(f"{PORTAL}?{q}")), encoding="utf-8-sig")
-    return d.set_index(pd.to_datetime(d["Applicable For"], format="%d/%m/%Y")).Value
+    return portal_items(fetch(f"{PORTAL}?{q}")).rename("portal")
 
 
 def ldz() -> pd.Series:
-    """LDZ offtake history: the cached file merged with fresh downloads, so days leaving the portal window are kept."""
-    parts = [pd.read_csv(LDZ_CACHE, index_col=0, parse_dates=True).mcm] if LDZ_CACHE.exists() else []
-    if not parts or parts[0]["2015":"2017"].empty:
-        parts.append(sheet())
-    s = pd.concat(parts + [portal()])
-    s = s[~s.index.duplicated(keep="last")].sort_index()
-    s.round(3).rename("mcm").to_csv(LDZ_CACHE, index_label="gas_day")
-    return s
+    """Daily LDZ offtake in GWh from 2015: the cached history, or the static sources on a first run, overlaid by
+    fresh portal days. Later sources win on shared days, and the cache keeps days that leave the portal window."""
+    if LDZ_CACHE.exists():
+        c = pd.read_csv(LDZ_CACHE, index_col=0, parse_dates=True)
+        parts = [pd.DataFrame({"kwh": c.gwh * 1e6, "source": c.source})]
+    else:
+        parts = [pd.DataFrame({"kwh": v, "source": v.name}) for v in static_history()]
+    p = portal()
+    parts.append(pd.DataFrame({"kwh": p, "source": p.name}))
+    d = pd.concat(parts)
+    d = d[~d.index.duplicated(keep="last")].sort_index()[str(FIRST):]
+    d.assign(gwh=(d.kwh / 1e6).round(3))[["gwh", "source"]].to_csv(LDZ_CACHE, index_label="gas_day")
+    return d.kwh / 1e6
 
 
 def pairs(t: pd.Series, g: pd.Series) -> list[dict]:
-    """Days with both a temperature and a gas figure, grouped by year from FIRST, as [°C, mcm, day of year]."""
+    """Days with both a temperature and a gas figure, grouped by year from FIRST, as [°C, GWh, day of year]."""
     j = pd.concat([t.rename("t"), g.rename("g")], axis=1, join="inner")[str(FIRST):].dropna()
     out = []
     for y, c in j.groupby(j.index.year):
-        out.append({"name": str(y), "points": [[round(a, 1), round(b, 1), int(d)] for a, b, d in zip(c.t, c.g, doy(c.index))]})
+        out.append({"name": str(y), "points": [[round(a, 1), round(b), int(d)] for a, b, d in zip(c.t, c.g, doy(c.index))]})
     return out
 
 
@@ -192,7 +209,7 @@ def main() -> None:
         "grid": {"z0": float(GRID[0]), "dz": 0.1, "n": len(GRID)},
         "modes": {k: mode(v) for k, v in scored.items()},
         "temp": by_year(mean.t[str(FIRST - 1):], 1),
-        "gas": by_year(gas, 1),
+        "gas": by_year(gas, 0),
         "scatter": pairs(mean.t, gas),
         "normals": normals(era5()),
     }
@@ -201,7 +218,7 @@ def main() -> None:
     print(f"wrote {OUT} ({OUT.stat().st_size / 1024:.0f} KB), CET to {last.date()}")
     for a, b in GAS:
         c = gas[str(a):str(b)]
-        print(f"gas {a}-{b}: {c.count()} days, mean {c.mean():.1f} mcm/d, Jan {c[c.index.month == 1].mean():.1f}, Jul {c[c.index.month == 7].mean():.1f}")
+        print(f"gas {a}-{b}: {c.count()} days, mean {c.mean():.0f} GWh/d, Jan {c[c.index.month == 1].mean():.0f}, Jul {c[c.index.month == 7].mean():.0f}")
     n = data["normals"]
     print("normals", n["windows"], "last12 from", n["last12From"], "to", n["last"])
     for i, mon in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):
