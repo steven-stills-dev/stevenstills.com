@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { fmt } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, tickDecimals, PAD_L, PAD_R } from "./geom";
+import { ticksFrom, tickDecimals, PAD_L, PAD_R } from "./geom";
 import { ChartTip } from "./ChartTip";
 
 export interface Series {
@@ -17,25 +17,25 @@ export interface Series {
  *  Two-series comparisons read as primary vs Night; the band takes the primary tint. */
 export default function LineChart({
   series, labels, ticks = [], band, unit = "", digits = 1, hover = true,
-  padL = PAD_L, padR = PAD_R, yMax, yTarget = 4,
+  padL = PAD_L, padR = PAD_R, yMax, yMin = 0,
 }: {
   series: Series[];
   labels: string[];
   ticks?: { i: number; label: string }[];
   band?: { top: number[]; bottom: number[]; color?: string };
   unit?: string; digits?: number; hover?: boolean;
-  padL?: number; padR?: number; yMax?: number; yTarget?: number;
+  padL?: number; padR?: number; yMax?: number; yMin?: number;
 }) {
   const [ref, size] = useSize<HTMLDivElement>();
   const [hi, setHi] = useState<number | null>(null);
   const W = size.w, H = size.h;
   const n = labels.length;
   const raw = yMax ?? Math.max(...series.flatMap((s) => s.values), ...(band?.top ?? []));
-  const yt = axisTicks(raw, yTarget);
-  const top = yt[yt.length - 1] || 1;
+  const yt = ticksFrom(yMin, raw);
+  const top = yt[yt.length - 1] || 1, bot = yt[0];
   const ydig = tickDecimals(yt.length > 1 ? yt[1] - yt[0] : 1);
   const X = (i: number) => padL + (i / (n - 1)) * (W - padL - padR);
-  const Y = (v: number) => H - 26 - (v / top) * (H - 46);
+  const Y = (v: number) => H - 26 - ((v - bot) / (top - bot || 1)) * (H - 46);
   const poly = (arr: number[]) => arr.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
   const onMove = (e: MouseEvent<SVGSVGElement>) => {
     if (n < 2) return;
@@ -56,7 +56,7 @@ export default function LineChart({
           <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" preserveAspectRatio="none"
             onMouseMove={hover ? onMove : undefined} onMouseLeave={hover ? () => setHi(null) : undefined}
             style={{ display: "block", cursor: hover ? "crosshair" : undefined }}>
-            <line x1={padL} y1={Y(top)} x2={padL} y2={Y(0)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+            <line x1={padL} y1={Y(top)} x2={padL} y2={Y(bot)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
             {yt.map((t, k) => (
               <g key={k}>
                 <line x1={padL - 3} y1={Y(t)} x2={padL} y2={Y(t)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />

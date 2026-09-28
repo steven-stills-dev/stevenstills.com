@@ -1,16 +1,8 @@
 import { useState, type MouseEvent } from "react";
 import { fmt } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, niceStep, tickDecimals, PAD_L, PAD_R } from "./geom";
+import { ticksFrom, tickDecimals, PAD_L, PAD_R } from "./geom";
 
-/** Clean ticks spanning lo..hi; from zero when lo is 0. */
-function ticksFrom(lo: number, hi: number): number[] {
-  if (lo <= 0) return axisTicks(hi, 4);
-  const step = niceStep(hi - lo, 4);
-  const first = Math.floor(lo / step) * step;
-  const n = Math.max(1, Math.ceil((hi - first) / step));
-  return Array.from({ length: n + 1 }, (_, i) => first + i * step);
-}
 import { ChartTip } from "./ChartTip";
 
 /** Minimalist area chart: primary gradient fill + Night line, sized to its
