@@ -1,13 +1,13 @@
 import { useState, type MouseEvent } from "react";
 import { fmt } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, tickDecimals, PAD_L, PAD_R } from "./geom";
+import { axisTicks, ramp, tickDecimals, PAD_L, PAD_R } from "./geom";
 import { ChartTip } from "./ChartTip";
 
 const PTOP = 20;
 const BW_MAX = 64;
 
-/** Pill bars over a full-height track, sized to the container. */
+/** Pill bars over a full-height track, sized to the container, coloured along the brand ramp. */
 export default function PillBars({
   items, digits = 0, hover = true, unit = "", axis = true, padL = PAD_L, padR = PAD_R, yScale = 1,
 }: {
@@ -59,7 +59,7 @@ export default function PillBars({
               return (
                 <g key={i}>
                   <rect x={x} y={PTOP} width={bw} height={span} rx={bw / 2} fill="var(--track)" />
-                  <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={bw / 2} fill="var(--ste-secondary)" />
+                  <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={bw / 2} fill={ramp(i, n)} />
                   {hi === i && <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={bw / 2} fill="none" stroke="var(--ste-night)" strokeWidth={1.6} />}
                   <text x={x + bw / 2} y={base + 13} textAnchor="middle" fontSize="10" fill="var(--ste-dusk)">{d.label}</text>
                 </g>

@@ -29,6 +29,11 @@ BRUEGEL = ("https://raw.githubusercontent.com/benmcwilliams/gas-demand/28da8b4d0
 WINTER = "https://www.nationalgas.com/sites/default/files/documents/Gas%20Winter%20Review%20and%20Consultation%20Datasheet.xlsx"
 KWH_PER_M3 = 10.96  # energy over volume on overlapping days; converts the Winter Review's 1-18 Jan 2020 only
 LDZ_CACHE = Path(__file__).with_name("ldz_gwh.csv")
+CWV = {"PUBOB2064": "actual", "PUBOB2061": "normal"}  # national Composite Weather Variable, actual and seasonal normal
+CWV_CACHE = Path(__file__).with_name("cwv.csv")
+SND_BOOK = "https://www.nationalgas.com/sites/default/files/documents/CWV%20and%20Seasonal%20Normal%20Demands%20Rolling%205%20Years%20(Oct%2025)_0.xlsx"
+SND_CACHE = Path(__file__).with_name("snd.csv")  # National Gas seasonal normal LDZ demand forecast, GWh
+SND_YEAR = 2024  # the last full gas year, October 2024 to September 2025
 GAS = [(2015, 2017), (2022, 2025)]  # complete years in the public daily data
 ERA5 = "https://archive-api.open-meteo.com/v1/archive"  # ECMWF ERA5 via Open-Meteo, as the forecasting dashboard uses
 ERA5_POINT = (52.48, -1.89)  # Birmingham, the dashboard's central England proxy
@@ -160,6 +165,71 @@ def ldz() -> pd.Series:
     return d.kwh / 1e6
 
 
+def cwv() -> pd.DataFrame:
+    """Daily national CWV, actual and seasonal normal, from the portal merged into the cache (the portal keeps five years)."""
+    q = urllib.parse.urlencode({"applicableFor": "Y", "dateFrom": "2021-01-01", "dateTo": date.today().isoformat(),
+                                "dateType": "GASDAY", "latestFlag": "Y", "ids": ",".join(CWV), "type": "CSV"})
+    d = pd.read_csv(io.BytesIO(fetch(f"{PORTAL}?{q}")), encoding="utf-8-sig")
+    d["day"] = pd.to_datetime(d["Applicable For"], format="%d/%m/%Y")
+    ids = {"Composite Weather Variable - Actual": "actual", "Composite Weather Variable - Normal": "normal"}
+    new = d.assign(k=d["Data Item"].map(ids)).pivot_table(index="day", columns="k", values="Value", aggfunc="last")
+    if CWV_CACHE.exists():
+        new = new.combine_first(pd.read_csv(CWV_CACHE, index_col=0, parse_dates=True))
+    new = new.sort_index()[["actual", "normal"]]
+    new.round(4).to_csv(CWV_CACHE, index_label="gas_day")
+    return new
+
+
+def gas_years(c: pd.DataFrame) -> list[dict]:
+    """Per complete-enough gas year (October to September): share of days warmer than the seasonal normal and the mean gap."""
+    c = c.dropna()
+    gy = np.where(c.index.month >= 10, c.index.year, c.index.year - 1)
+    out = []
+    for y, g in c.groupby(gy):
+        if len(g) < 300:
+            continue
+        out.append({"name": f"{y}/{str(y + 1)[2:]}", "days": int(len(g)), "warmer": round(float((g.actual > g.normal).mean() * 100), 1),
+                    "gap": round(float((g.actual - g.normal).mean()), 2)})
+    return out
+
+
+def gas_day(idx: pd.DatetimeIndex) -> np.ndarray:
+    """Map dates to a 0-364 day of the gas year from 1 October, folding 29 February onto 28 February."""
+    d = doy(idx)
+    return (d - 273) % 365  # 1 October is day 273 of a non-leap calendar year
+
+
+def by_gas_year(s: pd.Series, y: int, w: int, digits: int) -> list:
+    """One gas year of a daily series as 365 values from 1 October, smoothed by a centred w-day mean."""
+    sm = s.asfreq("D").rolling(w, center=True, min_periods=w // 2 + 1).mean()
+    c = sm[f"{y}-10-01":f"{y + 1}-09-30"].dropna()
+    m = c.groupby(gas_day(c.index)).mean().reindex(range(365))
+    return [None if pd.isna(v) else round(float(v), digits) for v in m]
+
+
+def cwv_years(c: pd.DataFrame) -> dict:
+    """The national seasonal normal CWV and each gas year's actual CWV since October 2022, smoothed over 31 days."""
+    years = [y for y in range(2022, c.index.max().year + 1) if c[f"{y}-10-01":].size]
+    return {"normal": by_gas_year(c.normal, years[-1] - 1, 1, 2),
+            "years": [{"name": f"{y}/{str(y + 1)[2:]}", "end": y + 1, "values": by_gas_year(c.actual, y, SMOOTH, 2)} for y in years]}
+
+
+def snd() -> pd.Series:
+    """National Gas seasonal normal LDZ demand (GWh) for gas years 2021/22 to 2025/26, cached from its workbook."""
+    if SND_CACHE.exists():
+        return pd.read_csv(SND_CACHE, index_col=0, parse_dates=True).gwh
+    book = io.BytesIO(fetch(SND_BOOK))
+    parts = []
+    for y in range(2021, 2026):
+        d = pd.read_excel(book, sheet_name=f"{y}_{str(y + 1)[2:]} Energy", header=None, skiprows=4, usecols=[0, 4], names=["day", "gwh"])
+        d = d[pd.to_datetime(d.day, errors="coerce").notna()]
+        parts.append(d.set_index(pd.to_datetime(d.day)).gwh.astype(float))
+    s = pd.concat(parts).dropna().sort_index()
+    s = s[~s.index.duplicated(keep="last")]
+    s.round(3).rename("gwh").to_csv(SND_CACHE, index_label="gas_day")
+    return s
+
+
 def pairs(t: pd.Series, g: pd.Series) -> list[dict]:
     """Days with both a temperature and a gas figure, grouped by year from FIRST, as [°C, GWh, day of year]."""
     j = pd.concat([t.rename("t"), g.rename("g")], axis=1, join="inner")[str(FIRST):].dropna()
@@ -211,6 +281,10 @@ def main() -> None:
         "temp": by_year(mean.t[str(FIRST - 1):], 1),
         "gas": by_year(gas, 0),
         "scatter": pairs(mean.t, gas),
+        "cwv": gas_years(cw := cwv()),
+        "cwvYears": cwv_years(cw),
+        "sndYear": {"name": f"{SND_YEAR}/{str(SND_YEAR + 1)[2:]}",
+                    "forecast": by_gas_year(snd(), SND_YEAR, 7, 0), "actual": by_gas_year(gas, SND_YEAR, 7, 0)},
         "normals": normals(era5()),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -219,6 +293,7 @@ def main() -> None:
     for a, b in GAS:
         c = gas[str(a):str(b)]
         print(f"gas {a}-{b}: {c.count()} days, mean {c.mean():.0f} GWh/d, Jan {c[c.index.month == 1].mean():.0f}, Jul {c[c.index.month == 7].mean():.0f}")
+    print("cwv by gas year", data["cwv"])
     n = data["normals"]
     print("normals", n["windows"], "last12 from", n["last12From"], "to", n["last"])
     for i, mon in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):

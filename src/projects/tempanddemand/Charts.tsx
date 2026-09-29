@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { fmt, MON } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, niceStep, tickDecimals, PAD_L, PAD_R } from "../../components/charts/geom";
+import { axisTicks, niceStep, ramp, tickDecimals, PAD_L, PAD_R } from "../../components/charts/geom";
 import { ChartTip } from "../../components/charts/ChartTip";
 
 const TOP = 20, BOT = 26;
@@ -13,10 +13,19 @@ export const DAYS = Array.from({ length: 365 }, (_, d) => {
 });
 const MONTH_TICKS = MON.flatMap((label, m) => (m % 2 ? [] : [{ i: Math.round((Date.UTC(2001, m, 1) - Date.UTC(2001, 0, 1)) / 864e5), label }]));
 
-/** A year's colour, Secondary for the first year shown through to Night for the latest. */
+/** "1 Oct" .. "30 Sep" for a 365-day gas year, and its ticks every other month from October. */
+export const GAS_DAYS = Array.from({ length: 365 }, (_, d) => {
+  const x = new Date(Date.UTC(2001, 9, 1 + d));
+  return `${x.getUTCDate()} ${MON[x.getUTCMonth()]}`;
+});
+export const GAS_TICKS = [9, 11, 1, 3, 5, 7].map((m) => ({
+  i: Math.round((Date.UTC(m >= 9 ? 2001 : 2002, m, 1) - Date.UTC(2001, 9, 1)) / 864e5), label: MON[m],
+}));
+
+/** A year's colour: the brand ramp from lime (first year) to mint, and Night for the latest. */
 export const yearColor = (year: string, years: number[]) => {
-  const p = years.length > 1 ? years.indexOf(+year) / (years.length - 1) : 1;
-  return `color-mix(in srgb, var(--ste-night) ${Math.round(p * 100)}%, var(--ste-secondary))`;
+  const k = years.indexOf(+year);
+  return k === years.length - 1 ? "var(--ste-night)" : ramp(k, years.length - 1);
 };
 
 /** Y ticks from zero with their decimals. */
@@ -29,10 +38,11 @@ function yAxis(max: number) {
 export type DayHover = { i: number; year: string } | null;
 
 /** One line per year across the calendar, gaps left open; hover picks out the nearest year.
- *  Pass `hover` and `onHover` to share the hovered day and year with another chart. */
-export function YearLines({ lines, years, unit, digits, hover, onHover }: {
-  lines: { name: string; values: (number | null)[] }[]; years: number[]; unit: string; digits: number;
-  hover?: DayHover; onHover?: (h: DayHover) => void;
+ *  Pass `hover` and `onHover` to share the hovered day and year with another chart. A line's own
+ *  `color` and `dash` override the year ramp; `ticks` and `days` swap the calendar for a gas year. */
+export function YearLines({ lines, years, unit, digits, hover, onHover, ticks = MONTH_TICKS, days = DAYS }: {
+  lines: { name: string; values: (number | null)[]; color?: string; dash?: string }[]; years: number[]; unit: string; digits: number;
+  hover?: DayHover; onHover?: (h: DayHover) => void; ticks?: { i: number; label: string }[]; days?: string[];
 }) {
   const [ref, { w: W, h: H }] = useSize<HTMLDivElement>();
   const [own, setOwn] = useState<DayHover>(null);
@@ -55,6 +65,7 @@ export function YearLines({ lines, years, unit, digits, hover, onHover }: {
     set(k >= 0 ? { i, year: lines[k].name } : null);
   };
   const hl = h ? lines.find((l) => l.name === h.year) : undefined;
+  const col = (l: { name: string; color?: string }) => l.color ?? yearColor(l.name, years);
   const hv = h && hl ? hl.values[h.i] : null;
 
   return (
@@ -68,26 +79,28 @@ export function YearLines({ lines, years, unit, digits, hover, onHover }: {
               {t.map((v) => (
                 <text key={v} x={PAD_L - 6} y={Y(v) + 3} textAnchor="end" fontSize="10.5" fill="var(--ste-dusk)">{fmt(v, dig)}</text>
               ))}
-              {MONTH_TICKS.map((m) => (
+              {ticks.map((m) => (
                 <text key={m.i} x={X(m.i)} y={H - 6} textAnchor="middle" fontSize="10.5" fill="var(--ste-dusk)">{m.label}</text>
               ))}
               {h && <line x1={X(h.i)} x2={X(h.i)} y1={Y(top)} y2={Y(0)} stroke="var(--ste-dusk)" strokeDasharray="3 3" />}
               {lines.map((l) => (
-                <path key={l.name} d={path(l.values)} fill="none" stroke={yearColor(l.name, years)} strokeLinejoin="round"
+                <path key={l.name} d={path(l.values)} fill="none" stroke={col(l)} strokeLinejoin="round" strokeDasharray={l.dash}
                   strokeWidth={h?.year === l.name ? 2.6 : 1.6} opacity={h && h.year !== l.name ? 0.25 : 1} />
               ))}
-              {h && hv != null && (
-                <circle cx={X(h.i)} cy={Y(hv)} r={4} fill={yearColor(h.year, years)} stroke="var(--ste-night)" strokeWidth={1.2} />
+              {h && hv != null && hl && (
+                <circle cx={X(h.i)} cy={Y(hv)} r={4} fill={col(hl)} stroke="var(--ste-night)" strokeWidth={1.2} />
               )}
             </svg>
             {h && hv != null && (
-              <ChartTip x={X(h.i)} y={Y(hv)} cw={W} title={`${h.year} · ${DAYS[h.i]}`} value={`${fmt(hv, digits)} ${unit}`} />
+              <ChartTip x={X(h.i)} y={Y(hv)} cw={W} title={`${h.year} · ${days[h.i]}`} value={`${fmt(hv, digits)} ${unit}`} />
             )}
           </>
         )}
       </div>
       <div className="legend">
-        {lines.map((l) => <span key={l.name}><i style={{ background: yearColor(l.name, years) }} />{l.name}</span>)}
+        {lines.map((l) => (
+          <span key={l.name}><i style={l.dash ? { background: "none", border: `1.5px dashed ${col(l)}` } : { background: col(l) }} />{l.name}</span>
+        ))}
       </div>
     </>
   );

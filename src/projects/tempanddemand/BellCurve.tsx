@@ -38,6 +38,12 @@ export interface BellData {
   /** days with both series, by year: [°C, GWh, day of year] */
   scatter: { name: string; points: [number, number, number][] }[];
   normals: Normals;
+  /** per gas year: % of days the national CWV beat its seasonal normal, and the mean gap */
+  cwv: { name: string; days: number; warmer: number; gap: number }[];
+  /** gas-year days from 1 October: the national seasonal normal CWV and each gas year's actual, 31-day smoothed */
+  cwvYears: { normal: (number | null)[]; years: { name: string; end: number; values: (number | null)[] }[] };
+  /** one gas year from 1 October: National Gas's seasonal normal LDZ forecast and the actual, 7-day smoothed, GWh */
+  sndYear: { name: string; forecast: (number | null)[]; actual: (number | null)[] };
 }
 
 export const CATS = [
