@@ -36,13 +36,11 @@ async function refresh(map: maplibregl.Map) {
 }
 
 /** Live vessel map of the Strait of Hormuz. Tankers and LNG carriers carry the
- *  secondary accent; everything else is muted. Refreshes every minute and
- *  re-reads the tokens whenever the design tray changes them. */
+ *  secondary accent; everything else is muted. Refreshes every minute. */
 export default function HormuzMap({ preview = false }: { preview?: boolean }) {
   const { ref, mapRef } = useMapLibre({
     bounds: GULF,
     interactive: !preview,
-    onDesign: paint,
     onLoad: (map) => {
       map.addSource("ships", { type: "geojson", data: fc([]) });
       map.addLayer({

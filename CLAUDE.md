@@ -20,19 +20,18 @@ set to GitHub Actions in the repo settings).
 Modelled on the Shuttle "Unsophisticated Investor" newsletter: clean white page,
 one reading column, Poppins throughout, rounded 24px shapes, tone-tile thumbnails.
 
-- **Tokens** live in `src/styles.css` `:root` and `src/lib/design.ts`. Never
-  hard-code a hex in a component; read the variable in SVG/CSS, or
-  `token("--ste-...", ...)` for canvases (maplibre) and re-read it on the
-  `ste:design` window event.
+- **Tokens** live in `src/styles.css` `:root`. Never hard-code a hex in a
+  component; read the variable in SVG/CSS, or `token("--ste-...", ...)` for
+  canvases (maplibre).
 - **Palette**: `--ste-primary` #E1FE73 lime (buttons, active nav, chips,
-  highlights; the tray edits this one), `--ste-secondary` #60D0B8 mint (chart
+  highlights), `--ste-secondary` #60D0B8 mint (chart
   and map data marks), `--ste-tertiary` #BAF084 green (lime gradient end, third
   series), `--ste-midday` #FFFFFF page, `--ste-day` #F1F2F1 grey panels,
   `--ste-dusk` #6F8488 muted labels, `--ste-night` #29494F text and headings,
   `--ste-midnight` #183036 deep teal numerals and dark card gradient.
 - **Panels** (`Box`): rounded 24px, `--panel` grey fill, no border, no shadow.
 - **Typography**: Poppins by default; hierarchy by size and weight, never colour.
-  Named roles in `design.ts` (`title, nav, headline, lede, header, caption,
+  Named roles in `:root` (`title, nav, headline, lede, header, caption,
   kpilabel, body`); every text surface reads its `--t-<role>-*` variables.
 - **Thumbnails** (`Thumb`): 3:2 rounded tone tiles in four tones (lime
   gradient, deep teal, mint, grey) cycling by list position.
@@ -48,9 +47,6 @@ one reading column, Poppins throughout, rounded 24px shapes, tone-tile thumbnail
   so text and images share one width.
 - **Brand mark**: "SS" initials circle in `Nav` and `public/img/initials.svg`
   (favicon), a placeholder until the logo arrives.
-- **Design tray**: Ctrl+B+G or the corner button. Edits `:root` live and
-  persists to localStorage. Bake tuned values back into `DEFAULT_CONFIG` and
-  bump `STORAGE_KEY`.
 
 ## Adding a project
 

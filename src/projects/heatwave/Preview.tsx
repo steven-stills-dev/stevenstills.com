@@ -74,7 +74,6 @@ export default function Preview() {
     interactive: false,
     padding: 0,
     onLoad: paint,
-    onDesign: paint,
   });
 
   useEffect(() => {
