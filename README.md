@@ -28,20 +28,14 @@ The workflow copies `index.html` to `404.html` so client-side routes resolve on
 GitHub Pages. Repo settings: Pages source = GitHub Actions; custom domain from
 `public/CNAME`.
 
-## Design tray
-
-Press Ctrl+B+G on any page to open the design tray: one primary colour and the
-typography roles, edited live and saved to your browser. Copy JSON exports the
-current values to bake into `src/lib/design.ts`.
-
 ## Structure
 
 ```
 index.html                 app shell
 src/main.tsx, App.tsx      entry and routes
 src/styles.css             tokens and all styling
-src/lib/                   design config, Hormuz API client, helpers
-src/components/            Nav, Layout, Box, Thumb, Article, AboutHero, DesignTray
+src/lib/                   Hormuz API client, helpers
+src/components/            Nav, Layout, Box, Thumb, Article, AboutHero
 src/components/charts/     AreaChart, LineChart, PillBars, ChartTip, geom
 src/components/maps/       UKMap, HormuzMap, useMapLibre, uk-geo
 src/pages/                 Home and About

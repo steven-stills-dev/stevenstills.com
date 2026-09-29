@@ -1,6 +1,6 @@
 /* =========================================================================
    stevenstills.com design system. Light surfaces, one accent.
-   Every accent surface reads --ste-primary; the design tray sets it on :root.
+   Every accent surface reads --ste-primary.
    ========================================================================= */
 :root {
   --ste-primary: #E1FE73;     /* lime: buttons, active states, highlights */
@@ -9,13 +9,23 @@
   --ste-midday: #FFFFFF; --ste-day: #F1F2F1; --ste-dusk: #6F8488;
   --ste-night: #29494F; --ste-midnight: #183036;
   --ste-alert: #FF646D;   /* stress and worst-case marking only */
-  /* soft tint derived from the primary, so it follows the tray */
+  /* soft tint derived from the primary */
   --ste-tint: color-mix(in srgb, var(--ste-primary) 30%, var(--ste-midday));
   --panel: var(--ste-day); --hairline: rgba(41, 73, 79, 0.14);
   --track: rgba(24, 48, 54, 0.08); --band: rgba(41, 73, 79, 0.035);
   --radius: 24px;
   --measure: 59rem;   /* reading width, matches --wide so text and figures align */
   --wide: 59rem;      /* figure width */
+  /* typography roles */
+  --t-font-body: 'Poppins', 'Helvetica Neue', Arial, system-ui, sans-serif; --t-word-spacing: 0em;
+  --t-title-font: var(--t-font-body); --t-title-size: 1.25rem; --t-title-weight: 600; --t-title-tracking: -0.01em; --t-title-case: none;
+  --t-nav-font: var(--t-font-body); --t-nav-size: 0.875rem; --t-nav-weight: 500; --t-nav-tracking: 0em; --t-nav-case: none;
+  --t-headline-font: var(--t-font-body); --t-headline-size: 2.5rem; --t-headline-weight: 600; --t-headline-tracking: -0.02em; --t-headline-case: none;
+  --t-lede-font: var(--t-font-body); --t-lede-size: 1.125rem; --t-lede-weight: 400; --t-lede-tracking: 0em; --t-lede-case: none;
+  --t-header-font: var(--t-font-body); --t-header-size: 1.0rem; --t-header-weight: 600; --t-header-tracking: 0em; --t-header-case: none;
+  --t-caption-font: var(--t-font-body); --t-caption-size: 0.8125rem; --t-caption-weight: 400; --t-caption-tracking: 0em; --t-caption-case: none;
+  --t-kpilabel-font: var(--t-font-body); --t-kpilabel-size: 0.8125rem; --t-kpilabel-weight: 500; --t-kpilabel-tracking: 0em; --t-kpilabel-case: none;
+  --t-body-font: var(--t-font-body); --t-body-size: 1.0rem; --t-body-weight: 400; --t-body-tracking: 0em; --t-body-case: none;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, #root { background: var(--ste-midday); }
@@ -190,45 +200,6 @@ sup.fn a:hover { text-decoration: underline; }
 .site-foot a { color: var(--ste-night); text-decoration: none; }
 .site-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .contact-links { display: flex; gap: 22px; flex-wrap: wrap; }
-
-/* ── design tray (Ctrl+B+G) ──────────────────────────────── */
-.dt-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; width: 42px; height: 42px; border-radius: 50%;
-  border: none; background: var(--ste-night); color: var(--ste-primary); cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 26px rgba(20,20,10,0.22); opacity: .55; transition: opacity .15s, transform .15s; }
-.dt-fab:hover { opacity: 1; transform: translateY(-1px); }
-.dt-tray { position: fixed; right: 0; top: 0; bottom: 0; width: 340px; z-index: 95; background: var(--ste-night); color: var(--ste-day);
-  box-shadow: -18px 0 50px rgba(20,20,10,0.28); padding: 22px 22px 30px; overflow-y: auto; font-family: "Inter", system-ui, sans-serif; }
-.dt-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.dt-title { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; color: var(--ste-midday); }
-.dt-icon { background: none; border: none; color: var(--ste-dusk); cursor: pointer; padding: 4px; display: flex; }
-.dt-icon:hover { color: var(--ste-midday); }
-.dt-sec { padding: 16px 0; border-top: 1px solid rgba(129,135,124,0.24); }
-.dt-sec:first-of-type { border-top: none; padding-top: 0; }
-.dt-sec-h { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ste-dusk); font-weight: 600; margin-bottom: 14px; }
-.dt-group { margin-bottom: 12px; }
-.dt-group-lbl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ste-dusk); opacity: .8; margin-bottom: 7px; }
-.dt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.dt-chip { font-size: 11.5px; padding: 6px 11px; border-radius: 999px; border: 1px solid rgba(129,135,124,0.3); background: none; color: var(--ste-day); cursor: pointer; font-family: inherit; opacity: .8; }
-.dt-chip:hover { opacity: 1; }
-.dt-chip.on { background: var(--ste-primary); color: var(--ste-midnight); border-color: var(--ste-primary); opacity: 1; font-weight: 600; }
-.dt-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; font-size: 12.5px; color: var(--ste-day); }
-.dt-field > span { color: var(--ste-dusk); flex: 0 0 auto; }
-.dt-field select, .dt-hex { flex: 1; min-width: 0; background: rgba(255,255,255,0.06); color: var(--ste-midday); border: 1px solid rgba(129,135,124,0.3);
-  border-radius: 9px; padding: 8px 10px; font-family: inherit; font-size: 12.5px; cursor: pointer; }
-.dt-hex { font-family: "JetBrains Mono", ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; cursor: text; outline: none; }
-.dt-field input[type="color"] { width: 38px; height: 34px; border: 1px solid rgba(129,135,124,0.3); border-radius: 9px; background: none; padding: 2px; cursor: pointer; }
-.dt-sample { background: var(--ste-midday); color: var(--ste-midnight); border-radius: 12px; padding: 20px 18px; margin: 6px 0 18px;
-  text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.2; }
-.dt-slider { margin-bottom: 14px; }
-.dt-slider-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--ste-dusk); margin-bottom: 6px; }
-.dt-slider-top b { color: var(--ste-midday); font-weight: 600; font-variant-numeric: tabular-nums; }
-.dt-slider input[type="range"] { width: 100%; accent-color: var(--ste-primary); cursor: pointer; }
-.dt-seg { display: inline-flex; gap: 3px; background: rgba(255,255,255,0.06); border-radius: 999px; padding: 3px; }
-.dt-seg button { font-size: 11.5px; padding: 6px 11px; border-radius: 999px; border: none; background: none; color: var(--ste-day); cursor: pointer; font-family: inherit; opacity: .75; }
-.dt-seg button.on { background: var(--ste-primary); color: var(--ste-midnight); opacity: 1; font-weight: 600; }
-.dt-reset { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 8px; padding: 11px;
-  background: none; border: 1px solid rgba(129,135,124,0.35); border-radius: 10px; color: var(--ste-day); cursor: pointer; font-family: inherit; font-size: 12.5px; }
-.dt-reset:hover { border-color: var(--ste-primary); color: var(--ste-primary); }
 
 /* ── responsive ──────────────────────────────────────────── */
 @media (max-width: 1100px) {
