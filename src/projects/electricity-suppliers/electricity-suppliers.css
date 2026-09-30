@@ -1,0 +1,18 @@
+.es-select { align-self: flex-start; margin-bottom: 16px; font-family: inherit;
+  font-size: var(--t-kpilabel-size); font-weight: var(--t-kpilabel-weight); color: var(--ste-night);
+  background: var(--ste-midday); border: none; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.es-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.es-panel { display: flex; flex-direction: column; min-width: 0; }
+.es-panel > .chart-fill { height: 300px; }
+.es-cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+  font-size: var(--t-kpilabel-size); font-weight: var(--t-kpilabel-weight); color: var(--ste-night); }
+.es-cap .legend { gap: 14px; font-weight: 400; }
+.es-fill .es-pair { flex: 1; min-height: 0; }
+.es-fill .es-cap .legend { display: none; }
+.es-fill .es-panel > .chart-fill { height: auto; flex: 1; min-height: 0; }
+@media (max-width: 640px) {
+  .es-pair { grid-template-columns: 1fr; }
+}
+.legend .es-dash { background: none; border: 1.5px dashed var(--ste-night); }
+.legend .es-ramp { background: linear-gradient(90deg, var(--ste-primary), var(--ste-secondary)); }
+.es-bars { position: relative; width: 100%; }

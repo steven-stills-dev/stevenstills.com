@@ -1,6 +1,7 @@
 import { Article, Prose, Section, Wide, Fn, Footnotes, StatRow } from "../../components/Article";
 import Box from "../../components/Box";
 import LineChart from "../../components/charts/LineChart";
+import { ramp } from "../../components/charts/geom";
 import { usePageMeta } from "../../lib/meta";
 import BatteryAnim from "./BatteryAnim";
 import "./batteries.css";
@@ -166,14 +167,14 @@ export default function Batteries() {
           <LineChart labels={HH_LABELS} ticks={SHIFT_TICKS} unit="kW" digits={2} yMax={0.8}
             band={{ top: S_B90, bottom: S_B10 }}
             series={[
-              { name: "No solar", values: S_PLAIN, color: NIGHT, width: 1.6, dash: "5 4" },
-              { name: "Solar only", values: S_SOLAR, color: NIGHT, width: 1.6 },
-              { name: "Solar + battery", values: S_BATT, color: SECONDARY, width: 2.2 },
+              { name: "No solar", values: S_PLAIN, color: ramp(0, 2), width: 1.8 },
+              { name: "Solar only", values: S_SOLAR, color: ramp(1, 2), width: 1.8 },
+              { name: "Solar + battery", values: S_BATT, color: NIGHT, width: 2.4 },
             ]} />
           <div className="legend bat-legend">
-            <span className="bat-dash"><i />No solar</span>
-            <span><i style={{ background: NIGHT }} />Solar only</span>
-            <span><i style={{ background: SECONDARY }} />Solar + battery</span>
+            <span><i style={{ background: ramp(0, 2) }} />No solar</span>
+            <span><i style={{ background: ramp(1, 2) }} />Solar only</span>
+            <span><i style={{ background: NIGHT }} />Solar + battery</span>
           </div>
         </Box>
       </Wide>
@@ -195,12 +196,12 @@ export default function Batteries() {
           <LineChart labels={HH_LABELS} ticks={SHIFT_TICKS} unit="kW" digits={2} yMax={4}
             band={{ top: W_B90, bottom: W_B10 }}
             series={[
-              { name: "No battery", values: W_PLAIN, color: NIGHT, width: 1.6, dash: "5 4" },
-              { name: "Battery, smart tariff", values: W_BATT, color: SECONDARY, width: 2.2 },
+              { name: "No battery", values: W_PLAIN, color: SECONDARY, width: 1.8 },
+              { name: "Battery, smart tariff", values: W_BATT, color: NIGHT, width: 2.4 },
             ]} />
           <div className="legend bat-legend">
-            <span className="bat-dash"><i />No battery</span>
-            <span><i style={{ background: SECONDARY }} />Battery, smart tariff</span>
+            <span><i style={{ background: SECONDARY }} />No battery</span>
+            <span><i style={{ background: NIGHT }} />Battery, smart tariff</span>
           </div>
         </Box>
       </Wide>

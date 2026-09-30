@@ -1,42 +1,47 @@
 import { useState, type MouseEvent } from "react";
 import { fmt } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, tickDecimals, PAD_L, PAD_R } from "./geom";
+import { ticksFrom, tickDecimals, PAD_L, PAD_R } from "./geom";
 import { ChartTip } from "./ChartTip";
 
 export interface Series {
   name: string;
-  values: number[];
+  /** null leaves a gap */
+  values: (number | null)[];
   /** CSS colour; defaults to the primary accent for the first series and Night for the rest. */
   color?: string;
   width?: number;
   dash?: string;
+  opacity?: number;
 }
 
 /** Multi-series line chart with an optional P10–P90 band, sized to the container.
  *  Two-series comparisons read as primary vs Night; the band takes the primary tint. */
 export default function LineChart({
   series, labels, ticks = [], band, unit = "", digits = 1, hover = true,
-  padL = PAD_L, padR = PAD_R, yMax, yTarget = 4,
+  padL = PAD_L, padR = PAD_R, yMax, yMin = 0, yTicks,
 }: {
   series: Series[];
   labels: string[];
   ticks?: { i: number; label: string }[];
   band?: { top: number[]; bottom: number[]; color?: string };
   unit?: string; digits?: number; hover?: boolean;
-  padL?: number; padR?: number; yMax?: number; yTarget?: number;
+  padL?: number; padR?: number; yMax?: number; yMin?: number;
+  /** explicit y ticks, overriding the ones derived from yMin..yMax */
+  yTicks?: number[];
 }) {
   const [ref, size] = useSize<HTMLDivElement>();
   const [hi, setHi] = useState<number | null>(null);
   const W = size.w, H = size.h;
   const n = labels.length;
-  const raw = yMax ?? Math.max(...series.flatMap((s) => s.values), ...(band?.top ?? []));
-  const yt = axisTicks(raw, yTarget);
-  const top = yt[yt.length - 1] || 1;
+  const raw = yMax ?? Math.max(...series.flatMap((s) => s.values.filter((v): v is number => v != null)), ...(band?.top ?? []));
+  const yt = yTicks ?? ticksFrom(yMin, raw);
+  const top = yt[yt.length - 1] || 1, bot = yt[0];
   const ydig = tickDecimals(yt.length > 1 ? yt[1] - yt[0] : 1);
   const X = (i: number) => padL + (i / (n - 1)) * (W - padL - padR);
-  const Y = (v: number) => H - 26 - (v / top) * (H - 46);
-  const poly = (arr: number[]) => arr.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  const Y = (v: number) => H - 26 - ((v - bot) / (top - bot || 1)) * (H - 46);
+  const path = (arr: (number | null)[]) => arr.reduce<string>((d, v, i) =>
+    v == null ? d : d + `${i && arr[i - 1] != null ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`, "");
   const onMove = (e: MouseEvent<SVGSVGElement>) => {
     if (n < 2) return;
     const r = e.currentTarget.getBoundingClientRect();
@@ -56,7 +61,7 @@ export default function LineChart({
           <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" preserveAspectRatio="none"
             onMouseMove={hover ? onMove : undefined} onMouseLeave={hover ? () => setHi(null) : undefined}
             style={{ display: "block", cursor: hover ? "crosshair" : undefined }}>
-            <line x1={padL} y1={Y(top)} x2={padL} y2={Y(0)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+            <line x1={padL} y1={Y(top)} x2={padL} y2={Y(bot)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
             {yt.map((t, k) => (
               <g key={k}>
                 <line x1={padL - 3} y1={Y(t)} x2={padL} y2={Y(t)} stroke="var(--hairline)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
@@ -65,14 +70,14 @@ export default function LineChart({
             ))}
             {band && <path d={bandD} fill={band.color ?? "var(--ste-secondary)"} fillOpacity="0.22" />}
             {series.map((s, k) => (
-              <polyline key={s.name} points={poly(s.values)} fill="none" stroke={colorOf(s, k)}
+              <path key={s.name} d={path(s.values)} fill="none" stroke={colorOf(s, k)} strokeOpacity={s.opacity}
                 strokeWidth={s.width ?? (k === 0 ? 2.2 : 1.6)} strokeDasharray={s.dash} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             ))}
             {hover && hi != null && (
               <g>
                 <line x1={X(hi)} y1={6} x2={X(hi)} y2={H - 22} stroke="var(--ste-dusk)" strokeWidth="1" strokeDasharray="3 3" vectorEffect="non-scaling-stroke" />
                 {series.filter((s) => s.values[hi] != null).map((s, k) => (
-                  <circle key={s.name} cx={X(hi)} cy={Y(s.values[hi])} r={4} fill={colorOf(s, k)} stroke="var(--ste-night)" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+                  <circle key={s.name} cx={X(hi)} cy={Y(s.values[hi]!)} r={4} fill={colorOf(s, k)} stroke="var(--ste-night)" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
                 ))}
               </g>
             )}
@@ -81,8 +86,8 @@ export default function LineChart({
             ))}
           </svg>
           {hover && hi != null && series.some((s) => s.values[hi] != null) && (
-            <ChartTip x={X(hi)} y={Y(Math.max(...series.filter((s) => s.values[hi] != null).map((s) => s.values[hi])))} cw={W} title={labels[hi]}
-              rows={series.filter((s) => s.values[hi] != null).map((s, k) => ({ name: s.name, value: `${fmt(s.values[hi], digits)}${unit ? " " + unit : ""}`, color: colorOf(s, k) }))} />
+            <ChartTip x={X(hi)} y={Y(Math.max(...series.filter((s) => s.values[hi] != null).map((s) => s.values[hi]!)))} cw={W} title={labels[hi]}
+              rows={series.filter((s) => s.values[hi] != null).map((s, k) => ({ name: s.name, value: `${fmt(s.values[hi]!, digits)}${unit ? " " + unit : ""}`, color: colorOf(s, k) }))} />
           )}
         </>
       )}

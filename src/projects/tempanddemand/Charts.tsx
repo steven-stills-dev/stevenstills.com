@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import { fmt, MON } from "../../lib/format";
 import { useSize } from "../../lib/useSize";
-import { axisTicks, niceStep, tickDecimals, PAD_L, PAD_R } from "../../components/charts/geom";
+import { axisTicks, niceStep, ramp, tickDecimals, PAD_L, PAD_R } from "../../components/charts/geom";
 import { ChartTip } from "../../components/charts/ChartTip";
 
 const TOP = 20, BOT = 26;
@@ -22,10 +22,10 @@ export const GAS_TICKS = [9, 11, 1, 3, 5, 7].map((m) => ({
   i: Math.round((Date.UTC(m >= 9 ? 2001 : 2002, m, 1) - Date.UTC(2001, 9, 1)) / 864e5), label: MON[m],
 }));
 
-/** A year's colour, Secondary for the first year shown through to Night for the latest. */
+/** A year's colour: the brand ramp from lime (first year) to mint, and Night for the latest. */
 export const yearColor = (year: string, years: number[]) => {
-  const p = years.length > 1 ? years.indexOf(+year) / (years.length - 1) : 1;
-  return `color-mix(in srgb, var(--ste-night) ${Math.round(p * 100)}%, var(--ste-secondary))`;
+  const k = years.indexOf(+year);
+  return k === years.length - 1 ? "var(--ste-night)" : ramp(k, years.length - 1);
 };
 
 /** Y ticks from zero with their decimals. */

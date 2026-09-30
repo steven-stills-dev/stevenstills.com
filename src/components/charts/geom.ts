@@ -36,3 +36,19 @@ export function tickDecimals(step: number): number {
   if (step >= 0.1) return 1;
   return 2;
 }
+
+/** Clean ticks spanning lo..hi; from zero when lo is 0. */
+export function ticksFrom(lo: number, hi: number): number[] {
+  if (lo <= 0) return axisTicks(hi, 4);
+  const step = niceStep(hi - lo, 4);
+  const first = Math.floor(lo / step) * step;
+  const n = Math.max(1, Math.ceil((hi - first) / step));
+  return Array.from({ length: n + 1 }, (_, i) => first + i * step);
+}
+
+/** Brand ramp for ordered or categorical lines: lime at k = 0 through to mint at k = n - 1.
+ *  Night is kept for the highlighted line (latest, average) drawn alongside. */
+export function ramp(k: number, n: number): string {
+  const p = n > 1 ? Math.round((k / (n - 1)) * 100) : 100;
+  return `color-mix(in srgb, var(--ste-secondary) ${p}%, var(--ste-primary))`;
+}

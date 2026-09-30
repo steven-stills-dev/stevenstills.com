@@ -5,6 +5,7 @@ import Box from "../../components/Box";
 import PillBars from "../../components/charts/PillBars";
 import { MON, fmt } from "../../lib/format";
 import { usePageMeta } from "../../lib/meta";
+import { ramp } from "../../components/charts/geom";
 import BellCurve, { CATS, partial, useBell, type BellData, type Mode, type Normals } from "./BellCurve";
 import { GAS_DAYS, GAS_TICKS, MonthBars, YearLines, YearScatter, yearColor, type DayHover } from "./Charts";
 import "./bell-curve.css";
@@ -118,12 +119,12 @@ function ShareTable({ data, mode }: { data: BellData; mode: Mode }) {
   );
 }
 
-/** Monthly normals chart and table, in the forecasting dashboard's colours: 30y Secondary, 10y Dusk, 5y lime, last 12 months Night. */
+/** Monthly normals chart and table: 30y, 10y and 5y on the brand ramp, last 12 months in Night. */
 function NormalsFigures({ n }: { n: Normals }) {
   const cols = [
-    { key: "n30", name: "30y", color: "var(--ste-secondary)", values: n.n30 },
-    { key: "n10", name: "10y", color: "var(--ste-dusk)", values: n.n10 },
-    { key: "n5", name: "5y", color: "var(--ste-primary)", values: n.n5 },
+    { key: "n30", name: "30y", color: ramp(0, 3), values: n.n30 },
+    { key: "n10", name: "10y", color: ramp(1, 3), values: n.n10 },
+    { key: "n5", name: "5y", color: ramp(2, 3), values: n.n5 },
     { key: "last12", name: "Last 12 months", color: "var(--ste-night)", values: n.last12 },
   ];
   const signed = (v: number | null) => (v == null ? "–" : `${v > 0 ? "+" : ""}${fmt(v, 1)}`);
@@ -268,7 +269,7 @@ export default function BellCurvePage() {
           <Box icon="activity" title="Weather Against the Seasonal Normal" sub="°C" h={400}>
             <YearLines years={data.years} unit="°C" digits={1} ticks={GAS_TICKS} days={GAS_DAYS}
               lines={[
-                { name: "Seasonal normal", values: data.cwvYears.normal, color: "var(--ste-dusk)", dash: "4 4" },
+                { name: "Seasonal normal", values: data.cwvYears.normal, color: "var(--ste-night)", dash: "4 4" },
                 ...data.cwvYears.years.map((y) => ({ name: y.name, values: y.values, color: yearColor(String(y.end), data.years) })),
               ]} />
           </Box>
