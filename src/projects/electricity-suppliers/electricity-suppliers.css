@@ -8,7 +8,7 @@
   font-size: var(--t-kpilabel-size); font-weight: var(--t-kpilabel-weight); color: var(--ste-night); }
 .es-cap .legend { gap: 14px; font-weight: 400; }
 .es-fill .es-pair { flex: 1; min-height: 0; }
-.es-fill .es-cap .legend { display: none; }
+.es-single { grid-template-columns: 1fr; }
 .es-fill .es-panel > .chart-fill { height: auto; flex: 1; min-height: 0; }
 @media (max-width: 640px) {
   .es-pair { grid-template-columns: 1fr; }
