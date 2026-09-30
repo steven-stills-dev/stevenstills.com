@@ -32,9 +32,9 @@ export function Panel({ children: [cap, chart] }: { children: [ReactNode, (w: nu
 }
 
 /** Summer and winter daily demand shapes for one supplier, every season overlaid; also the home preview.
- *  With `onSupplier` it shows the supplier picker. */
-export default function ShapeExplorer({ supplier = DEFAULT_SUPPLIER, onSupplier }: {
-  supplier?: string; onSupplier?: (s: string) => void;
+ *  With `onSupplier` it shows the supplier picker; `only` limits it to one season type. */
+export default function ShapeExplorer({ supplier = DEFAULT_SUPPLIER, onSupplier, only }: {
+  supplier?: string; onSupplier?: (s: string) => void; only?: "Sum" | "Win";
 }) {
   const data = useSupplierData();
   const seasons = data?.profiles[supplier] ?? {};
@@ -47,8 +47,8 @@ export default function ShapeExplorer({ supplier = DEFAULT_SUPPLIER, onSupplier 
         </select>
       )}
       {data ? (
-        <div className="es-pair">
-          {TYPES.map((t) => {
+        <div className={only ? "es-pair es-single" : "es-pair"}>
+          {TYPES.filter((t) => !only || t.key === only).map((t) => {
             const list = Object.keys(seasons).filter((s) => s.startsWith(t.key));
             const latest = list[list.length - 1];
             // every supplier's profile for the same season, trimmed at each half hour
