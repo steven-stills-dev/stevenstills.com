@@ -136,13 +136,6 @@ export default function About() {
           <p>Globally it is starker. Livestock takes 80% of the world's agricultural land and gives back 17% of its calories and 38% of its protein.<Fn n={5} /></p>
         </Prose>
 
-        <Section title="My stance on leadership" />
-
-        <Prose>
-          <p>I was raised in a working class family where you never discussed 'ages or wages', and now I'm hitting 40 I can see how much that silence set me back. Not understanding how money or pay worked meant I spent my 20s and most of my 30s clearing debt before I could build anything, and I only own a small investment portfolio with a decent retirement in sight because I got there the slow way. Put that financial stress next to a few early managers who were unsympathetic, and it taught me the kind of leader I did not want to be. So I lead people-first. There is always a story behind the face, and whether someone's struggle is financial, physical or mental, I try to draw on my own to help them. I am fair but firm, and that care tends to show up in the results, both from individuals and from the team. People who used to report to me still come back for guidance or a steer, years later, because of how we worked together.</p>
-          <p>My teams are usually cross-functional, spanning trading, risk, operations, finance and data, and that mix carries a lot of technical detail. My job is to cut through it to the insight that actually matters. I'm not a fan of putting weak data in front of the stakeholders and investors who have to make decisions on it, so I make sure what leaves me is the best I can give them, using BI platforms and AI to build sharp, clear tools that keep everyone in the loop.</p>
-        </Prose>
-
         <Section title="The question I keep asking" />
 
         <Prose>

@@ -6,7 +6,7 @@
 .ukmap-legend { justify-content: center; flex: 0 0 auto; }
 .ukmap-legend-t { color: var(--ste-dusk); }
 .ukmap-legend i { box-shadow: inset 0 0 0 1px var(--hairline); }
-.ukmap-legend .ukmap-range { display: inline-flex; align-items: center; gap: 7px; }
+.ukmap-legend .ukmap-range { display: inline-flex; align-items: center; gap: 8px; }
 .ukmap-legend .ukmap-range i { margin-right: 0; }
 .ukmap-legend .ukmap-grad { width: 96px; background: linear-gradient(90deg, var(--ste-midday), var(--ste-secondary)); }
 .ukmap-legend .ukmap-dot { border-radius: 50%; }

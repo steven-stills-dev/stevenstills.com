@@ -6,11 +6,11 @@
 /* mounted circle: thick white ring, then a thin Night line */
 .about-hero-portrait img {
   width: min(100%, 380px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: 52% 22%;
-  box-shadow: 0 0 0 14px var(--ste-midday), 0 0 0 15.5px var(--ste-night);
+  box-shadow: 0 0 0 14px var(--ste-midday), 0 0 0 15px var(--ste-night);
 }
 .about-hero-text { align-self: center; padding: 56px 56px 56px 0; }
 .about-hero-text .kicker { margin-bottom: 16px; }
-.about-role { margin-top: 14px; font-size: 1.05rem; font-weight: 500; color: var(--ste-night); opacity: .72; line-height: 1.4; }
+.about-role { margin-top: 12px; font-size: 1.05rem; font-weight: 500; color: var(--ste-night); opacity: .72; line-height: 1.4; }
 .about-hero-text .lede { max-width: 34rem; }
 .about-attribution { font-size: .86rem; color: var(--ste-dusk); line-height: 1.45; }
 .about-attribution a { color: var(--ste-night); }

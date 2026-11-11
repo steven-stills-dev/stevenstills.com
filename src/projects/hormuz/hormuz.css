@@ -7,4 +7,4 @@
 .hz-shot { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Live/app toggle under the map panel. */
-.hz-chips { display: flex; gap: 6px; margin-top: 12px; }
+.hz-chips { display: flex; gap: 8px; margin-top: 12px; }
