@@ -4,9 +4,9 @@
 .es-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .es-panel { display: flex; flex-direction: column; min-width: 0; }
 .es-panel > .chart-fill { height: 300px; }
-.es-cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+.es-cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px;
   font-size: var(--t-kpilabel-size); font-weight: var(--t-kpilabel-weight); color: var(--ste-night); }
-.es-cap .legend { gap: 14px; font-weight: 400; }
+.es-cap .legend { gap: 16px; font-weight: 400; }
 .es-fill .es-pair { flex: 1; min-height: 0; }
 .es-single { grid-template-columns: 1fr; }
 .es-fill .es-panel > .chart-fill { height: auto; flex: 1; min-height: 0; }

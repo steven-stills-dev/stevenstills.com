@@ -45,7 +45,7 @@ export default function Home() {
             <h1 className="home-role">Let's clear up a few things</h1>
             <p className="home-lede">I've spent 16 years solving problems in the energy industry, from trading and forecasting to billing and metering. Here I look at how the energy transition is changing it for the better.</p>
           </div>
-          <div className="links-row"><Link to="/about">Beyond the day job</Link></div>
+          <div className="links-row"><Link to="/about">More about me</Link></div>
         </section>
 
         <div className="home-grid">
