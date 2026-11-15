@@ -55,7 +55,7 @@ export default function About() {
         <Wide>
           <div className="photo-pair">
             <div className="photo">
-              <img src="/img/portrait-4.jpg" alt="Steven Stills, arms folded, in front of a lit-up bar interior." />
+              <img src="/img/me_lisbon.jpeg" alt="Steven Stills in a black T-shirt in front of a carved stone chapel doorway." style={{ objectPosition: "48% 50%" }} />
             </div>
             <div className="photo">
               <img src="/img/about-camera.jpg" alt="Steven walking past a graffiti wall, checking the back of a camera." style={{ objectPosition: "50% 32%" }} />

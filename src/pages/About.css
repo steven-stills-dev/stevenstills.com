@@ -1,7 +1,7 @@
 /* About page: opening portrait and map attribution. Tokens come from styles.css. */
 .about .article-head { display: none; }
 .about-hero { display: grid; grid-template-columns: minmax(220px, 4fr) 7fr; gap: 48px; align-items: end; width: 100%; }
-.about-hero-portrait img { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius); object-fit: cover; object-position: 52% 22%; }
+.about-hero-portrait img { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius); object-fit: cover; object-position: 48% 50%; }
 .about-hero-text .kicker { margin-bottom: 16px; }
 .about-role { margin-top: 16px; font-size: 1.0625rem; font-weight: 500; color: var(--ste-dusk); line-height: 1.4; }
 .about-hero-text .lede { max-width: 34rem; }
