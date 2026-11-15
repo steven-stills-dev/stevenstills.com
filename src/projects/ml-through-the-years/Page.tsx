@@ -60,17 +60,14 @@ const NOTES = [
   <>The M5 competition ran on Kaggle from 3 March to 30 June 2020 on 42,840 Walmart sales series, with 7,092 participants in 5,507 teams from 101 countries. {a("https://www.kaggle.com/c/m5-forecasting-accuracy", "Kaggle, M5 Forecasting Accuracy")}; {a("https://statmodeling.stat.columbia.edu/wp-content/uploads/2021/10/M5_accuracy_competition.pdf", "Makridakis, Spiliotis and Assimakopoulos, The M5 accuracy competition, 2020 preprint")}, published in the International Journal of Forecasting 38(4), 2022.</>,
   <>S. Hochreiter and J. Schmidhuber, Long Short-Term Memory, Neural Computation 9(8), November 1997. {a("https://doi.org/10.1162/neco.1997.9.8.1735", "DOI")}.</>,
   <>M4 was won by Slawek Smyl's hybrid of exponential smoothing and LSTM networks, close to 10% more accurate than the combination benchmark; "the six pure ML methods performed poorly", none of them beating that benchmark. {a("https://pure.unic.ac.cy/en/publications/the-m4-competition-results-findings-conclusion-and-way-forward/", "Makridakis et al., The M4 Competition, IJF 34(4), 2018")}; {a("https://doi.org/10.1016/j.ijforecast.2019.03.017", "Smyl, IJF 36(1), 2020")}.</>,
-  <>Across 1,045 monthly M3 series, statistical methods beat machine learning at every horizon: average sMAPE of 10.89% for Theta against 12.09% for the best machine learning method. {a("https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0194889", "Makridakis, Spiliotis and Assimakopoulos, PLOS ONE, 27 March 2018")}.</>,
   <>The winning entry, an equal-weighted average of LightGBM models, was 22.4% more accurate (WRMSSE) than the best benchmark; four of the top five were built on LightGBM and the third was a set of LSTM networks. M5 preprint, note 3, Table 3 and Section 4.2.</>,
   <>17 of the 29 winning solutions published on Kaggle's blog in 2015 used XGBoost; deep neural networks, the next most common, appeared in 11. The regularised objective, leaf weight and split gain are equations 2, 5 and 7 of the paper. {a("https://arxiv.org/abs/1603.02754", "Chen and Guestrin, XGBoost: A Scalable Tree Boosting System, KDD 2016")}.</>,
   <>Ofgem decided on 20 April 2021 to introduce market-wide half-hourly settlement for electricity. {a("https://www.ofgem.gov.uk/decision/electricity-retail-market-wide-half-hourly-settlement-decision-and-full-business-case", "Ofgem, Decision and Full Business Case")}.</>,
   <>Elexon deployed the MHHS central systems on 22 September 2025, with meter migration from 22 October 2025, about 80% of meters by October 2026 and completion in May 2027, processing "up to 500 billion half-hourly readings per year". {a("https://www.elexon.co.uk/2025/09/24/market-wide-half-hourly-settlement-reaches-major-milestone/", "Elexon, 24 September 2025")}.</>,
   <>Gradient-based One-Side Sampling, Exclusive Feature Bundling and leaf-wise growth; up to 9 times faster than histogram-based XGBoost (Allstate: 2.63 against 0.28 seconds per iteration). {a("https://papers.nips.cc/paper_files/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf", "Ke et al., LightGBM, NeurIPS 2017")}.</>,
-  <>Across 45 datasets, "tree-based models remain state-of-the-art on medium-sized data (~10K samples) even without accounting for their superior speed". {a("https://arxiv.org/abs/2207.08815", "Grinsztajn, Oyallon and Varoquaux, NeurIPS 2022")}.</>,
   <>Initial National Demand Outturn (INDO), averaged by half-hour over weekdays that were not bank holidays, winter October 2024 to March 2025 and summer April to September 2025. {a("https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/INDO", "Elexon Insights API, INDO")}.</>,
   <>The bank holiday, monthly error and boosting charts are illustrative shapes, not model output.</>,
   <>J. Friedman, Greedy function approximation: a gradient boosting machine, Annals of Statistics 29(5), October 2001. {a("https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boosting-machine/10.1214/aos/1013203451.full", "Project Euclid")}.</>,
-  <>At GEFCom2014 gradient boosting won the wind and solar tracks and sat inside the winning price ensemble; the load track went to quantile regression and generalised additive models. {a("https://robjhyndman.com/papers/gefcom2014.pdf", "Hong et al., IJF 32(3), 2016")}.</>,
 ];
 
 export default function Page() {
@@ -82,40 +79,36 @@ export default function Page() {
   return (
     <Article kicker="Opinion · machine learning" title={title} lede={lede}>
       <Prose>
-        <p>A demand forecast for an electricity supplier has to give a number for every half-hour of the day, and for a supplier the money is made or lost on the days when the forecast is badly wrong. In my experience three things have made those days hard to avoid: bank holidays, which break the weekly pattern a model learns; the change between winter and summer in how demand responds to temperature; and the amount of half-hourly meter data a model has to be retrained on.</p>
-        <p>I have built half-hourly demand forecasts since 2016 with three families of model: SARIMA and linear regression, then LSTMs, then gradient boosting. I go through the three families in the order I built them, say what each one could not do for me, and then set out how gradient boosting learns.</p>
+        <p>A supplier's demand forecast gives a number for every half-hour, and the money is made or lost on the days it is badly wrong. Three things have made those days hard to avoid: bank holidays, the change between winter and summer in how demand responds to temperature, and the volume of half-hourly meter data to retrain on.</p>
       </Prose>
 
       <Section title="SARIMA and linear regression, 2016 to 2020" />
       <Prose>
-        <p>SARIMA (seasonal autoregressive integrated moving average) forecasts a series from its own past. Tomorrow's demand at 17:30 is a weighted sum of demand at 17:30 on recent days and on the same day last week, plus a correction for how wrong the last few forecasts were. George Box and Gwilym Jenkins set the method out in 1970,<Fn n={1} /> and I still treat SARIMA as the benchmark a new forecasting method has to beat.</p>
-        <p>Linear regression did the other half of the work. Demand becomes a straight-line function of temperature, day of week and time of year, with one coefficient per input. Both methods are transparent, in that every number in them can be read out to a trader and defended.</p>
-        <p>The weaknesses showed up on the calendar. A model that learns from its own recent past has no information that a Monday is a bank holiday until the Tuesday, so bank holidays were patched by hand, and now and then forgotten. The second weakness was seasonal. A linear model gives temperature one slope for the whole year, so a model tuned on winter heating drifted once the heating went off. The result was a model that worked well in winter and badly in summer.</p>
+        <p>SARIMA (seasonal autoregressive integrated moving average) forecasts a series from its own past, weighting demand at the same half-hour on recent days and last week. George Box and Gwilym Jenkins set the method out in 1970,<Fn n={1} /> and I still treat SARIMA as the benchmark to beat. Linear regression added temperature and the calendar, and every number in both could be defended to a trader.</p>
+        <p>A model that learns from its own recent past has no information that a Monday is a bank holiday until the Tuesday, so bank holidays were patched by hand, and now and then forgotten. A linear model also gives temperature one slope for the whole year, so a model tuned on winter heating drifted once the heating went off.</p>
       </Prose>
 
       <Section title="Reading the M competition results in 2020" />
       <Prose>
-        <p>On 23 March 2020 the Prime Minister told the country to stay at home.<Fn n={2} /> Three weeks earlier a forecasting competition called M5 had opened on Kaggle, a website that hosts data science competitions, asking entrants to forecast 42,840 Walmart sales series. M5 closed on 30 June with 5,507 teams from 101 countries.<Fn n={3} /> A long time inside gave me a lot of time to read up on what was emerging in machine learning, including the M competitions.</p>
-        <p>The evidence at the time pointed both ways. The LSTM (long short-term memory network), a neural network that carries a memory from one step of a sequence to the next, dates from 1997, so by lockdown the method was 23 years old.<Fn n={4} /> In M4, the 2018 edition of the competition, the winner was a hybrid of exponential smoothing and LSTM, close to 10% more accurate than the benchmark, a simple combination of statistical methods. None of the six pure machine learning entries beat that benchmark.<Fn n={5} /> A PLOS ONE paper the same year found statistical methods ahead of machine learning at every horizon on 1,045 monthly series.<Fn n={6} /></p>
-        <p>The M5 results were less ambiguous. The winning entry was an average of LightGBM models and came in 22.4% more accurate than the best benchmark. Four of the top five entries were built on LightGBM, a gradient boosting library, and the third-placed entry was a set of LSTMs.<Fn n={7} /> Gradient boosting already had a record on Kaggle: in 2015, 17 of the 29 winning solutions published on Kaggle's blog used XGBoost, another gradient boosting library.<Fn n={8} /></p>
-        <p>Through 2020 and 2021 I built a few LSTM models on AWS infrastructure and worked with a couple of third parties building neural networks for demand. The LSTM was also the architecture inside the M4 winner.</p>
+        <p>On 23 March 2020 the Prime Minister told the country to stay at home.<Fn n={2} /> Three weeks earlier M5, a forecasting competition on 42,840 Walmart sales series, had opened on Kaggle,<Fn n={3} /> and I used the time inside to read up. The LSTM (long short-term memory network), a neural network that carries a memory along a sequence, dates from 1997.<Fn n={4} /> In M4, in 2018, a hybrid of exponential smoothing and LSTM won, close to 10% more accurate than the benchmark, and none of the six pure machine learning entries beat that benchmark.<Fn n={5} /></p>
+        <p>M5 was clearer. The winning entry, an average of LightGBM models, came in 22.4% more accurate than the best benchmark, and four of the top five entries were built on LightGBM, a gradient boosting library.<Fn n={6} /> In 2015, 17 of the 29 winning solutions published on Kaggle's blog had used XGBoost, another such library.<Fn n={7} /> I still built a few LSTM models through 2020 and 2021.</p>
       </Prose>
 
       <Section title="Why I moved from the LSTM to gradient boosting" />
       <Prose>
-        <p>What ended my work on LSTMs was data volume. On 20 April 2021 Ofgem decided that every electricity meter in Great Britain would move to half-hourly settlement, a programme known as market-wide half-hourly settlement (MHHS),<Fn n={9} /> and Elexon's new systems are built to take up to 500 billion half-hourly readings a year once the programme completes in May 2027.<Fn n={10} /> As MHHS moved from decision to delivery, I was looking at ingesting about 5 billion data points a year, roughly a hundredth of that national figure. A neural network trained on that volume would have taken too long on the hardware I had, and a model that is slow to retrain is slow to correct.</p>
-        <p>Gradient boosting has its advantage at exactly that retraining step. LightGBM sorts each input into a small number of histogram bins before it looks for a split, samples the rows it still predicts badly more heavily than the rows it already fits, and bundles inputs that are rarely non-zero at the same time. LightGBM's authors measured it at up to 9 times faster than histogram-based XGBoost.<Fn n={11} /> Trees also hold their own on tabular data, the rows-and-columns shape of a demand dataset: across 45 tabular datasets, a NeurIPS 2022 study found tree-based models still ahead of deep learning on medium-sized data.<Fn n={12} /></p>
+        <p>What ended my work on LSTMs was data volume. On 20 April 2021 Ofgem decided that every electricity meter in Great Britain would move to market-wide half-hourly settlement (MHHS),<Fn n={8} /> and Elexon's systems are built to take up to 500 billion half-hourly readings a year once the programme completes in May 2027.<Fn n={9} /> I was looking at about 5 billion data points a year, roughly a hundredth of that national figure, and a neural network would have taken too long to retrain on that volume on my hardware. A model that is slow to retrain is slow to correct.</p>
+        <p>LightGBM sorts each input into histogram bins and samples the rows it predicts badly more heavily, and its authors measured it at up to 9 times faster than histogram-based XGBoost.<Fn n={10} /></p>
       </Prose>
 
       <Section title="How the three models read the same half-hour" />
       <Prose>
-        <p>The chart below shows the shape every one of these models is trying to forecast: average national demand on a weekday in winter and in summer, half-hour by half-hour, from Elexon's published outturn.<Fn n={13} /> Winter peaks at about 38.5 GW at 18:00. Summer tops out at about 28.4 GW in the evening, after a long midday dip that I put down to rooftop solar meeting demand in homes before that demand reaches the grid.</p>
+        <p>Every one of these models is forecasting the shape below, average national weekday demand from Elexon's published outturn.<Fn n={11} /> Winter peaks at about 38.5 GW at 18:00. Summer tops out at about 28.4 GW in the evening, after a long midday dip that I put down to rooftop solar.</p>
       </Prose>
       <Wide>
         <DemandShapeChart h={380} />
       </Wide>
       <Prose>
-        <p>The three families read that curve in different ways. SARIMA starts from the demand series itself: the same half-hour on recent days and last week, weighted and summed, with temperature bolted on. An LSTM reads the recent days in order and keeps a running memory, with gates that decide what to hold, what to forget and what to pass on. Gradient boosting reads no sequence. Every input, from the time of day to the bank-holiday flag, becomes a set of yes-or-no questions, and the forecast adds up the answers from hundreds of small trees. The diagram below shows how each model builds its forecast.</p>
+        <p>An LSTM reads the recent days in order and keeps a running memory. Gradient boosting reads no sequence: every input, from the time of day to the bank-holiday flag, becomes a set of yes-or-no questions, and the forecast adds up the answers from hundreds of small trees.</p>
       </Prose>
       <Wide>
         <Box title="How Each Model Forecasts">
@@ -123,7 +116,7 @@ export default function Page() {
         </Box>
       </Wide>
       <Prose>
-        <p>Treating the calendar as an input is why bank holidays stopped being a problem for me. A bank holiday is one more input the trees can split on, so the model learns what a bank holiday does to the morning ramp from every bank holiday in its training data. SARIMA, with no such input, forecasts an ordinary Monday. The chart below sketches that difference on a winter bank holiday.<Fn n={14} /></p>
+        <p>Treating the calendar as an input is why bank holidays stopped being a problem for me: the trees learn what a bank holiday does to the morning ramp from every bank holiday in the training data, while SARIMA forecasts an ordinary Monday.<Fn n={12} /></p>
       </Prose>
       <Wide>
         <Box title="Bank Holiday Forecast" sub="GW" h={420}>
@@ -143,7 +136,7 @@ export default function Page() {
         </Box>
       </Wide>
       <Prose>
-        <p>The seasons work the same way. Instead of one temperature slope for the year, the trees learn a different response to temperature at each time of year, and a classification model can sort days into regimes before the forecast is made. In my experience the accuracy on an average winter day improves a little and the summer drift goes, which is the pattern the chart below sketches.<Fn n={14} k="b" /></p>
+        <p>The trees also learn a different response to temperature at each time of year, and in my experience the summer drift goes.<Fn n={12} k="b" /></p>
       </Prose>
       <Wide>
         <Box title="Forecast Error by Month" sub="%" h={380}>
@@ -158,11 +151,11 @@ export default function Page() {
 
       <Section title="How a boosted tree learns" />
       <Prose>
-        <p>Gradient boosting is older than either library. Jerome Friedman set it out in 2001 as a way to build one strong model out of many weak ones.<Fn n={15} /> The method starts with a single guess, say average demand, and works out the residual (actual minus forecast) for every half-hour. It then fits a small tree to those residuals, adds a fraction of the tree's answer to the forecast, and repeats. Each new tree only has to learn what the previous trees got wrong.</p>
+        <p>Jerome Friedman set out gradient boosting in 2001.<Fn n={13} /> It starts with a single guess, say average demand, then fits a small tree to the residuals (actual minus forecast), adds a fraction of the tree's answer to the forecast and repeats, so each new tree only learns what the previous trees got wrong.</p>
       </Prose>
       <Prose><Eq>Fₘ(x) = Fₘ₋₁(x) + η · fₘ(x)</Eq></Prose>
       <Prose>
-        <p>The fraction η is the learning rate. A small learning rate needs more trees and overfits less. For squared error the residual is the negative gradient of the loss, which is where the name gradient boosting comes from, and for any other loss the tree fits the negative gradient of that loss instead. In the demo below each tree can only draw a stepped line, and a few hundred steps add up to a heating curve, the rise in demand as the temperature falls.<Fn n={14} k="c" /></p>
+        <p>The fraction η is the learning rate: a small one needs more trees and overfits less. For squared error the residual is the negative gradient of the loss, hence the name. Each tree draws a stepped line, and a few hundred steps add up to a heating curve.<Fn n={12} k="c" /></p>
       </Prose>
       <Wide>
         <Box title="Gradient Boosting on Daily Demand" h={520}>
@@ -170,21 +163,21 @@ export default function Page() {
         </Box>
       </Wide>
       <Prose>
-        <p>XGBoost adds two things to Friedman's recipe.<Fn n={8} k="b" /> It uses the second derivative of the loss as well as the first, so each tree takes a Newton step, and it charges for complexity inside the objective itself:</p>
+        <p>XGBoost adds two things to Friedman's recipe.<Fn n={7} k="b" /> It uses the second derivative of the loss as well as the first, so each tree takes a Newton step, and it charges for complexity inside the objective:</p>
       </Prose>
       <Prose><Eq>Obj = Σᵢ l(yᵢ, ŷᵢ) + Σₖ ( γT + ½ λ‖w‖² )</Eq></Prose>
       <Prose>
-        <p>T is the number of leaves in a tree and w the values in those leaves, so γ is a fee for every extra leaf and λ shrinks large leaf values. With g and h the first and second derivatives of the loss for each row, and G and H the sums of g and h over a leaf, the best value for a leaf and the gain from a split both have closed forms:</p>
+        <p>T is the number of leaves and w the leaf values, so γ is a fee for every extra leaf and λ shrinks large leaf values. With G and H the summed first and second derivatives of the loss over a leaf, the best leaf value and the split gain have closed forms:</p>
       </Prose>
       <Prose><Eq>w* = − G / (H + λ)</Eq></Prose>
       <Prose><Eq>Gain = ½ [ G_L² / (H_L + λ) + G_R² / (H_R + λ) − (G_L + G_R)² / (H_L + H_R + λ) ] − γ</Eq></Prose>
       <Prose>
-        <p>A split only happens if the gain is positive, so γ sets the minimum improvement a new branch has to earn. Every tree in the model, and so every half-hour in the forecast, comes out of that gain formula applied again and again.</p>
+        <p>A split only happens if the gain is positive, so γ sets the minimum improvement a new branch has to earn.</p>
       </Prose>
 
       <Section title="How XGBoost and LightGBM grow trees differently" />
       <Prose>
-        <p>The two libraries share the maths and differ in how they grow a tree. XGBoost by default grows level by level, splitting every leaf at one depth before going deeper. LightGBM grows leaf-wise: at each step LightGBM splits whichever single leaf offers the biggest gain, wherever that leaf sits.<Fn n={11} k="b" /> The diagram below steps through both kinds of growth, one split at a time.</p>
+        <p>XGBoost by default grows a tree level by level, splitting every leaf at one depth before going deeper. LightGBM grows leaf-wise, splitting whichever single leaf offers the biggest gain.<Fn n={10} k="b" /></p>
       </Prose>
       <Wide>
         <Box title="Tree Growth">
@@ -192,19 +185,17 @@ export default function Page() {
         </Box>
       </Wide>
       <Prose>
-        <p>Leaf-wise growth reaches a lower loss for the same number of leaves, so a leaf-wise tree needs fewer splits to reach a given fit. The price is a deep, narrow branch that can fit noise on a small dataset, so LightGBM users cap the depth or the minimum rows in a leaf. With the histogram bins and the row sampling added, LightGBM trains fast enough to be refit on half-hourly data at settlement scale.</p>
+        <p>Leaf-wise growth reaches a lower loss for the same number of leaves, but its deep, narrow branches can fit noise on a small dataset, so LightGBM users cap the depth or the minimum rows in a leaf.</p>
       </Prose>
 
       <Section title="What gradient boosting depends on" />
       <Prose>
-        <p>Gradient boosting only works while two conditions hold. The first condition is that tomorrow looks like something in the training data. A tree cannot extrapolate: past the hottest day the model has seen, every forecast lands in the same edge leaf, so a record heatwave or a new kind of load such as home batteries gets the answer for the nearest day the model already knows.</p>
-        <p>The second condition is clean data. Meter migration to half-hourly settlement runs from 22 October 2025, and implementation completes in May 2027,<Fn n={10} k="b" /> so the data under these models will keep shifting until then. Gradient boosting is not a universal winner in energy forecasting either. At GEFCom2014 (the Global Energy Forecasting Competition), gradient boosting took the wind and solar forecasting tracks, and the load track went to quantile regression and additive models.<Fn n={16} /></p>
+        <p>Gradient boosting depends on two conditions. Tomorrow has to look like something in the training data, because a tree cannot extrapolate: a record heatwave or a new kind of load such as home batteries gets the answer for the nearest day the model knows. The data also has to be clean, and meter migration runs from 22 October 2025 until implementation completes in May 2027.<Fn n={9} k="b" /></p>
       </Prose>
 
       <Section title="How I would choose a demand forecasting model now" />
       <Prose>
-        <p>Over nine years the average error has improved a little. The change I value more is consistency: the newer models are more correct, more often. The very bad days that used to turn up every year have gone, bank holidays are learned from data instead of remembered, and the model no longer has a good season and a bad one. For a supplier the money is made or lost on the bad days, so I would judge a new model by how often it has a bad day before I looked at its average error.</p>
-        <p>I would also choose a model I can retrain quickly at the data volume I expect, because MHHS is making the data a great deal bigger, and I would keep checking the two conditions gradient boosting depends on. SARIMA had a fifty-year run and I'd be surprised if tree models get half that, so I would keep a benchmark running alongside whatever model I use.</p>
+        <p>Over nine years the average error has improved a little. The bigger gain is that the very bad days that used to turn up every year have gone. I would judge a new model by how often it has a bad day before its average error, choose one I can retrain quickly at the data volume I expect, and keep checking the two conditions gradient boosting depends on. SARIMA had a fifty-year run and I'd be surprised if tree models get half that, so I would keep a benchmark running alongside.</p>
       </Prose>
 
       <Footnotes notes={NOTES} />

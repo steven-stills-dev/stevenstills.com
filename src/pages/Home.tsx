@@ -28,7 +28,9 @@ function Rows({ items, active, onPick }: { items: ProjectMeta[]; active: string;
 export default function Home() {
   usePageMeta("Steven Stills", "Projects and writing on energy markets and forecasting. Each piece takes one problem, shows the working and ends with what I'd do about it.");
   const navigate = useNavigate();
-  const [active, setActive] = useState(PROJECTS[0]?.slug ?? "");
+  const pinned = PROJECTS.filter((p) => p.pinned);
+  const rest = PROJECTS.filter((p) => !p.pinned);
+  const [active, setActive] = useState((pinned[0] ?? PROJECTS[0])?.slug ?? "");
   // in the single-column layout the stage sits above the index, out of view, so a tap opens the entry
   const pick = (slug: string) => (window.matchMedia("(max-width: 900px)").matches ? navigate(`/${slug}`) : setActive(slug));
 
@@ -70,8 +72,14 @@ export default function Home() {
         )}
 
         <div className="lists">
+          {pinned.length > 0 && (
+            <>
+              <h2 className="lists-h">Highlights</h2>
+              <Rows items={pinned} active={active} onPick={pick} />
+            </>
+          )}
           <h2 className="lists-h">Projects and writing</h2>
-          <Rows items={PROJECTS} active={active} onPick={pick} />
+          <Rows items={rest} active={active} onPick={pick} />
         </div>
       </div>
     </Layout>
