@@ -43,7 +43,7 @@ export default function Home() {
         <section className="hero">
           <h1 className="hero-h">Working through problems in energy markets</h1>
           <p className="hero-lede">I've spent 16 years in the energy industry, in trading, forecasting, billing and metering. On this site I take one energy problem at a time, show how I worked through it and say what I'd do about it.</p>
-          <Link className="btn btn-face" to="/about"><img src="/img/portrait-4.jpg" alt="" />More about me</Link>
+          <Link className="btn btn-face" to="/about"><img src="/img/me_lisbon_face.jpeg" alt="" />More about me</Link>
         </section>
 
         {feat && (

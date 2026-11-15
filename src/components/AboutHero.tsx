@@ -5,7 +5,7 @@ export default function AboutHero() {
   return (
     <div className="about-hero">
       <div className="about-hero-portrait">
-        <img src="/img/portrait-4.jpg" alt="Steven Stills" />
+        <img src="/img/me_lisbon.jpeg" alt="Steven Stills" />
       </div>
       <div className="about-hero-text">
         <p className="kicker">About</p>
