@@ -17,8 +17,8 @@ set to GitHub Actions in the repo settings).
 
 ## Design system
 
-Ink on white, in the manner of a research publication: a serif display face over
-a plain sans, flat grey figure panels, 6px corners, one cobalt accent that
+Ink on white, in the manner of a research publication: sans-serif type
+throughout, flat grey figure panels, 6px corners, one cobalt accent that
 belongs to the data.
 
 - **Tokens** live in `src/styles.css` `:root`. Never hard-code a hex in a
@@ -29,18 +29,22 @@ belongs to the data.
   (highlights, ramp start), `--ste-tertiary` #8C9EFF mid cobalt (third series),
   `--ste-midday` #FFFFFF page, `--ste-day` #F4F3F0 grey panels, `--ste-dusk`
   #5E6779 muted labels, `--ste-night` #1B2233 body text, `--ste-midnight`
-  #0A0E1A headlines, buttons and the footer band, `--ste-alert` #E5484D stress
+  #0A0E1A headlines and buttons, `--ste-alert` #E5484D stress
   marking only.
-- **Typography**: Newsreader (`--serif`) at weight 400 for headlines, ledes,
-  section headings, stat numerals and the wordmark; IBM Plex Sans (`--sans`)
-  for everything else. Weights 400 to 600, sentence case, tabular figures.
+- **Typography**: three tokens, `--display` (headlines, stage titles, the
+  wordmark), `--heading` (section headings, stat numerals) and `--sans` (body,
+  ledes, everything else). Defaults are Schibsted Grotesk at weight 600 for
+  display and heading, Source Sans 3 for body. Sentence case, tabular figures.
+- **Design tray** (`DesignTray`): open any page with `?tray` to try 15 Google
+  sans fonts per token and copy the choice as JSON. Fonts listed in `FONTS`;
+  the defaults also live in `index.html`'s font link and `styles.css`.
 - **Buttons** (`.btn`, `.links-row a`): Midnight fill with white text, `.ghost`
   for the secondary action. Chips are 32px hairline controls, Midnight when on.
 - **Panels** (`Box`): `--panel` grey fill, 6px radius, no border, no shadow, a
   plain title row with the unit on the right.
-- **Masthead** (`Nav`): serif wordmark, links and "Get in touch" over a
+- **Masthead** (`Nav`): wordmark, links and "Get in touch" over a
   hairline rule.
-- **Footer**: full-width Midnight band with the email set large in the serif.
+- **Footer**: full-width Day grey band, email, LinkedIn and copyright at 0.875rem.
 - **Charts**: `src/components/charts/`. Sized to the container (`useSize`),
   nice ticks (`geom.ts`), hover tooltip (`ChartTip`). Secondary vs Night for
   two-series comparisons, no multi-colour palettes, no gridlines, title in the
@@ -52,7 +56,7 @@ belongs to the data.
   by clicking a row, no auto-rotation; below 900px it stacks and a tap opens
   the entry). Articles are a 60rem column with one left edge: headline, `Prose`
   and `Wide` figures both at the full 60rem.
-- **Brand mark**: serif wordmark in `Nav`; `public/img/initials.svg` (favicon)
+- **Brand mark**: wordmark in `Nav`; `public/img/initials.svg` (favicon)
   is a placeholder until the logo arrives.
 
 ## Adding a project

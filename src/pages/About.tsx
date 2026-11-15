@@ -145,7 +145,7 @@ export default function About() {
           <p>I've been in leadership for over a decade, reporting straight to the executive team and to shareholders. I've led teams drawn from different disciplines, in start-ups and in larger organisations where the people on the team didn't report to me, so I've had to lead by persuading. I build AI and machine learning models as prototypes and then run them in production, explain the technical side to people who aren't technical, and show what the work is worth in money.</p>
           <p>If you'd like to work together, get in touch.</p>
           <nav className="links-row" aria-label="Contact">
-            <a href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
+            <a href="mailto:stevenprusinskistills@proton.me">stevenprusinskistills@proton.me</a>
             <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
           </nav>
         </Prose>

@@ -2,6 +2,7 @@ import { Suspense, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import DesignTray from "./components/DesignTray";
 import { PROJECTS } from "./projects/registry";
 
 function ScrollToTop() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
+      <DesignTray />
     </>
   );
 }
