@@ -6,7 +6,7 @@ import { PROJECTS, fmtDate } from "../projects/registry";
 import type { ProjectMeta } from "../projects/types";
 import { usePageMeta } from "../lib/meta";
 
-/** Index rows: title and date. A click shows the entry on the stage; a double click opens it. */
+/** Index rows: title, kind and date, with the summary line on the selected row. A click shows the entry on the stage; a double click opens it. */
 function Rows({ items, active, onPick }: { items: ProjectMeta[]; active: string; onPick: (slug: string) => void }) {
   const navigate = useNavigate();
   return (
@@ -15,7 +15,9 @@ function Rows({ items, active, onPick }: { items: ProjectMeta[]; active: string;
         <li key={p.slug}>
           <button type="button" className={"row" + (p.slug === active ? " on" : "")} aria-pressed={p.slug === active} onClick={() => onPick(p.slug)} onDoubleClick={() => navigate(`/${p.slug}`)}>
             <span className="row-t">{p.title}</span>
+            <span className="row-k">{p.kind === "project" ? "Project" : "Writing"}</span>
             <span className="row-d">{fmtDate(p.date)}</span>
+            {p.slug === active && <span className="row-l">{p.line}</span>}
           </button>
         </li>
       ))}
@@ -26,9 +28,7 @@ function Rows({ items, active, onPick }: { items: ProjectMeta[]; active: string;
 export default function Home() {
   usePageMeta("Steven Stills", "Projects and writing on energy markets and forecasting. Each piece takes one problem, shows the working and ends with what I'd do about it.");
   const navigate = useNavigate();
-  const projects = PROJECTS.filter((p) => p.kind === "project");
-  const writing = PROJECTS.filter((p) => p.kind === "writing");
-  const [active, setActive] = useState(projects[0]?.slug ?? "");
+  const [active, setActive] = useState(PROJECTS[0]?.slug ?? "");
   // in the single-column layout the stage sits above the index, out of view, so a tap opens the entry
   const pick = (slug: string) => (window.matchMedia("(max-width: 900px)").matches ? navigate(`/${slug}`) : setActive(slug));
 
@@ -70,11 +70,8 @@ export default function Home() {
         )}
 
         <div className="lists">
-          <h2 className="lists-h">Projects</h2>
-          <Rows items={projects} active={active} onPick={pick} />
-
-          <h2 className="lists-h">Writing</h2>
-          <Rows items={writing} active={active} onPick={pick} />
+          <h2 className="lists-h">Projects and writing</h2>
+          <Rows items={PROJECTS} active={active} onPick={pick} />
         </div>
       </div>
     </Layout>
