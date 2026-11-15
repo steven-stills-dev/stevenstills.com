@@ -23,7 +23,7 @@ function fc(ships: Ship[]) {
 /** Colour the ship layers from the current design tokens. */
 function paint(map: maplibregl.Map) {
   if (!map.getLayer("ships-energy")) return;
-  map.setPaintProperty("ships-energy", "circle-color", token("--ste-secondary", "#0E7490"));
+  map.setPaintProperty("ships-energy", "circle-color", token("--ste-secondary", "#2447F9"));
   map.setPaintProperty("ships-energy", "circle-stroke-color", token("--ste-midnight", "#0A0E1A"));
   map.setPaintProperty("ships-other", "circle-color", token("--ste-dusk", "#5E6779"));
 }

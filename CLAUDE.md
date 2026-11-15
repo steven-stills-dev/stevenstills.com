@@ -18,15 +18,15 @@ set to GitHub Actions in the repo settings).
 ## Design system
 
 Ink on white, in the manner of a research publication: a serif display face over
-a plain sans, flat grey figure panels, 6px corners, one petrol accent that
+a plain sans, flat grey figure panels, 6px corners, one cobalt accent that
 belongs to the data.
 
 - **Tokens** live in `src/styles.css` `:root`. Never hard-code a hex in a
   component; read the variable in SVG/CSS, or `token("--ste-...", ...)` for
   canvases (maplibre).
-- **Palette**: `--ste-secondary` #0E7490 petrol (the accent: links, the
-  selected row, chart and map data marks), `--ste-primary` #CDEFF6 pale petrol
-  (highlights, ramp start), `--ste-tertiary` #5FB8CF mid petrol (third series),
+- **Palette**: `--ste-secondary` #2447F9 cobalt (the accent: links, the
+  selected row, chart and map data marks), `--ste-primary` #D6DEFF pale cobalt
+  (highlights, ramp start), `--ste-tertiary` #8C9EFF mid cobalt (third series),
   `--ste-midday` #FFFFFF page, `--ste-day` #F4F3F0 grey panels, `--ste-dusk`
   #5E6779 muted labels, `--ste-night` #1B2233 body text, `--ste-midnight`
   #0A0E1A headlines, buttons and the footer band, `--ste-alert` #E5484D stress

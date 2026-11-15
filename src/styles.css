@@ -1,11 +1,11 @@
 /* =========================================================================
    stevenstills.com design system. Ink on white, a serif display face over a
-   plain sans, and one petrol accent that belongs to the data.
+   plain sans, and one cobalt accent that belongs to the data.
    ========================================================================= */
 :root {
-  --ste-primary: #CDEFF6;     /* pale petrol: highlights, ramp start */
-  --ste-secondary: #0E7490;   /* petrol, the accent: links, selection, chart and map data marks */
-  --ste-tertiary: #5FB8CF;    /* mid petrol: third series */
+  --ste-primary: #D6DEFF;     /* pale cobalt: highlights, ramp start */
+  --ste-secondary: #2447F9;   /* cobalt, the accent: links, selection, chart and map data marks */
+  --ste-tertiary: #8C9EFF;    /* mid cobalt: third series */
   --ste-midday: #FFFFFF; --ste-day: #F4F3F0; --ste-dusk: #5E6779;
   --ste-night: #1B2233; --ste-midnight: #0A0E1A;
   --ste-alert: #E5484D;   /* stress and worst-case marking only */
@@ -70,21 +70,23 @@ img { max-width: 100%; display: block; }
 
 /* ── home: text and index on the left, the selected work on the right ── */
 .home { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "hero stage" "lists stage";
-  column-gap: 64px; align-items: start; padding: 64px 0 96px; }
+  column-gap: 64px; align-items: start; padding: 48px 0 96px; }
 .hero { grid-area: hero; }
-.hero-h { font-family: var(--serif); font-size: clamp(2.75rem, 5.6vw, 5.5rem); font-weight: 400; letter-spacing: -.03em; line-height: 1.02; color: var(--ste-midnight); text-wrap: balance; }
+.hero-h { font-family: var(--serif); font-size: clamp(2.5rem, 3.8vw, 3.75rem); font-weight: 400; letter-spacing: -.03em; line-height: 1.02; color: var(--ste-midnight); text-wrap: balance; }
 .hero-lede { margin-top: 24px; max-width: 34rem; font-size: 1.1875rem; line-height: 1.55; color: var(--ste-dusk); }
 .hero .btn { margin-top: 32px; }
 
 .lists { grid-area: lists; margin-top: 16px; }
 .lists-h { font-size: .8125rem; font-weight: 500; color: var(--ste-dusk); margin: 40px 0 8px; }
 .rows { list-style: none; border-bottom: 1px solid var(--hairline); }
-.row { width: 100%; display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; gap: 12px; align-items: baseline;
+.row { width: 100%; display: grid; grid-template-columns: 8px minmax(0, 1fr) auto 5.5rem; gap: 12px; align-items: baseline;
   padding: 12px 12px 12px 0; border: none; border-top: 1px solid var(--hairline); background: none;
   font: inherit; color: inherit; text-align: left; cursor: pointer; transition: background-color .15s var(--ease); }
 .row::before { content: ""; width: 8px; height: 8px; align-self: center; background: var(--ste-secondary); opacity: 0; transition: opacity .15s var(--ease); }
 .row-t { font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ste-night); text-wrap: pretty; }
-.row-d { font-size: .8125rem; color: var(--ste-dusk); white-space: nowrap; }
+.row-k, .row-d { font-size: .8125rem; color: var(--ste-dusk); white-space: nowrap; }
+.row-d { text-align: right; }
+.row-l { grid-column: 2 / -1; font-size: .875rem; line-height: 1.55; color: var(--ste-dusk); animation: fadein .4s var(--ease); }
 .row:hover, .row.on { background: var(--ste-day); }
 .row.on::before { opacity: 1; }
 .row.on .row-t { color: var(--ste-midnight); }
