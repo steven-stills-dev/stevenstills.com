@@ -41,9 +41,12 @@ export default function Home() {
     <Layout>
       <div className="home">
         <section className="hero">
+          <Link className="hero-portrait" to="/about">
+            <img src="/img/me_lisbon.jpeg" alt="Steven Stills" />
+            <span className="btn btn-s">More about me</span>
+          </Link>
           <h1 className="hero-h">Working through problems in energy markets</h1>
           <p className="hero-lede">I've worked in energy retail for 16 years, end to end: from buying the power and forecasting demand to registering the meter, sending the bill and answering the complaint. On this site I take one energy problem at a time, show how I worked through it and say what I'd do about it.</p>
-          <Link className="btn btn-face" to="/about"><img src="/img/me_lisbon_face.jpeg" alt="" />More about me</Link>
         </section>
 
         {feat && (
