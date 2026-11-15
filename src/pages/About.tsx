@@ -52,17 +52,6 @@ export default function About() {
           <p>Fair warning, this isn't the professional introduction. I'm Steven. Most people who have known me a long time are surprised when I bring up my advertising degree, on the assumption that I did "something in maths". Figuring out the solution has always been my keen interest, and for the last 16 years that has meant a lot of statistical modelling and tonnes of charts and diagrams with boxes and arrows to explain what's going on. I'm also quick to notice an anomaly in the slide deck.</p>
         </Prose>
 
-        <Wide>
-          <div className="photo-pair">
-            <div className="photo">
-              <img src="/img/me_lisbon.jpeg" alt="Steven Stills in a black T-shirt in front of a carved stone chapel doorway." style={{ objectPosition: "48% 50%" }} />
-            </div>
-            <div className="photo">
-              <img src="/img/about-camera.jpg" alt="Steven walking past a graffiti wall, checking the back of a camera." style={{ objectPosition: "50% 32%" }} />
-            </div>
-          </div>
-        </Wide>
-
         <Prose>
           <p>Outside of work my passions include photography, climbing, a good country hike or a long night in game design.</p>
           <p>At work I code in Python and TypeScript, and by night I switch to GDScript for gaming and HTML and CSS for websites like this. But I'm not the best at any of these. Where I'm useful is in putting a wide set of skills to work on one tightly defined deliverable.</p>
