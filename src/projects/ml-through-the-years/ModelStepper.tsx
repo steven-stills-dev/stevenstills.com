@@ -29,7 +29,7 @@ function Card({ x, y, w, h, label, fill = "var(--ste-midday)", shift }: {
 }) {
   return (
     <g>
-      <rect x={x} y={y} width={w} height={h} rx={10} fill={fill} {...STROKE} />
+      <rect x={x} y={y} width={w} height={h} rx={4} fill={fill} {...STROKE} />
       {shift != null && <Profile x={x} y={y} w={w} h={h} shift={shift} />}
       {label && <text x={x + w / 2} y={y + h + 16} {...LABEL}>{label}</text>}
     </g>
@@ -62,7 +62,7 @@ function Lstm() {
         <g key={x}>
           <path d={`M${x + w / 2},${top + h + 30}V${top + h}`} fill="none" {...STROKE} />
           <circle cx={x + w / 2} cy={top + h + 34} r={5} fill="var(--ste-secondary)" />
-          <rect x={x} y={top} width={w} height={h} rx={14} fill="var(--ste-midday)" {...STROKE} />
+          <rect x={x} y={top} width={w} height={h} rx={6} fill="var(--ste-midday)" {...STROKE} />
           {[0.25, 0.5, 0.75].map((f) => (
             <circle key={f} cx={x + f * w} cy={top + 25} r={8}
               fill={k === xs.length - 1 ? "var(--ste-primary)" : "var(--ste-midday)"} {...STROKE} />
@@ -92,8 +92,8 @@ function Boosting() {
             {[[t.x, 76, lx[0], 150], [t.x, 76, t.x + 20, 110], [t.x + 20, 124, lx[1], 150], [t.x + 20, 124, lx[2], 150]].map(([x1, y1, x2, y2], j) => (
               <path key={j} d={`M${x1},${y1}C${x1},${(y1 + y2) / 2} ${x2},${(y1 + y2) / 2} ${x2},${y2}`} fill="none" {...STROKE} />
             ))}
-            <rect x={t.x - 14} y={60} width={28} height={16} rx={7} fill="var(--ste-midday)" {...STROKE} />
-            <rect x={t.x + 6} y={110} width={28} height={14} rx={7} fill="var(--ste-midday)" {...STROKE} />
+            <rect x={t.x - 14} y={60} width={28} height={16} rx={3} fill="var(--ste-midday)" {...STROKE} />
+            <rect x={t.x + 6} y={110} width={28} height={14} rx={3} fill="var(--ste-midday)" {...STROKE} />
             {lx.map((x, j) => (
               <circle key={j} cx={x} cy={156} r={6} fill={j === t.hit ? "var(--ste-primary)" : "var(--ste-secondary)"}
                 stroke={j === t.hit ? "var(--ste-night)" : "none"} strokeWidth={1.5} />

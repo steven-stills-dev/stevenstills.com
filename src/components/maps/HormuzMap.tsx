@@ -23,9 +23,9 @@ function fc(ships: Ship[]) {
 /** Colour the ship layers from the current design tokens. */
 function paint(map: maplibregl.Map) {
   if (!map.getLayer("ships-energy")) return;
-  map.setPaintProperty("ships-energy", "circle-color", token("--ste-secondary", "#60D0B8"));
-  map.setPaintProperty("ships-energy", "circle-stroke-color", token("--ste-midnight", "#183036"));
-  map.setPaintProperty("ships-other", "circle-color", token("--ste-dusk", "#6F8488"));
+  map.setPaintProperty("ships-energy", "circle-color", token("--ste-secondary", "#0E7490"));
+  map.setPaintProperty("ships-energy", "circle-stroke-color", token("--ste-midnight", "#0A0E1A"));
+  map.setPaintProperty("ships-other", "circle-color", token("--ste-dusk", "#5E6779"));
 }
 
 /** Load the latest positions; on failure the last ones stay on the map. */

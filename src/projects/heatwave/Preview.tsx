@@ -13,8 +13,8 @@ const W = 640;             // overlay canvas width, px
 /** Cool to hot across the theme: night, secondary, tertiary, primary, alert. */
 function palette(): string[] {
   return [
-    token("--ste-night", "#29494F"), token("--ste-secondary", "#60D0B8"), token("--ste-tertiary", "#BAF084"),
-    token("--ste-primary", "#E1FE73"), token("--ste-alert", "#FF646D"),
+    token("--ste-night", "#1B2233"), token("--ste-secondary", "#0E7490"), token("--ste-tertiary", "#5FB8CF"),
+    token("--ste-primary", "#CDEFF6"), token("--ste-alert", "#E5484D"),
   ];
 }
 

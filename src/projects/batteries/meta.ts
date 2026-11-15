@@ -4,9 +4,9 @@ import type { ProjectMeta } from "../types";
 export const meta: ProjectMeta = {
   slug: "batteries",
   kind: "writing",
-  title: "Home batteries add up at the front of the business. What happens at settlement?",
+  title: "Home batteries and settlement risk for suppliers",
   date: "2026-06-29",
-  line: "More than 40,000 home batteries were installed in 2025 and the sums behind them work. I follow a fleet of them to the half-hour where a supplier is billed for being wrong.",
+  line: "A home battery changes the hours in which a household draws from the grid. I use early Australian data and a simple model to look at what that change does to a supplier's forecast and its settlement position.",
   page: lazy(() => import("./Page")),
   preview: lazy(() => import("./Preview")),
 };

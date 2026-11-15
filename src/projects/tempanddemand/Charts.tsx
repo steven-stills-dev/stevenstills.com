@@ -208,7 +208,7 @@ export function MonthBars({ series, unit, digits }: {
               {t.map((v) => (
                 <text key={v} x={PAD_L - 6} y={Y(v) + 3} textAnchor="end" fontSize="10.5" fill="var(--ste-dusk)">{fmt(v, dig)}</text>
               ))}
-              {hi != null && <rect x={PAD_L + hi * slot} y={TOP} width={slot} height={Y(0) - TOP} rx={8} fill="var(--band)" />}
+              {hi != null && <rect x={PAD_L + hi * slot} y={TOP} width={slot} height={Y(0) - TOP} rx={4} fill="var(--band)" />}
               {MON.map((label, m) => (
                 <g key={label}>
                   {series.map((s, k) => {

@@ -1,6 +1,6 @@
 .es-select { align-self: flex-start; margin-bottom: 16px; font-family: inherit;
   font-size: var(--t-kpilabel-size); font-weight: var(--t-kpilabel-weight); color: var(--ste-night);
-  background: var(--ste-midday); border: none; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+  background: var(--ste-midday); border: 1px solid var(--hairline); border-radius: var(--radius); height: 36px; padding: 0 12px; cursor: pointer; }
 .es-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .es-panel { display: flex; flex-direction: column; min-width: 0; }
 .es-panel > .chart-fill { height: 300px; }

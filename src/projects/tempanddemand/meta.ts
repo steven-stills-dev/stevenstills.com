@@ -4,9 +4,9 @@ import type { ProjectMeta } from "../types";
 export const meta: ProjectMeta = {
   slug: "tempanddemand",
   kind: "writing",
-  title: "The forgotten problem in forecasting gas allocations",
+  title: "Seasonal normal weather in gas demand allocation",
   date: "2026-09-28",
-  line: "In 2015, 43% of days in Central England ran warmer than normal and in 2026 it is 70%. Gas is the simple half of energy forecasting, but the seasonal normal in its settlement formula is reset only every five years and is already behind the weather.",
+  line: "Britain's gas industry allocates and forecasts demand against a seasonal normal that is reset once every five years. I look at temperature and gas demand since 2015, compare the published seasonal normal with the weather since October 2022, and estimate what the difference was worth in the 2024/25 gas year.",
   page: lazy(() => import("./Page")),
   preview: lazy(() => import("./Preview")),
 };

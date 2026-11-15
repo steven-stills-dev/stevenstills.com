@@ -51,7 +51,7 @@ function Tree({ order, step }: { order: string[]; step: number }) {
           fill="none" stroke="var(--ste-night)" strokeWidth="1.4" />;
       })}
       {[...pos].map(([p, c]) => splits.has(p)
-        ? <rect key={p} x={c.x - NODE} y={c.y - NODE / 2 - 2} width={NODE * 2} height={NODE + 4} rx={7}
+        ? <rect key={p} x={c.x - NODE} y={c.y - NODE / 2 - 2} width={NODE * 2} height={NODE + 4} rx={3}
             fill={p === newest ? "var(--ste-primary)" : "var(--ste-midday)"} stroke="var(--ste-night)" strokeWidth="1.4" />
         : <circle key={p} cx={c.x} cy={c.y} r={NODE / 2} fill="var(--ste-secondary)" />)}
     </svg>
