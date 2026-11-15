@@ -15,7 +15,7 @@ export default function Nav() {
           <NavLink key={to} to={to} end={to === "/"}>{label}</NavLink>
         ))}
       </nav>
-      <a className="btn btn-s ghost mast-cta" href="mailto:stevenstills@icloud.com">Get in touch</a>
+      <a className="btn btn-s ghost mast-cta" href="mailto:stevenprusinskistills@proton.me">Get in touch</a>
     </header>
   );
 }
