@@ -51,7 +51,7 @@ belongs to the data.
   left, the selected entry's preview on a sticky stage on the right (switched
   by clicking a row, no auto-rotation; below 900px it stacks and a tap opens
   the entry). Articles are a 60rem column with one left edge: headline, `Prose`
-  at a 42rem reading measure, and `Wide` figures at the full 60rem.
+  and `Wide` figures both at the full 60rem.
 - **Brand mark**: serif wordmark in `Nav`; `public/img/initials.svg` (favicon)
   is a placeholder until the logo arrives.
 
@@ -61,7 +61,8 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
 
 - `meta.ts` exporting `meta: ProjectMeta` (see `src/projects/types.ts`): slug,
   kind (`project` | `writing`), title, ISO date, one-sentence `line`, optional
-  `live` URL, `page: lazy(() => import("./Page"))`, and
+  `live` URL, optional `pinned: true` (lists it under "Highlights" at the top
+  of the home index instead of in the main list), `page: lazy(() => import("./Page"))`, and
   `preview: lazy(() => import("./Preview"))`.
 - `Page.tsx`: the full page, built from `Article`, `Prose`, `Wide`, `Section`,
   `Fn`, `Footnotes`, `StatRow` and `Box`. Call `usePageMeta`.

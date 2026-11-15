@@ -30,13 +30,13 @@ export default function Heatwave() {
 
       <Section title="Why a heatwave is a risk for a retail supplier" />
       <Prose>
-        <p>A retail supplier buys electricity ahead of time against a forecast of what its customers will use. Any difference between the electricity the supplier bought and the electricity its customers used is settled half-hour by half-hour (each half-hour is a settlement period) at the imbalance price, which is quoted in £/MWh. A hot spell can reach a supplier in two separate ways: through the volume of demand, in MWh, and through the price paid on each MWh of imbalance.</p>
-        <p>The UK had four heatwaves before August 2026: one in May, one in June and two in July.<Fn n={1} /> My tracker ran from late June to the end of July and followed UK heat against the imbalance price, so the May heatwave was over before the tracker started, and the tracker was live during the other three. The tracker had no demand feed. I wanted to know how demand responded as well as how the imbalance price responded, so for this page I pulled demand and price data for all four heatwaves. A supplier that watches only its demand forecast sees the volume side only.</p>
+        <p>A retail supplier buys electricity ahead of time against a forecast of what its customers will use. Any difference is settled half-hour by half-hour (each half-hour is a settlement period) at the imbalance price, quoted in £/MWh. A hot spell can reach a supplier through the volume of demand, in MWh, and through the price paid on each MWh of imbalance.</p>
+        <p>The UK had four heatwaves before August 2026: one in May, one in June and two in July.<Fn n={1} /> My tracker ran from late June to the end of July, so it was live for the last three. It had no demand feed, so for this page I pulled demand and price data for all four.</p>
       </Prose>
 
       <Section title="How the tracker worked" />
       <Prose>
-        <p>I built a web app that put the temperature forecast on a map, and it ran through the summer until I took it offline in August. The first image shows the temperature at the 850hPa pressure level across the UK and western Europe, as the tracker drew it.</p>
+        <p>I built a web app that put the temperature forecast on a map, drawn at the 850hPa pressure level.</p>
       </Prose>
 
       <Wide>
@@ -46,7 +46,7 @@ export default function Heatwave() {
       </Wide>
 
       <Prose>
-        <p>Around the map I showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage, and I could scrub the whole screen forward through the forecast. The second image shows that interface.</p>
+        <p>Around the map I showed heatwave and red-alert probabilities over 7 and 14 days, a rolling imbalance price profile against the mean, and the day's heat coverage, all of which could be scrubbed forward through the forecast.</p>
       </Prose>
 
       <Wide>
@@ -56,31 +56,22 @@ export default function Heatwave() {
       </Wide>
 
       <Prose>
-        <p>The app was FastAPI behind Caddy, running in Docker on a GCP VM built with Terraform, with SQLite for the store and vanilla JS on the front end. Temperature and the 1991–2020 climatology came from Open-Meteo, and the imbalance prices came from Elexon's BMRS system-prices endpoint.</p>
+        <p>The app was FastAPI behind Caddy, in Docker on a GCP VM built with Terraform, with SQLite and vanilla JS. Temperature and the 1991–2020 climatology came from Open-Meteo, and the imbalance prices from Elexon's BMRS system-prices endpoint.</p>
       </Prose>
 
       <Section title="What I found in demand and in the imbalance price" />
       <Prose>
-        <p>Demand is a volume and the imbalance price is a price per MWh, so I report the two separately, each against its own baseline. The tracker showed heat and the imbalance price and had no demand feed, so after I retired the tracker I pulled two public Elexon series for 1 May to 31 July 2026: national demand, and the system price, which is the imbalance price for each half-hour settlement period.<Fn n={2} /><Fn n={3} /> I dated the four heatwaves from daily maximum temperatures in ten cities, which gives 23 to 28 May, 21 to 27 June, 6 to 17 July and 28 to 30 July, 28 days in all.<Fn n={1} k="b" /> The baseline (the ordinary level I measure each heatwave against) is a straight line fitted through the other 64 days, with one level for weekdays and another for weekends and bank holidays. I use a line because demand on those 64 days fell by about 30 MW a day between May and July, so one average for the whole three months would set the baseline too low for May and too high for July.<Fn n={4} /></p>
-        <p>National demand averaged 22,629 MW across the 28 heatwave days, against a baseline of 21,817 MW. That is 3.7% higher, or 543.1 GWh a day against 523.6 GWh. The four heatwaves did not agree with each other. Demand was 4.5% below baseline in May (21,134 MW against 22,133 MW), 8.5% above in June (23,725 MW against 21,862 MW), 3.6% above in the 6 to 17 July heatwave (22,470 MW against 21,679 MW) and 9.6% above in the 28 to 30 July heatwave (23,697 MW against 21,630 MW).</p>
-        <p>In June and in the 6 to 17 July heatwave, demand was no more than 3.7% above baseline on the first two days, and then 7.2% to 13.1% above baseline on the days that followed (23 to 27 June and 8 to 11 July). I did not find that pattern in May or at the end of July. National demand is measured on the transmission system, so it leaves out demand met by embedded generation (solar panels and small wind farms connected to local networks). NESO's estimate of embedded solar output averaged 4,862 MW on heatwave days against a baseline of 3,897 MW.<Fn n={5} /> With NESO's embedded solar and wind estimates added back, demand averaged 28,639 MW on heatwave days against a baseline of 27,297 MW, which is 4.9% higher, and it was above baseline in all four heatwaves (by 0.8%, 8.7%, 4.6% and 5.6%).</p>
-        <p>The imbalance price averaged £109.76/MWh across the heatwave days, against a baseline of £100.93/MWh, which is about £9/MWh or 8.8% higher. By heatwave, the mean was £98.52/MWh in May (4.5% above baseline), £118.08/MWh in June (18.1% above), £107.81/MWh from 6 to 17 July (4.5% above) and £120.66/MWh from 28 to 30 July (12.1% above).</p>
-        <p>One evening carries much of that average. On 23 June the imbalance price was above £450/MWh in every half-hour from 18:00 to 22:00 and reached £800/MWh in the half-hour from 20:30, the highest price in the three months. The highest price on a baseline day was £385.55/MWh, on 18 June. Without 23 June, the mean on the other 27 heatwave days was £106.27/MWh against a baseline of £100.69/MWh, which is 5.5% higher. For scale, the daily mean price on baseline weekdays had a standard deviation of £20.53/MWh, so a gap of about £9/MWh sits inside the ordinary spread from one day to the next.</p>
-        <p>On timing, the price data is mixed. The daily mean price was more than 35% above its baseline on the first day of the May and June heatwaves (23 May and 21 June), and below its baseline on the first day of both July heatwaves (6 July and 28 July). The daily mean price was at least 10% above baseline on 10 of the 28 heatwave days, and on 21 of the 64 baseline days.</p>
+        <p>I pulled two public Elexon series for 1 May to 31 July 2026: national demand, and the system price, which is the imbalance price for each settlement period.<Fn n={2} /><Fn n={3} /> I dated the four heatwaves from daily maximum temperatures in ten cities, which gives 23 to 28 May, 21 to 27 June, 6 to 17 July and 28 to 30 July, 28 days in all.<Fn n={1} k="b" /> The baseline is a straight line fitted through the other 64 days, with one level for weekdays and another for weekends and bank holidays, because demand on those days fell by about 30 MW a day between May and July.<Fn n={4} /></p>
+        <p>National demand averaged 22,629 MW across the 28 heatwave days, against a baseline of 21,817 MW, which is 3.7% higher. The heatwaves did not agree: demand was 4.5% below baseline in May, and 8.5%, 3.6% and 9.6% above in June and the two July heatwaves. National demand leaves out demand met by embedded generation (solar panels and small wind farms on local networks), and NESO's estimate of embedded solar output averaged 4,862 MW on heatwave days against a baseline of 3,897 MW.<Fn n={5} /> With embedded solar and wind added back, demand averaged 28,639 MW against a baseline of 27,297 MW, which is 4.9% higher, and it was above baseline in all four heatwaves.</p>
+        <p>The imbalance price averaged £109.76/MWh on heatwave days against a baseline of £100.93/MWh, which is 8.8% higher. One evening carries much of that: on 23 June the price was above £450/MWh in every half-hour from 18:00 to 22:00 and reached £800/MWh in the half-hour from 20:30. Without 23 June, the other 27 heatwave days averaged £106.27/MWh against a baseline of £100.69/MWh, which is 5.5% higher. The daily mean price on baseline weekdays had a standard deviation of £20.53/MWh, so a gap of about £9/MWh sits inside the ordinary spread from one day to the next.</p>
         <p>I think the spike on 23 June comes from the state of the system in summer, when margins (the spare generating capacity above demand) are thin and plant is on outage. I have not tested that against margin or outage data here.</p>
-      </Prose>
-
-      <Section title="Why I retired the tracker" />
-      <Prose>
-        <p>I built the tracker to watch one summer, and I took it offline in August 2026. What interests me now is the period after the heat, when dry ground sheds rain instead of absorbing it and flooding can follow.</p>
       </Prose>
 
       <Section title="What I would watch when a heatwave is forecast" />
       <Prose>
-        <p>The first thing I would watch is the imbalance price in each half-hour, because the daily means on this page smooth over the evening of 23 June. A supplier that had bought less electricity than its customers used between 18:00 and 22:00 that evening settled the shortfall at £454.50 to £800/MWh, on a day when the mean price was £204.23/MWh. So when a heatwave is forecast I would check the supplier's imbalance exposure half-hour by half-hour as well as its daily demand forecast.</p>
-        <p>For demand I would look at the figure with embedded solar and wind added back. On that measure demand was above baseline in all four heatwaves, by between 0.8% and 8.7%. On the transmission measure, demand was above baseline in three heatwaves and 4.5% below baseline in May.</p>
-        <p>I would also want to know how thin margins are and how much plant is on outage before the heat arrives, since I think those two conditions shape how the imbalance price responds.</p>
-        <p>Four heatwaves in one summer is a small sample, and the 64 baseline days varied a good deal among themselves, so I would repeat these measurements in the next hot summer before relying on them.</p>
+        <p>I would watch the imbalance price in each half-hour, since daily means smooth over evenings like 23 June. A supplier that had bought less electricity than its customers used between 18:00 and 22:00 that evening settled the shortfall at £454.50 to £800/MWh, on a day when the mean price was £204.23/MWh.</p>
+        <p>For demand I would use the figure with embedded solar and wind added back, which was above baseline in all four heatwaves, by between 0.8% and 8.7%. I would also check how thin margins are and how much plant is on outage before the heat arrives.</p>
+        <p>Four heatwaves is a small sample, so I would repeat these measurements in the next hot summer before relying on them.</p>
       </Prose>
 
       <Footnotes notes={[

@@ -37,6 +37,7 @@ SND_YEAR = 2024  # the last full gas year, October 2024 to September 2025
 GAS = [(2015, 2017), (2022, 2025)]  # complete years in the public daily data
 ERA5 = "https://archive-api.open-meteo.com/v1/archive"  # ECMWF ERA5 via Open-Meteo, as the forecasting dashboard uses
 ERA5_POINT = (52.48, -1.89)  # Birmingham, the dashboard's central England proxy
+END = "2026-08-27"  # data cut-off, the day before the article's publish date
 
 
 def fetch(url: str, browser: bool = True) -> bytes:
@@ -284,10 +285,10 @@ def normals(t: pd.Series) -> dict:
 
 def main() -> None:
     """Assemble and write the page dataset."""
-    scored = {k: score(cet(k)) for k in ("mean", "max", "min")}
+    scored = {k: score(cet(k)[:END]) for k in ("mean", "max", "min")}
     mean = scored["mean"]
     last = mean.index.max()
-    gas = ldz()
+    gas = ldz()[:END]
     data = {
         "last": str(last.date()),
         "years": list(range(FIRST, last.year + 1)),
@@ -296,11 +297,11 @@ def main() -> None:
         "temp": by_year(mean.t[str(FIRST - 1):], 1),
         "gas": by_year(gas, 0),
         "scatter": pairs(mean.t, gas),
-        "cwv": gas_years(cw := cwv()),
+        "cwv": gas_years(cw := cwv()[:END]),
         "cwvYears": cwv_years(cw),
         "sndYear": {"name": f"{SND_YEAR}/{str(SND_YEAR + 1)[2:]}",
                     "forecast": by_gas_year(snd(), SND_YEAR, 7, 0), "actual": by_gas_year(gas, SND_YEAR, 7, 0)},
-        "normals": normals(era5()),
+        "normals": normals(era5()[:END]),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, separators=(",", ":"), ensure_ascii=False))

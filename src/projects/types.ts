@@ -11,6 +11,8 @@ export interface ProjectMeta {
   date: string;
   /** one sentence for lists and the highlight panel */
   line: string;
+  /** pinned to the highlights at the top of the home index */
+  pinned?: boolean;
   /** external live app, if any */
   live?: string;
   /** the full page */
