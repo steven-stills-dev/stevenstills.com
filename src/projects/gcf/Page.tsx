@@ -1,6 +1,9 @@
 import { Article, Prose, Section, Wide, Fn, Footnotes } from "../../components/Article";
 import Box from "../../components/Box";
 import LineChart from "../../components/charts/LineChart";
+import GroupedBars from "../../components/charts/GroupedBars";
+import StackedBars from "../../components/charts/StackedBars";
+import decomp from "./decomp.json";
 import { useState } from "react";
 import { MON } from "../../lib/format";
 import { SOLAR, S_PLAIN } from "../batteries/Page";
@@ -79,6 +82,76 @@ function HouseholdDayChart() {
 }
 
 
+/* One supplier's settlement data, anonymised to shares. Breakdown: initial (II) run for 3 November 2026.
+   Uplift: mean change in the import factor on matched settlement dates, July to November 2026. */
+const BREAKDOWN = {
+  groups: ["Real readings", "Estimates, weight 1", "Estimates, weight 0.08", "Losses", "Legacy meters"],
+  volume: [38, 34, 13, 9, 5],
+  correction: [0, 68, 2, 19, 10],
+};
+const UPLIFT = { groups: ["First to second run", "Second to third run", "Third to fourth run"], night: [0.040, 0.000, 0.007], midday: [0.043, 0.014, 0.008] };
+
+function CorrectionShareChart() {
+  return (
+    <Box title="Share of Volume and Correction" sub="%" h={380}>
+      <GroupedBars groups={BREAKDOWN.groups} unit="%" digits={0}
+        series={[{ name: "Volume", values: BREAKDOWN.volume, color: NIGHT }, { name: "Correction", values: BREAKDOWN.correction, color: SECONDARY }]} />
+      <div className="legend">
+        <span><i style={{ background: NIGHT }} />Volume</span>
+        <span><i style={{ background: SECONDARY }} />Correction</span>
+      </div>
+    </Box>
+  );
+}
+
+function RunUpliftChart() {
+  return (
+    <Box title="Change in Import Factor Between Runs" sub="factor" h={360}>
+      <GroupedBars groups={UPLIFT.groups} digits={3}
+        series={[{ name: "00:00 to 06:00", values: UPLIFT.night, color: NIGHT }, { name: "10:00 to 16:00", values: UPLIFT.midday, color: SECONDARY }]} />
+      <div className="legend">
+        <span><i style={{ background: NIGHT }} />00:00 to 06:00</span>
+        <span><i style={{ background: SECONDARY }} />10:00 to 16:00</span>
+      </div>
+    </Box>
+  );
+}
+
+/* The same supplier's correction on 3 November 2026 (initial run) by half hour, and by month and run,
+   as a share of its volume before correction. Losses are the residual after estimates and legacy meters. */
+const DECOMP_SERIES = [
+  { name: "Estimates, weight 1", values: decomp.est1, color: "var(--ste-secondary)" },
+  { name: "Estimates, weight 0.08", values: decomp.est008, color: "var(--ste-primary)" },
+  { name: "Losses", values: decomp.loss, color: "var(--ste-tertiary)" },
+  { name: "Legacy meters", values: decomp.leg, color: "var(--ste-dusk)" },
+];
+const MONTHS_RUN = decomp.monthly.months.map((m) => `${MON[parseInt(m.slice(5, 7), 10) - 1]} ${m.slice(2, 4)}`);
+
+function HalfHourCorrectionChart() {
+  return (
+    <Box title="Correction by Half Hour" sub="% of volume" h={400}>
+      <StackedBars labels={HH} ticks={HH_TICKS} unit="%" digits={1} series={DECOMP_SERIES} />
+      <div className="legend">
+        {DECOMP_SERIES.map((s) => <span key={s.name}><i style={{ background: s.color }} />{s.name}</span>)}
+      </div>
+    </Box>
+  );
+}
+
+function MonthlyCorrectionChart() {
+  const val = (a: (number | null)[]) => a.map((v) => v ?? 0);
+  return (
+    <Box title="Correction by Month and Run" sub="% of volume" h={380}>
+      <GroupedBars groups={MONTHS_RUN} unit="%" digits={1}
+        series={[{ name: "First run", values: val(decomp.monthly.II), color: NIGHT }, { name: "Second run", values: val(decomp.monthly.SF), color: SECONDARY }]} />
+      <div className="legend">
+        <span><i style={{ background: NIGHT }} />First run</span>
+        <span><i style={{ background: SECONDARY }} />Second run</span>
+      </div>
+    </Box>
+  );
+}
+
 const TITLE = "What's going on with Group Correction Factors";
 
 export default function Gcf() {
@@ -123,18 +196,34 @@ export default function Gcf() {
         <p>For the business sites, on paper, yes: from 5 May the biggest of them went back to carrying none of the correction. I couldn't find a published review that checks the money, though.</p>
         <p>For the factor, the May changes made the numbers look worse without changing anyone's bill. The factor is the gap divided by the weighted volume, and May set the weight on a lot of volume, including migrated half-hourly use, to zero. Same gap, smaller base, so the factor lands further from 1. Elexon's working group says as much.<Fn n={8} k="b" /> In my data the typical daily spread of the factor across regions and half hours was 0.044 in April, 0.073 in the first weeks of May and 0.095 after 27 May.</p>
         <p>The gap itself is mostly about export. Elexon's Issue 120 working group agreed in September 2026 that the main cause of extreme factors in early runs is export data that hasn't arrived, or has been estimated as zero.<Fn n={8} k="c" /> If a home's solar export goes missing, the system thinks the region used more than it did, and scales everyone's import down. Elexon's own example is North Scotland at midnight on 28 June 2026: 0.08 on the first run, 0.77 once more export had been settled. Across Britain that June, settled export rose 6.1% between the first two runs, and Elexon's operations group has logged more low and negative factors since May.<Fn n={9} /></p>
-        <p>Export doesn't explain the nights, though, and the nights are where the factor is now falling fastest. Between midnight and 06:00 it held at about 1.00 until June, then slid to 0.956 in July, 0.886 in August and 0.798 in October, the lowest part of the day by then. A second culprit fits that. In settlement data I've seen, estimated half hours spread a home's day over one flat shape, with about 22% of its energy between midnight and 06:00, where a single-rate home with real readings uses nearer 18%. Real readings carry a weight of zero, so the correction lands entirely on the estimates and has to claw that overnight excess back. The night dip has deepened month by month as more meters moved across.</p>
+        <p>Export doesn't explain the nights, though, and the nights are where the factor is now falling fastest. Between midnight and 06:00 it held at about 1.00 until June, then slid to 0.956 in July, 0.886 in August and 0.798 in October, the lowest part of the day by then. A second culprit fits that. In one supplier's settlement data I've seen,<Fn n={10} /> estimated half hours spread a home's day over one flat shape, with about 22% of its energy between midnight and 06:00, where a single-rate home with real readings uses nearer 18%. Real readings carry a weight of zero, so the correction lands entirely on the estimates and has to claw that overnight excess back. The night dip has deepened month by month as more meters moved across.</p>
+        <p>The same data shows how lopsided the correction has become. On 3 November 2026, real readings were 38% of that supplier's volume and took none of the correction, while estimates on a weight of 1 were 34% of the volume and took 68% of it.</p>
+      </Prose>
+      <Wide><CorrectionShareChart /></Wide>
+      <Prose>
+        <p>Spread across that day, the correction took 7.2% off the supplier's volume. Overnight it averaged about 11% a half hour, peaking at 13.1% between 02:00 and 02:30, against about 6% for the rest of the day, and most of every bar is estimates.</p>
+      </Prose>
+      <Wide><HalfHourCorrectionChart /></Wide>
+      <Prose>
         <p>So the fix did what it said for the sites it was written for. It also made the factor jumpier, and it was never going to touch the missing export behind the gap. Elexon says the factors are improving and within its range.<Fn n={2} k="b" /> On the runs published so far, August to October 2026 all averaged below 0.9.</p>
       </Prose>
 
       <Section title="Where are we now, and what should suppliers expect?" />
       <Prose>
-        <p>Where the factor lands depends on the meter. A home with good half-hourly readings has a weight of zero and settles on exactly what it used. A home on estimates is scaled half hour by half hour. The chart shows a modelled summer day for a home on estimates, at the average July and August 2026 factor for each half hour.<Fn n={10} /></p>
+        <p>Where the factor lands depends on the meter. A home with good half-hourly readings has a weight of zero and settles on exactly what it used. A home on estimates is scaled half hour by half hour. The chart shows a modelled summer day for a home on estimates, at the average July and August 2026 factor for each half hour.<Fn n={11} /></p>
       </Prose>
       <Wide><HouseholdDayChart /></Wide>
       <Prose>
         <p>The home's 8.0 kWh of use settles as 7.4 kWh. Export goes the other way, because the export factor mirrors import (in October 2026 it was 1.154, which is 2 minus 0.846). If that home's 16.1 kWh of solar export carried a weight of 1, it would settle as 19.1 kWh.</p>
-        <p>For suppliers, the next year is about re-runs. If Elexon's working group is right, the factor should drift back towards 1 as missing export is filled in, with the summer months moving most. Ofgem's 1.89% cap allowance was set when the factor sat above 1, and is reviewed each August,<Fn n={5} k="b" /> while Issue 120, which will settle the weights for good, is still being assessed.<Fn n={8} k="d" /> On the current timetable the final run comes 14 months after each day, so September 2025 is finally settled this month and October 2026 in December 2027.<Fn n={4} k="b" /></p>
+        <p>For that supplier the swing has been large. Last winter the correction added up to 2.1% to its volume at the second run. In August 2026 it took 10.4% off at the second run and 13.2% at the first.<Fn n={10} k="c" /></p>
+      </Prose>
+      <Wide><MonthlyCorrectionChart /></Wide>
+      <Prose>
+        <p>For suppliers, the next year is about re-runs, and I wouldn't count on them to close the gap. Elexon's working group expects the factor to recover as missing export is filled in. On the same supplier's matched days from July to November 2026, though, the factor rose by about 0.04 from the first run to the second and by 0.014 or less after that, and overnight it didn't move at all between the second and third runs.<Fn n={10} k="b" /></p>
+      </Prose>
+      <Wide><RunUpliftChart /></Wide>
+      <Prose>
+        <p> Ofgem's 1.89% cap allowance was set when the factor sat above 1, and is reviewed each August,<Fn n={5} k="b" /> while Issue 120, which will settle the weights for good, is still being assessed.<Fn n={8} k="d" /> On the current timetable the final run comes 14 months after each day, so September 2025 is finally settled this month and October 2026 in December 2027.<Fn n={4} k="b" /></p>
       </Prose>
 
       <Footnotes notes={[
@@ -147,6 +236,7 @@ export default function Gcf() {
         <>Drax, <a href="https://energy.drax.com/intelligence/ofgem-to-amend-group-correction-factors/" target="_blank" rel="noopener">Ofgem to amend group correction factors</a>, 17 April 2026, quoting Elexon figures: measurement class C scaling weights rose from 0 to 0.55 for actual data and 0.95 for estimates. Elexon, <a href="https://www.elexon.co.uk/mod-proposal/p507/" target="_blank" rel="noopener">P507</a>; Ofgem, <a href="https://www.ofgem.gov.uk/publications/p507-balancing-and-settlement-code-bsc-proposed-changes" target="_blank" rel="noopener">P507 decision</a>: Ofgem rejected the backdated proposal and approved the forward-only P507 Alternative, effective 5 May 2026. P506, a separate modification implemented on 16 January 2026, deals with industry reference data and not with correction factors: <a href="https://www.elexon.co.uk/mod-proposal/p506/" target="_blank" rel="noopener">Elexon, P506</a>.</>,
         <>Elexon, Issue 120 Workgroup 4, September 2026: <a href="https://www.elexon.co.uk/bsc/documents/change/issues/101-150/issue-120-workgroup-4-slides/" target="_blank" rel="noopener">slides</a> and <a href="https://www.elexon.co.uk/bsc/documents/change/issues/101-150/issue-120-workgroup-4-meeting-summary/" target="_blank" rel="noopener">meeting summary</a>. The import factor is 1 + UD/(WI + WE), where UD is unallocated demand and WI and WE are weighted import and export. The M10 weights gave profiled import a weight of 1.4, which held factors closer to 1 until May; the review effective 27 May returned it to 1.0 and set migrated half-hourly consumption to 0. Members broadly agreed that missing export, or export estimated as zero, is the main cause of extreme factors in early runs. Issue 120 was still in assessment, last updated 11 September 2026.</>,
         <>Elexon, <a href="https://www.elexon.co.uk/bsc/documents/groups/mhhs-transitional-operations-group/transitional-operations-group-meeting41-slidedeck-31july2026/" target="_blank" rel="noopener">MHHS Transitional Operations Group meeting 41</a>, 31 July 2026: more low and negative factors since the May weight updates, concentrated in North Scotland and the first (II) run.</>,
+        <>Settlement data for one GB electricity supplier's portfolio (settlement and DIP reports D0296, REP-003 and PUB-021), analysed November 2026 and shown as shares only. The factors backed out of it match Elexon's published values to within 0.003. Night share compares estimated half hours with actual readings for single-rate (profile class 1) customers on 3 to 4 November 2026. Run steps are mean changes on matched settlement dates, July to November 2026, with only 11 days for the third to fourth run. The half-hourly breakdown is for the initial (II) run of 3 November 2026, with losses taken as the residual after estimates and legacy meters; it reconciles to the supplier's total correction. Monthly figures are corrected minus uncorrected import volume as a share of uncorrected volume, on days with all 14 GSP Groups, for months with at least 10 days of that run; October 2026 at the second run has 10 days.</>,
         <>My model, so treat accordingly. Consumption is the modelled summer household from my <a href="/batteries">home batteries</a> piece (about 8 kWh a day, no solar). Solar is a 4 kWp array peaking at 2.8 kW on a clear day; export is generation above the home's use. Settled import is metered use times the average July and August 2026 import factor for each half hour, at a weight of 1. Settled export uses 2 minus that factor, and also assumes a weight of 1, which I haven't confirmed for estimated export.</>,
       ]} />
     </Article>

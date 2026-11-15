@@ -52,3 +52,12 @@ export function ramp(k: number, n: number): string {
   const p = n > 1 ? Math.round((k / (n - 1)) * 100) : 100;
   return `color-mix(in srgb, var(--ste-secondary) ${p}%, var(--ste-primary))`;
 }
+
+/** Clean ticks spanning lo..hi where lo may be below zero; zero is always a tick. */
+export function ticksSigned(lo: number, hi: number): number[] {
+  if (lo >= 0) return axisTicks(hi, 4);
+  const step = niceStep(hi - lo, 4);
+  const first = Math.floor(lo / step) * step;
+  const n = Math.max(1, Math.ceil((hi - first) / step));
+  return Array.from({ length: n + 1 }, (_, i) => +(first + i * step).toFixed(10));
+}
