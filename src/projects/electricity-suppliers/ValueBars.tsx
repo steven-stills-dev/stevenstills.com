@@ -31,7 +31,7 @@ function PairBars({ title, unit, bars, rows }: { title: string; unit: string; ba
   const dig = tickDecimals(step);
 
   return (
-    <Box icon="bars" title={title} sub={unit} className="es-box">
+    <Box title={title} sub={unit} className="es-box">
       <div ref={ref} className="es-bars" style={{ height: rows ? H : undefined }} onMouseLeave={() => setHi(null)}>
         {rows ? (
           <>
@@ -47,7 +47,7 @@ function PairBars({ title, unit, bars, rows }: { title: string; unit: string; ba
                     <text x={LABEL - 10} y={TOP + i * ROW + ROW / 2 + 4} textAnchor="end" fontSize="12" fill="var(--ste-night)">{r.name}</text>
                     {bars.map((b, k) => (
                       <rect key={b.label} x={Math.min(X(0), X(r.values[k]))} y={TOP + i * ROW + 5 + k * 10} width={Math.abs(X(r.values[k]) - X(0))}
-                        height={9} rx={4.5} fill={b.color} opacity={hi == null || hi === i ? 1 : 0.35} />
+                        height={9} rx={2} fill={b.color} opacity={hi == null || hi === i ? 1 : 0.35} />
                     ))}
                   </g>
                 ))}

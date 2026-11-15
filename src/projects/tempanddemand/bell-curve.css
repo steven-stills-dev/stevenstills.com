@@ -11,17 +11,15 @@
 }
 
 .bc-year { position: absolute; top: 2px; right: 6px; pointer-events: none; text-align: right;
-  font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 600; letter-spacing: -.02em; line-height: 1; color: var(--ste-midnight); }
-.bc-year small { display: block; margin-top: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--ste-dusk); }
+  font-size: clamp(2rem, 5vw, 3.25rem); font-family: var(--serif); font-weight: 400; letter-spacing: -.03em; line-height: 1; color: var(--ste-midnight); }
+.bc-year small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--ste-dusk); }
 
 .bc-controls { flex: 0 0 auto; display: flex; align-items: center; gap: 16px; margin-top: 16px; }
 .bc-controls input[type="range"] { flex: 1; min-width: 0; accent-color: var(--ste-night); cursor: pointer; }
-.bc-play { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center; background: var(--ste-primary); color: var(--ste-night); }
+.bc-play { flex: 0 0 auto; width: 40px; height: 40px; border-radius: var(--radius); border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; background: var(--ste-midnight); color: var(--ste-midday); }
 .bc-play svg { width: 16px; height: 16px; }
-.bc-modes { flex: 0 0 auto; display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--ste-midday); }
-.bc-modes .chip { background: none; }
-.bc-modes .chip.on { background: var(--ste-primary); }
+.bc-modes { flex: 0 0 auto; display: inline-flex; gap: 4px; }
 
 .legend .bc-dash { background: none; border: 1.5px dashed var(--ste-dusk); }
 .bc-ring { box-shadow: inset 0 0 0 1px var(--hairline); }
@@ -43,11 +41,11 @@
 
 /* Formula panel: the settlement formula set as text, the seasonal normal term picked out in the accent. */
 .bc-eq { text-align: center; overflow-x: auto; padding: 8px 0 4px; }
-.bc-eq p { white-space: nowrap; font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 500; color: var(--ste-midnight); line-height: 2.1; }
+.bc-eq p { white-space: nowrap; font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 400; color: var(--ste-midnight); line-height: 2.1; }
 .bc-eq p + p { font-size: clamp(.9rem, 1.8vw, 1.1rem); color: var(--ste-night); line-height: 2.2; }
 .bc-eq-h { display: block; margin: 4px 0 4px; font-size: 12px; font-weight: 600; color: var(--ste-dusk); }
 .bc-eq-h ~ .bc-eq-h { margin-top: 16px; }
 .bc-eq var { font-style: normal; font-weight: 600; }
-.bc-eq mark { background: var(--ste-primary); color: var(--ste-midnight); border-radius: 8px; padding: 2px 8px; }
+.bc-eq mark { background: var(--ste-primary); color: var(--ste-midnight); border-radius: 4px; padding: 2px 8px; }
 .bc-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 24px; margin-top: 16px; font-size: 13px; color: var(--ste-dusk); }
 .bc-key b { color: var(--ste-night); font-weight: 600; margin-right: 8px; }

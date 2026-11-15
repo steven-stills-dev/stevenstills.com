@@ -230,6 +230,21 @@ def snd() -> pd.Series:
     return s
 
 
+def snd_gap(gas: pd.Series, normal: pd.Series, c: pd.DataFrame) -> None:
+    """Print each gas year's LDZ offtake against the seasonal normal forecast and the part the weather explains, in TWh."""
+    d = pd.concat([normal.rename("snd"), gas.rename("act"), c], axis=1).dropna(subset=["snd", "act"])
+    fit = d.dropna()[lambda x: x.actual < 14]  # demand stops responding to weather above a CWV of about 14
+    slope, cut = np.polyfit(fit.actual, fit.act, 1)
+    r2 = 1 - ((fit.act - (cut + slope * fit.actual)) ** 2).sum() / ((fit.act - fit.act.mean()) ** 2).sum()
+    print(f"snd gap: {slope:.0f} GWh a day per degree of CWV below 14, R2 {r2:.3f}")
+    for y, g in d.groupby(np.where(d.index.month >= 10, d.index.year, d.index.year - 1)):
+        k = g.dropna()
+        weather = (slope * (k.actual.clip(upper=14) - k.normal.clip(upper=14))).sum() / 1e3
+        gap = (g.act - g.snd).sum() / 1e3
+        print(f"  {y}/{str(y + 1)[2:]}: {len(g)} days, gap {gap:.1f} TWh ({(g.act.sum() / g.snd.sum() - 1) * 100:.1f}%), "
+              f"weather {weather:.1f} on {len(k)} days, other {gap - weather:.1f}")
+
+
 def pairs(t: pd.Series, g: pd.Series) -> list[dict]:
     """Days with both a temperature and a gas figure, grouped by year from FIRST, as [°C, GWh, day of year]."""
     j = pd.concat([t.rename("t"), g.rename("g")], axis=1, join="inner")[str(FIRST):].dropna()
@@ -294,6 +309,7 @@ def main() -> None:
         c = gas[str(a):str(b)]
         print(f"gas {a}-{b}: {c.count()} days, mean {c.mean():.0f} GWh/d, Jan {c[c.index.month == 1].mean():.0f}, Jul {c[c.index.month == 7].mean():.0f}")
     print("cwv by gas year", data["cwv"])
+    snd_gap(gas, snd(), cw)
     n = data["normals"]
     print("normals", n["windows"], "last12 from", n["last12From"], "to", n["last"])
     for i, mon in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):

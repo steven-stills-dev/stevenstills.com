@@ -9,7 +9,7 @@ export default function PriceShape() {
   const all = data ? Object.values(data.prices).flat() : [];
 
   return (
-    <Box icon="activity" title="Wholesale Price by Half Hour" sub="£/MWh" className="es-box">
+    <Box title="Wholesale Price by Half Hour" sub="£/MWh" className="es-box">
       {data ? (
         <div className="es-pair">
           {TYPES.map((t) => {

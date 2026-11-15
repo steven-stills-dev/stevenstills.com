@@ -1,19 +1,23 @@
 import type { ReactNode } from "react";
 import Nav from "./Nav";
 
-/** Standard scrolling page wrapper: brand cell, content, footer. */
+/** Standard scrolling page: masthead, content, full-width contact footer. */
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="wrap">
-      <div className="brandcell"><Nav /></div>
-      {children}
-      <footer className="site-foot">
-        <span>© 2026 Steven Stills</span>
-        <nav className="contact-links" aria-label="Contact">
-          <a href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
-          <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
-        </nav>
+    <>
+      <div className="wrap">
+        <Nav />
+        <main>{children}</main>
+      </div>
+      <footer className="foot">
+        <div className="wrap foot-in">
+          <a className="foot-mail" href="mailto:stevenstills@icloud.com">stevenstills@icloud.com</a>
+          <div className="foot-meta">
+            <a href="https://www.linkedin.com/in/steven-stills" target="_blank" rel="noopener">LinkedIn</a>
+            <span>© 2026 Steven Stills</span>
+          </div>
+        </div>
       </footer>
-    </div>
+    </>
   );
 }

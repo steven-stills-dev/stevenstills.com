@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { Article, Prose, Section, Wide, Fn, Footnotes } from "../../components/Article";
 import Box from "../../components/Box";
-import PillBars from "../../components/charts/PillBars";
+import Bars from "../../components/charts/Bars";
 import { MON, fmt } from "../../lib/format";
 import { usePageMeta } from "../../lib/meta";
 import { ramp } from "../../components/charts/geom";
@@ -57,7 +57,7 @@ export function BellFigure({ h, preview = false, mode = "mean", onMode }: {
   };
 
   return (
-    <Box icon="activity" title="Distribution of Daily Temperature" sub="σ" h={h}>
+    <Box title="Distribution of Daily Temperature" sub="σ" h={h}>
       {data ? <BellCurve data={data} mode={mode} t={t} /> : <div className="loading">Loading…</div>}
       <div className="legend">
         {CATS.map((c, k) => <span key={c.name}><i className={k === 3 ? "bc-ring" : undefined} style={{ background: c.color }} />{c.name}</span>)}
@@ -66,7 +66,7 @@ export function BellFigure({ h, preview = false, mode = "mean", onMode }: {
       {!preview && data && (
         <div className="bc-controls">
           <button type="button" className="bc-play" onClick={toggle} aria-label={playing ? "Pause" : "Play"}>
-            {playing ? <Pause strokeWidth={2.4} /> : <Play strokeWidth={2.4} />}
+            {playing ? <Pause strokeWidth={1.5} /> : <Play strokeWidth={1.5} />}
           </button>
           <input type="range" min={0} max={n - 1} step={1} value={Math.round(t)} aria-label="Year"
             onChange={(e) => { setPlaying(false); seek(+e.target.value); }} />
@@ -92,7 +92,7 @@ function ShareTable({ data, mode }: { data: BellData; mode: Mode }) {
     label: i === data.years.length - 1 && tail ? `${y} ${tail}` : String(y), share: m.share[i], shift: m.shift[i],
   }));
   return (
-    <Box icon="layers" title="Share of Days by Category" sub={`Daily ${mode}, %`}>
+    <Box title="Share of Days by Category" sub={`Daily ${mode}, %`}>
       <div className="bc-table-wrap">
         <table className="bc-table">
           <thead>
@@ -130,10 +130,10 @@ function NormalsFigures({ n }: { n: Normals }) {
   const signed = (v: number | null) => (v == null ? "–" : `${v > 0 ? "+" : ""}${fmt(v, 1)}`);
   return (
     <>
-      <Box icon="bars" title="Month-by-Month Temperatures" sub="°C" h={400}>
+      <Box title="Month-by-Month Temperatures" sub="°C" h={400}>
         <MonthBars series={cols} unit="°C" digits={1} />
       </Box>
-      <Box icon="layers" title="Month-by-Month Data" sub="°C">
+      <Box title="Month-by-Month Data" sub="°C">
         <div className="bc-table-wrap">
           <table className="bc-table">
             <thead>
@@ -160,7 +160,7 @@ function NormalsFigures({ n }: { n: Normals }) {
 /** The settlement and national forecasting formulas, with every seasonal normal term picked out. */
 function FormulaPanel() {
   return (
-    <Box icon="layers" title="Gas Demand Formulas">
+    <Box title="Gas Demand Formulas">
       <div className="bc-eq">
         <span className="bc-eq-h">Settlement</span>
         <p><var>SPD</var> = (<var>AQ</var> ÷ 365) × <var>ALP</var> × (1 + <var>DAF</var> × <var>WCF</var>)</p>
@@ -185,88 +185,98 @@ function FormulaPanel() {
 }
 
 export default function BellCurvePage() {
-  const title = "The forgotten problem in forecasting gas allocations";
-  const lede = "I've been thinking about how hot this year has been. So far, 70% of days in 2026 have run warmer than normal, but Britain's gas system still plans for ‘normal’ conditions. I dug into it, and the fix turns out to be fairly simple for an increasingly extreme problem.";
-  usePageMeta(title, "In 2015, 43% of days in Central England ran warmer than normal for their date, and so far in 2026 it is 70%. I look at why gas is the simple half of energy forecasting, and why the seasonal normal inside the industry's gas formula is falling out of step with the weather.");
+  const title = "Seasonal normal weather in gas demand allocation";
+  const lede = "Britain's gas industry allocates and forecasts demand against a seasonal normal, the weather the industry treats as typical for each day of the year, and resets that normal once every five years. I look at how far temperatures and gas demand have moved since 2015, how the published seasonal normal compares with the weather since October 2022, and what the difference between the two was worth in gas in 2024/25.";
+  usePageMeta(title, "Britain's gas industry allocates and forecasts demand against a seasonal normal that is reset once every five years. I look at temperature and gas demand since 2015, compare the published seasonal normal with the weather since October 2022, and estimate what the difference was worth in the 2024/25 gas year.");
   const data = useBell();
   const [mode, setMode] = useState<Mode>("mean");
   const [dayHover, setDayHover] = useState<DayHover>(null);
 
   return (
-    <Article kicker="Writing · climate & energy" title={title} lede={lede}>
-      <Wide>
-        <BellFigure h={500} mode={mode} onMode={setMode} />
-      </Wide>
-
+    <Article kicker="Writing · climate & energy · updated 12 Nov 2026" title={title} lede={lede}>
       <Prose>
-        <p>On 1 March 2018, with the Beast from the East blowing across the country, Britain's gas networks carried 3,893 GWh in a single day, the most of any day since 2015.<Fn n={1} /> Eight summers later the records are all heat. 26 June and 13 August 2026 were the second and third hottest days in a Central England record that starts in 1772, beaten only by 19 July 2022.<Fn n={2} /><Fn n={3} /> This is the story of how fast the weather is moving, and how slowly the gas industry's idea of normal moves with it.</p>
-        <p>The chart shows every day since 2015, one year at a time, sorted by how far its temperature sat above or below the 1961 to 1990 average for that date. The dashed outline is 2015.<Fn n={4} /> In 2015, 43% of days ran warmer than normal. In 2020, 53%. In 2025, 60%. This year so far, 70%.<Fn n={3} k="b" /></p>
-        <p>Each colour in the chart marks a band of days. A day counts as normal when its temperature lands in the middle third of what that date saw between 1961 and 1990. Warmer days fall into warm, very warm or extremely warm, depending on how many standard deviations (the typical swing for that date) they sit above its 1961 to 1990 average, and colder days mirror them. The table below gives the cut-offs, which come from James Hansen's 2012 paper on how people perceive a warming climate.<Fn n={5} /></p>
+        <p>Most of the gas on Britain's local networks goes to homes and small businesses whose meters are read monthly at best. The industry therefore allocates each day's demand to those meters with a formula written into the Uniform Network Code, the gas industry's rulebook, and the formula depends on the seasonal normal: the weather, and the demand that goes with that weather, which the industry treats as typical for each day of the year.<Fn n={1} /></p>
+        <p>The seasonal normal is slow to change. The Demand Estimation Sub-Committee (DESC) resets it once every five years,<Fn n={2} /> so between resets the formula measures each day against a fixed view of typical weather. A supplier that buys gas against a forecast built on the seasonal normal carries the difference: when the weather runs warmer than the seasonal normal, the supplier holds gas bought for demand that does not arrive.</p>
+        <p>I started looking at the seasonal normal because of how warm 2026 has been. I wanted to know how far the weather has moved from the seasonal normal the industry publishes, and what that difference is worth in gas.</p>
       </Prose>
 
-      {data && <Wide><ShareTable data={data} mode={mode} /></Wide>}
-
-      <Section title="Gas is the simple half" />
+      <Section title="Where the seasonal normal sits in the allocation formula" />
       <Prose>
-        <p>Most people in energy will tell you gas is the easier forecast, and for most of the year I'd agree. As the days warm up, demand falls in something close to a straight line, about 146 GWh a day for every degree of daily mean temperature. It keeps falling until daytime highs pass about 22°C, where it bottoms out near 500 GWh a day, the gas for hot water, cooking and industry that no weather switches off.<Fn n={3} k="c" /></p>
-      </Prose>
-      {data && (
-        <Wide>
-          <Box icon="activity" title="Average Temperature by Day" sub="°C" h={400}>
-            <YearLines lines={data.temp} years={data.years} unit="°C" digits={1} hover={dayHover} onHover={setDayHover} />
-          </Box>
-          <Box icon="activity" title="Gas Demand by Day" sub="GWh" h={400}>
-            <YearLines lines={data.gas} years={data.years} unit="GWh" digits={0} hover={dayHover} onHover={setDayHover} />
-          </Box>
-        </Wide>
-      )}
-      <Prose>
-        <p>Year by year, the networks carried between 1,410 and 1,490 GWh a day from 2015 to 2021. In 2022 that fell to 1,270 GWh, and it has stayed between 1,210 and 1,230 GWh since.<Fn n={1} k="b" /> Compare days of the same temperature and the drop is still there. At 4 to 6°C the networks took 2,240 GWh in 2015 to 2017 and 2,060 GWh in 2022 to 2025, and every 2°C band from 0 to 20°C fell by 8% to 14%.<Fn n={1} k="c" /></p>
-      </Prose>
-      {data && (
-        <Wide>
-          <Box icon="activity" title="Gas Demand Against Temperature" sub="GWh" h={440}>
-            <YearScatter groups={data.scatter} years={data.years} xUnit="°C" yUnit="GWh" />
-          </Box>
-        </Wide>
-      )}
-      <Prose>
-        <p>When Ofgem cut its typical household gas figure from 11,500 to 9,500 kWh a year in May 2026, it listed efficiency, "evolving patterns of energy use within the home", climate and "more recent behavioural responses to affordability pressures".<Fn n={6} /> Weather is only one of those. It is also the one the industry writes down in advance.</p>
-      </Prose>
-
-      <Section title="The formula runs on a normal" />
-      <Prose>
-        <p>Most of the gas on the local networks goes to homes and small businesses whose meters are read monthly at best, so the industry allocates each day's demand with a formula written into the Uniform Network Code. Each site's annual quantity is spread across the year by a load profile, then nudged by a weather correction: the gap between the day's composite weather variable, a blend of temperature and wind, and its seasonal normal.<Fn n={7} /></p>
+        <p>The allocation formula takes each site's annual quantity of gas and spreads it across the year with a load profile. The formula then adjusts each day's share with a weather correction: the gap between the day's composite weather variable, a blend of temperature and wind, and the seasonal normal value of that variable.<Fn n={1} k="b" /></p>
       </Prose>
       <Wide>
         <FormulaPanel />
       </Wide>
       <Prose>
-        <p>The seasonal normal turns up in three of the formula's four moving parts. The load profile is built from seasonal normal demand, and so is the adjustment factor, which divides by it. The weather correction then measures each day's weather against the seasonal normal weather.<Fn n={7} k="b" /> The Demand Estimation Sub-Committee resets that normal once every five years, "due to the time taken to perform the review and the need for stability". The last reset took effect on 1 October 2025, onto a warmer basis built from Met Office climate projections, and the next is due in 2030.<Fn n={8} /></p>
-        <p>National Gas forecasts demand for the whole network the same way: seasonal normal demand, plus a weather sensitivity multiplied by the gap between the day's weather and the seasonal normal weather. NESO's Future Energy Scenarios point to that National Gas method for peak gas demand.<Fn n={9} /></p>
+        <p>The seasonal normal turns up in three of the formula's four moving parts. The load profile is built from seasonal normal demand. The daily adjustment factor is built from seasonal normal demand too, because the factor divides by it. The weather correction then measures each day's composite weather variable against the seasonal normal for that variable.<Fn n={1} k="c" /></p>
+        <p>DESC resets the seasonal normal once every five years, "due to the time taken to perform the review and the need for stability". The last reset took effect on 1 October 2025, onto a warmer basis built from Met Office climate projections, and the next is due in 2030.<Fn n={2} k="b" /></p>
+        <p>National Gas forecasts demand for the whole network the same way: seasonal normal demand, plus a weather sensitivity multiplied by the gap between the day's weather and the seasonal normal weather. The Future Energy Scenarios published by NESO (the National Energy System Operator) point to that National Gas method for peak gas demand.<Fn n={3} /></p>
       </Prose>
 
-      <Section title="The normal is already behind" />
+      <Section title="How far daily temperatures have moved since 2015" />
       <Prose>
-        <p>Public weather data shows how quickly a weather average falls behind. Taking a central, well-populated area as a sample, I looked at Birmingham's temperature history: 2021 to 2025 ran about 0.7°C warmer than 1991 to 2020, and warmer in 10 of 12 months. Over the last 12 months, 11 came in above the 1991 to 2020 average, July by 3.9°C.<Fn n={10} /></p>
+        <p>I started with temperature, using the Met Office's Central England series, which gives a daily mean, maximum and minimum.<Fn n={4} /> Two days in 2026 rank near the top of that series: 26 June and 13 August 2026 were the second and third hottest days since 2015, behind 19 July 2022.<Fn n={5} /></p>
       </Prose>
-      {data && <Wide><NormalsFigures n={data.normals} /></Wide>}
+      <Wide>
+        <BellFigure h={500} mode={mode} onMode={setMode} />
+      </Wide>
       <Prose>
-        <p>The gas industry's own figures show the same drift. National Gas publishes the national composite weather variable every day next to its seasonal normal, and that published normal has not changed, day for day, since October 2022. In each of the three gas years to September 2025, the actual weather variable came in warmer than the seasonal normal on about two days in three. So far this gas year, it has been 78% of days.<Fn n={11} /></p>
+        <p>The chart shows every day since 2015, one year at a time, sorted by how far the day's temperature sat above or below the 1961 to 1990 average for that date.<Fn n={6} /> The dashed outline marks 2015. In 2015, 42% of days ran warmer than normal. The share was 53% in 2020 and 60% in 2025, and so far in 2026 it is 70%.<Fn n={5} k="b" /> The share of days warmer than normal does not rise in every year, and the table below gives each year in full.</p>
+        <p>Each colour in the chart marks a band of days. A day counts as normal when its temperature lands in the middle third of what that date saw between 1961 and 1990. Warmer days fall into warm, very warm or extremely warm, depending on how many standard deviations (the typical swing for that date) they sit above the 1961 to 1990 average for that date, and colder days mirror them. The cut-offs come from James Hansen's 2012 paper on how people perceive a warming climate.<Fn n={7} /> The table below gives the cut-offs and the share of days in each band for every year.</p>
+      </Prose>
+
+      {data && <Wide><ShareTable data={data} mode={mode} /></Wide>}
+
+      <Section title="How gas demand responds to temperature" />
+      <Prose>
+        <p>Most people in energy will tell you gas is an easier forecast than electricity, which solar, batteries and half-hourly settlement make the harder problem, and for most of the year I'd agree. As the days warm up, gas demand falls in something close to a straight line, about 146 GWh a day for every degree of daily mean temperature. Demand keeps falling until daytime highs pass about 22°C, where it levels off near 500 GWh a day, the gas for hot water, cooking and industry that no weather switches off.<Fn n={5} k="c" /></p>
+        <p>The largest single day in the data was 1 March 2018, with the Beast from the East blowing across the country, when Britain's local gas networks carried 3,893 GWh.<Fn n={8} /> The two charts below show average temperature and gas demand for each day of the year, with one line for each year since 2015.</p>
       </Prose>
       {data && (
         <Wide>
-          <Box icon="bars" title="Days Warmer Than the Seasonal Normal" sub="%" h={340}>
-            <PillBars items={data.cwv.filter((c) => c.name >= "2022").map((c) => ({ label: c.name, value: c.warmer }))} unit="%" />
+          <Box title="Average Temperature by Day" sub="°C" h={400}>
+            <YearLines lines={data.temp} years={data.years} unit="°C" digits={1} hover={dayHover} onHover={setDayHover} />
+          </Box>
+          <Box title="Gas Demand by Day" sub="GWh" h={400}>
+            <YearLines lines={data.gas} years={data.years} unit="GWh" digits={0} hover={dayHover} onHover={setDayHover} />
           </Box>
         </Wide>
       )}
       <Prose>
-        <p>DESC reached the same answer in its NDM Algorithm Review in June 2026. The seasonal normal "was approximately 0.25 degrees cooler than expected" across the five gas years to 2024/25, and "all Springs since 2022 have stood out as warmer than normal". The review still concluded the algorithm "remains fit for purpose".<Fn n={12} /></p>
+        <p>Year by year, the networks carried an average of between 1,410 and 1,490 GWh a day from 2015 to 2021. In 2022 the average fell to 1,270 GWh a day, and it has stayed between 1,210 and 1,230 GWh a day in each full year since.<Fn n={8} k="b" /> The drop is still there when I compare days of the same temperature. On days with a mean temperature of 4 to 6°C the networks took an average of 2,240 GWh a day in 2015 to 2017 and 2,060 GWh a day in 2022 to 2025, and the average for every 2°C band from 0 to 20°C fell by 8% to 14%.<Fn n={8} k="c" /> The scatter below shows each day's gas demand against that day's temperature, coloured by year.</p>
       </Prose>
       {data && (
         <Wide>
-          <Box icon="activity" title="Weather Against the Seasonal Normal" sub="°C" h={400}>
+          <Box title="Gas Demand Against Temperature" sub="GWh" h={440}>
+            <YearScatter groups={data.scatter} years={data.years} xUnit="°C" yUnit="GWh" />
+          </Box>
+        </Wide>
+      )}
+      <Prose>
+        <p>When Ofgem decided in May 2026 to cut its typical household gas figure from 11,500 to 9,500 kWh a year, it listed efficiency, "evolving patterns of energy use within the home", climate and "more recent behavioural responses to affordability pressures".<Fn n={9} /> Climate is one of those four factors, and it is the one the industry writes down in advance, as the seasonal normal.</p>
+      </Prose>
+
+      <Section title="The seasonal normal against recent weather" />
+      <Prose>
+        <p>I wanted to see how quickly a weather average falls behind the recent weather, so I took Birmingham, a central, well-populated area, as a sample and looked at its temperature history. The years 2021 to 2025 ran about 0.7°C warmer than 1991 to 2020, and warmer in 10 of 12 months. Over the last 12 months, 11 came in above the 1991 to 2020 average, July by 3.9°C.<Fn n={10} /> The chart and table below show Birmingham's average temperature for each month over 30 years, 10 years, 5 years and the last 12 months.</p>
+      </Prose>
+      {data && <Wide><NormalsFigures n={data.normals} /></Wide>}
+      <Prose>
+        <p>The gas industry's own figures also show the weather running warmer than its seasonal normal. National Gas publishes the national composite weather variable every day next to its own seasonal normal for that variable. That published normal last changed in October 2022 and did not change when DESC's new basis took effect on 1 October 2025. In each of the three gas years to September 2025 (a gas year runs from October to September), the actual composite weather variable came in warmer than the seasonal normal on about two days in three. In the 2025/26 gas year so far, the share has been 78% of days.<Fn n={11} /> I'm less sure of the latest figure, because the industry revised the formula behind the composite weather variable from 1 October 2025 and the published seasonal normal did not change with it. The bar chart below shows the share of days in each gas year on which the composite weather variable was warmer than the published seasonal normal.</p>
+      </Prose>
+      {data && (
+        <Wide>
+          <Box title="Days Warmer Than the Seasonal Normal" sub="%" h={340}>
+            <Bars items={data.cwv.filter((c) => c.name >= "2022").map((c) => ({ label: c.name, value: c.warmer }))} unit="%" />
+          </Box>
+        </Wide>
+      )}
+      <Prose>
+        <p>DESC's own review points the same way. In its NDM Algorithm Review in June 2026, DESC reported that the seasonal normal "was approximately 0.25 degrees cooler than expected" across the five gas years to 2024/25, and that "all Springs since 2022 have stood out as warmer than normal". The review concluded that the algorithm "remains fit for purpose".<Fn n={12} /></p>
+      </Prose>
+      {data && (
+        <Wide>
+          <Box title="Weather Against the Seasonal Normal" sub="°C" h={400}>
             <YearLines years={data.years} unit="°C" digits={1} ticks={GAS_TICKS} days={GAS_DAYS}
               lines={[
                 { name: "Seasonal normal", values: data.cwvYears.normal, color: "var(--ste-night)", dash: "4 4" },
@@ -276,12 +286,17 @@ export default function BellCurvePage() {
         </Wide>
       )}
       <Prose>
-        <p>The chart shows the same comparison on National Gas's national figures, one line for each gas year since October 2022 against the seasonal normal it publishes. Spring came in above the seasonal normal in every one of those years, by 0.4 to 1.4 degrees on average.<Fn n={11} k="b" /></p>
-        <p>In 2024/25, the last full gas year, the networks carried 12.7% less gas than National Gas's seasonal normal forecast, about 64 TWh. By my estimate some 19 TWh of that was the weather running warmer than the normal, and the rest is homes using less.<Fn n={13} /> For scale, 19 TWh is a year's gas for about two million homes at Ofgem's typical 9,500 kWh, and about £620m of gas at the 96p a therm UK gas fetched in late May 2026.<Fn n={6} k="b" /><Fn n={14} /> A supplier that bought gas for 1% of the market against that seasonal normal would be holding about £6m of gas priced for weather that never came.</p>
+        <p>The chart above shows the same comparison day by day on National Gas's national figures, with one line for each gas year since October 2022 against the seasonal normal that National Gas publishes. Spring, March to May, came in above the seasonal normal in every one of those gas years, by 0.4 to 1.4 degrees on average.<Fn n={11} k="b" /></p>
+      </Prose>
+
+      <Section title="What the gap was worth in the 2024/25 gas year" />
+      <Prose>
+        <p>In 2024/25, the last full gas year, the local networks carried 12.7% less gas than National Gas's seasonal normal forecast, a shortfall of about 64 TWh. National Gas defines the local network figure in its forecast as metered demand plus the gas the networks lose, so I treat the forecast and the gas the networks carried as the same quantity.<Fn n={13} /> By my estimate some 19 TWh of the shortfall came from the weather running warmer than the seasonal normal. The other 45 TWh is demand running below the seasonal normal forecast in the same weather, and I found a shortfall of that second kind in every gas year I checked: between 32 and 45 TWh in each of the four gas years from 2021/22 to 2024/25. So I read the 45 TWh as the level of the forecast sitting too high, which a weather correction would not remove. For scale, 19 TWh is a year's gas for about two million homes at Ofgem's typical 9,500 kWh, and about £630m at 97p a therm, the average of the daily System Average Price of gas over the 2024/25 gas year.<Fn n={9} k="b" /><Fn n={14} /> A supplier that bought gas for 1% of the market against that seasonal normal would be holding about £6m of gas bought for weather that did not arrive.</p>
+        <p>The chart below shows the 2024/25 gas year day by day. National Gas's seasonal normal forecast sat above the gas the local networks carried on 84% of days.<Fn n={13} k="b" /></p>
       </Prose>
       {data && (
         <Wide>
-          <Box icon="activity" title="Gas Demand Against the Seasonal Normal Forecast" sub="GWh" h={400}>
+          <Box title="Gas Demand Against the Seasonal Normal Forecast" sub="GWh" h={400}>
             <YearLines years={data.years} unit="GWh" digits={0} ticks={GAS_TICKS} days={GAS_DAYS}
               lines={[
                 { name: "Seasonal normal forecast", values: data.sndYear.forecast, color: "var(--ste-night)", dash: "4 4" },
@@ -290,31 +305,28 @@ export default function BellCurvePage() {
           </Box>
         </Wide>
       )}
-      <Prose>
-        <p>The chart shows 2024/25 day by day. National Gas's seasonal normal forecast sat above what the local networks actually carried on 84% of days.<Fn n={13} k="b" /></p>
-      </Prose>
 
-      <Section title="What I take from this" />
+      <Section title="Tracking the gap between weather and the seasonal normal" />
       <Prose>
-        <p>Electricity gets the attention, and fairly so. Solar, batteries and half-hourly settlement make it the harder problem. Gas is the one that looks solved. The physics is simple and the formula is public, so the risk sits in a single input that is reset once every five years.</p>
-        <p>The fix is as simple as it seems: track the gap between actual and seasonal normal every month and trim the gas forecasts to match that demand ‘miss’. A solution that will save any gas supplier a lot of wasted cash forecasting gas inaccurately, though this only works if you have a decent meter read performance to support it and aren't beholden to the gas allocation algorithms in the first place. But the heat is coming either way, and five years is a long time to plan for a winter that feels like it's never coming back.</p>
+        <p>Gas demand follows temperature closely and the allocation formula is public, so one risk in a gas forecast that I can measure is the seasonal normal, which DESC resets once every five years. In each of the three gas years to September 2025 the weather came in warmer than the seasonal normal National Gas publishes on about two days in three, and by my estimate that difference accounted for some 19 TWh of the 64 TWh shortfall against the seasonal normal forecast in 2024/25. The other 45 TWh was demand below the forecast in the same weather, at a size I found in every gas year from 2021/22, so I would correct that part separately, as an error in the level of the forecast.</p>
+        <p>The correction I would make is fairly simple. I would track the gap between the actual weather and the seasonal normal every month, and trim the gas forecast by the demand that the gap explains. I would look at spring first, because spring came in above the seasonal normal in every gas year since October 2022. The correction only works for a supplier with decent meter read performance to support it, and for one that is not beholden to the gas allocation algorithms in the first place.</p>
       </Prose>
 
       <Footnotes notes={[
-        <>My calculations from National Gas Transmission's NTS Energy Offtaken, LDZ Offtake Total. 2015 to 2019 is from Grant Wilson and Noah Godfrey's extract of National Grid's MIPI data on <a href="https://zenodo.org/records/4913872" target="_blank" rel="noopener">Zenodo</a> (CC BY-NC 4.0). 19 January 2020 to 26 September 2021 is from an archived portal export in the <a href="https://github.com/benmcwilliams/gas-demand" target="_blank" rel="noopener">gas-demand repository</a> on GitHub. From 27 September 2021 it is from the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, which keeps five rolling years. 1 to 18 January 2020 is converted from the LDZ volumes in National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">Gas Winter Review and Consultation 2020</a> datasheet at 10.96 kWh per cubic metre. Periods use complete calendar years, and lines by date are smoothed over 31 days.</>,
+        <>"SPDt = ((AQ/365) x ALPt x (1 + (DAFt x WCFt)))" and "WCFt = CWVt – SNCWVt", where SNCWV "is the Seasonal Normal value of the Composite Weather Variable". The ALP is "the Seasonal Normal Demand of the End User Category for that Day as a proportion of the average Seasonal Normal Demand", and "DAF = WVCEt/SNDEt". <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2023-10/Demand%20Estimation%20UNC%20Related%20Document%20v1.4.pdf" target="_blank" rel="noopener">Uniform Network Code, NDM Demand Estimation Methodology v1.4</a>, sections 2 to 3.5, reproducing <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2024-10/10%20TPD%20Section%20H%20-%20Demand%20Estimation%20and%20Demand%20Forecasting.pdf" target="_blank" rel="noopener">UNC TPD Section H</a> H2.2.1 to H2.5.</>,
+        <>"Reviews of the CWV formula and Seasonal Normal basis are normally only carried out by DESC every 5 years due to the time taken to perform the review and the need for stability." The 2019 review took effect on 1 October 2020 and the next basis on 1 October 2025, and DESC wrote on 14 August 2025 that "SNCWV profiles have generally increased across all months to account for the latest view of climate". <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2025-07/3.0%20Seasonal%20Normal%20Review%20DESC_230725.pdf" target="_blank" rel="noopener">DESC, Seasonal Normal Review, 23 July 2025</a>; the new basis is built from Met Office climate projections for gas years 2025/26 to 2029/30, <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2025-08/Seasonal%20Normal%20Review%202025%20%2814%20August%202025%29.pdf" target="_blank" rel="noopener">DESC, 14 August 2025</a>.</>,
+        <>"Demandi = SNDi + Weather Sensitivityi * (CWVi –SNCWi) + ui", where "SNDi is the seasonal normal demand for day i". <a href="https://www.nationalgas.com/sites/default/files/documents/Gas%20Demand%20Forecasting%20Methodology%202020_v1.pdf" target="_blank" rel="noopener">National Gas, Gas Demand Forecasting Methodology, July 2020</a>, A2.4. "Peak gas demand is calculated for a 1-in-20 day, as described in the Gas Demand Forecasting Methodology published on the National Gas website." <a href="https://www.neso.energy/document/364701/download" target="_blank" rel="noopener">NESO, Future Energy Scenarios: Modelling Methods, July 2025</a>.</>,
         <>Met Office Hadley Centre Central England Temperature, HadCET v2.1.1.0, daily mean, maximum and minimum, representative of a roughly triangular area enclosed by Lancashire, London and Bristol, with a −0.2°C urban warming correction applied to mean temperatures since 1974. Data to 27 September 2026. <a href="https://www.metoffice.gov.uk/hadobs/hadcet/" target="_blank" rel="noopener">Met Office Hadley Centre, HadCET</a>.</>,
-        <>My calculations from HadCET daily data for 1961 to 1990 and 2015 to 27 September 2026. Ranks use the daily mean, which runs from 1772. Each day's anomaly is its temperature minus a three-harmonic fit of the 1961 to 1990 average for its date, and σ is the 1961 to 1990 spread of those anomalies, smoothed over 31 days. Curves are kernel density estimates with a 0.3σ bandwidth. The demand slope is a straight-line fit of daily network demand on daily mean temperature for days below 14°C in 2022 to 2025 (R² 0.85), and the floor is average demand by daytime high. Script in <code>scripts/tempanddemand/build.py</code>.</>,
+        <>My calculations from HadCET daily data for 1961 to 1990 and 2015 to 27 September 2026. Ranks use the daily mean: 28.1°C on 19 July 2022, 26.5°C on 26 June 2026 and 25.8°C on 13 August 2026, which are also the three highest values in the full daily series. Each day's anomaly is its temperature minus a three-harmonic fit of the 1961 to 1990 average for its date, and σ is the 1961 to 1990 spread of those anomalies, smoothed over 31 days. Curves are kernel density estimates with a 0.3σ bandwidth. The demand slope is a straight-line fit of daily network demand on daily mean temperature for days below 14°C in 2022 to 2025 (R² 0.85), and the floor is average demand by daytime high. Script in <code>scripts/tempanddemand/build.py</code>.</>,
         <>"For the purposes of historical comparison and climate change monitoring, WMO still recommends the continuation of the 1961-1990 period for the computation and tracking global climate anomalies." <a href="https://wmo.int/media/news/updated-30-year-reference-period-reflects-changing-climate" target="_blank" rel="noopener">WMO, 5 May 2021</a>.</>,
         <>Hansen, J., Sato, M. and Ruedy, R. (2012), Perception of climate change, PNAS 109, E2415, which scored summers against 1951 to 1980. <a href="https://doi.org/10.1073/pnas.1205276109" target="_blank" rel="noopener">PNAS</a>. The animated form follows the global version at <a href="https://celsius.earth/motion/bell-curve" target="_blank" rel="noopener">celsius.earth</a>.</>,
+        <>My calculations from National Gas Transmission's NTS Energy Offtaken, LDZ Offtake Total. 2015 to 2019 is from Grant Wilson and Noah Godfrey's extract of National Grid's MIPI data on <a href="https://zenodo.org/records/4913872" target="_blank" rel="noopener">Zenodo</a> (CC BY-NC 4.0). 19 January 2020 to 26 September 2021 is from an archived portal export in the <a href="https://github.com/benmcwilliams/gas-demand" target="_blank" rel="noopener">gas-demand repository</a> on GitHub. From 27 September 2021 it is from the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, which keeps five rolling years. 1 to 18 January 2020 is converted from the LDZ volumes in National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">Gas Winter Review and Consultation 2020</a> datasheet at 10.96 kWh per cubic metre. Periods use complete calendar years, and lines by date are smoothed over 31 days.</>,
         <>"Long-term trends in energy efficiency, evolving patterns of energy use within the home, climatic changes and more recent behavioural responses to affordability pressures have likely all contributed to sustained reductions in typical household demand." Medium gas use falls from 11,500 to 9,500 kWh a year. <a href="https://www.ofgem.gov.uk/sites/default/files/2026-05/Review%20of%20typical%20domestic%20consumption%20values%20decision.pdf" target="_blank" rel="noopener">Ofgem, Review of typical domestic consumption values: decision, 27 May 2026</a>.</>,
-        <>"SPDt = ((AQ/365) x ALPt x (1 + (DAFt x WCFt)))" and "WCFt = CWVt – SNCWVt", where SNCWV "is the Seasonal Normal value of the Composite Weather Variable". The ALP is "the Seasonal Normal Demand of the End User Category for that Day as a proportion of the average Seasonal Normal Demand", and "DAF = WVCEt/SNDEt". <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2023-10/Demand%20Estimation%20UNC%20Related%20Document%20v1.4.pdf" target="_blank" rel="noopener">Uniform Network Code, NDM Demand Estimation Methodology v1.4</a>, sections 2 to 3.5, reproducing <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2024-10/10%20TPD%20Section%20H%20-%20Demand%20Estimation%20and%20Demand%20Forecasting.pdf" target="_blank" rel="noopener">UNC TPD Section H</a> H2.2.1 to H2.5.</>,
-        <>"Reviews of the CWV formula and Seasonal Normal basis are normally only carried out by DESC every 5 years due to the time taken to perform the review and the need for stability." The 2019 review took effect on 1 October 2020 and the next basis on 1 October 2025, with "an overall reduction in SND from the 2020 to the 2025 definition, caused by a warmer SNCWV". <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2025-07/3.0%20Seasonal%20Normal%20Review%20DESC_230725.pdf" target="_blank" rel="noopener">DESC, Seasonal Normal Review, 23 July 2025</a>; the new basis is built from Met Office climate projections for gas years 2025/26 to 2029/30, <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2025-08/Seasonal%20Normal%20Review%202025%20%2814%20August%202025%29.pdf" target="_blank" rel="noopener">DESC, 14 August 2025</a>.</>,
-        <>"Demandi = SNDi + Weather Sensitivityi * (CWVi –SNCWi) + ui", where "SNDi is the seasonal normal demand for day i". <a href="https://www.nationalgas.com/sites/default/files/documents/Gas%20Demand%20Forecasting%20Methodology%202020_v1.pdf" target="_blank" rel="noopener">National Gas, Gas Demand Forecasting Methodology, July 2020</a>, A2.4. "Peak gas demand is calculated for a 1-in-20 day, as described in the Gas Demand Forecasting Methodology published on the National Gas website." <a href="https://www.neso.energy/document/364701/download" target="_blank" rel="noopener">NESO, Future Energy Scenarios: Modelling Methods, July 2025</a>.</>,
-        <>ECMWF ERA5 reanalysis, daily mean 2 m temperature at Birmingham (52.48°N, 1.89°W), 1991 to 23 September 2026, from the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener">Open-Meteo historical weather API</a>. My calculations: normals are monthly means over 1991 to 2020, 2016 to 2025 and 2021 to 2025, the 0.7°C is the average of the twelve monthly gaps between 2021 to 2025 and 1991 to 2020, and the last 12 months run from 23 September 2025. Contains modified Copernicus Climate Change Service information.</>,
-        <>My calculations from National Gas's daily Composite Weather Variable, Actual and Normal, on the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, gas years October to September, 2025/26 to 28 September 2026. In the chart each gas year is smoothed over 31 days, and spring is March to May. The industry's CWV formula parameters were revised from 1 October 2025 while the published normal was not, so the latest year may not compare exactly like for like.</>,
+        <>ECMWF ERA5 reanalysis, daily mean 2 m temperature at Birmingham (52.48°N, 1.89°W), 1991 to 24 September 2026, from the <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noopener">Open-Meteo historical weather API</a>. My calculations: normals are monthly means over 1991 to 2020, 2016 to 2025 and 2021 to 2025, the 0.7°C is the average of the twelve monthly gaps between 2021 to 2025 and 1991 to 2020, and the last 12 months run from 24 September 2025. Contains modified Copernicus Climate Change Service information.</>,
+        <>My calculations from National Gas's daily Composite Weather Variable, Actual and Normal, on the <a href="https://data.nationalgas.com/find-gas-data" target="_blank" rel="noopener">National Gas data portal</a>, gas years October to September, 2025/26 to 27 September 2026. In the chart each gas year is smoothed over 31 days, and spring is March to May. The industry's CWV formula parameters were revised from 1 October 2025 while the published normal was not, so the latest year may not compare exactly like for like.</>,
         <>"The most frequent WCF was between +0.1 and +0.3 CWV degrees, with an average of 0.246 … This indicates that overall, the SNCWV was approximately 0.25 degrees cooler than expected." GB level, gas years 2020/21 to 2024/25. <a href="https://www.gasgovernance.co.uk/sites/default/files/related-files/2026-07/NDM%20Algorithm%20Review%202026%20-%20Approved_0.pdf" target="_blank" rel="noopener">DESC, NDM Algorithm Review 2026, v2.0, 30 June 2026</a>.</>,
-        <>My estimate. Seasonal normal LDZ demand from National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">CWV and Seasonal Normal Demands, rolling 5 years (October 2025)</a> workbook against actual LDZ offtake. The weather share applies a fit of daily LDZ demand on the actual CWV (−154 GWh a day per degree below a CWV of 14, R² 0.96) to the gap between actual and seasonal normal CWV, capped at 14. In the chart both lines are smoothed over 7 days.</>,
-        <>UK natural gas at 96p a therm in late May 2026. <a href="https://tradingeconomics.com/commodity/uk-natural-gas" target="_blank" rel="noopener">Trading Economics, UK natural gas</a>. 19 TWh is about 650 million therms.</>,
+        <>My estimate. Seasonal normal LDZ demand from National Gas's <a href="https://www.nationalgas.com/our-businesses/operational-data/our-data" target="_blank" rel="noopener">CWV and Seasonal Normal Demands, rolling 5 years (October 2025)</a> workbook against actual LDZ offtake. The workbook defines LDZ as "Total of NDM and daily metered (DM) demand plus shrinkage in the distribution networks" and says the 2024/25 forecasts "were produced in June 2024". The weather share applies a fit of daily LDZ demand on the actual CWV (−154 GWh a day per degree below a CWV of 14, R² 0.96, on days from October 2021) to the gap between actual and seasonal normal CWV, capped at 14, on the 349 days of 2024/25 that have both CWV values. By the same method the shortfall and its weather share were 59 and 15 TWh in 2021/22, 59 and 18 TWh in 2022/23, and 58 and 26 TWh in 2023/24. In the chart both lines are smoothed over 7 days.</>,
+        <>The System Average Price of gas averaged 3.32p/kWh, about 97p a therm, over the 365 days from 1 October 2024 to 30 September 2025. My calculation from the <a href="https://www.ons.gov.uk/economy/economicoutputandproductivity/output/datasets/systemaveragepricesapofgas" target="_blank" rel="noopener">ONS System Average Price (SAP) of gas dataset</a>, edition of 5 November 2026, which republishes National Gas Transmission data. 19 TWh is about 650 million therms.</>,
       ]} />
     </Article>
   );

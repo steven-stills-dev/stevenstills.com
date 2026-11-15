@@ -40,7 +40,7 @@ export default function ShapeExplorer({ supplier = DEFAULT_SUPPLIER, onSupplier,
   const seasons = data?.profiles[supplier] ?? {};
 
   return (
-    <Box icon="activity" title="Demand Shape by Supplier" sub="Ratio to daily mean" className={onSupplier ? "es-box" : "es-box es-fill"}>
+    <Box title="Demand Shape by Supplier" sub="Ratio to daily mean" className={onSupplier ? "es-box" : "es-box es-fill"}>
       {onSupplier && data && (
         <select className="es-select" value={supplier} aria-label="Supplier" onChange={(e) => onSupplier(e.target.value)}>
           {data.suppliers.map((s) => <option key={s}>{s}</option>)}

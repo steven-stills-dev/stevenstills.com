@@ -1,0 +1,390 @@
+{
+ "window": [
+  "2026-05-01",
+  "2026-07-31"
+ ],
+ "heatwave_rule": ">= 28.0\u00b0C daily maximum for >= 3 consecutive days at any of 10 cities",
+ "high_price_gbp_mwh": 150.0,
+ "baseline": {
+  "weekday": {
+   "demand_mw": 23095.91,
+   "price_mean": 107.41,
+   "periods_over": 5.4,
+   "solar_mw": 3674.15,
+   "underlying_mw": 28328.67,
+   "days": 43,
+   "price_max": 385.55,
+   "demand_sd_mw": 1181.24,
+   "price_sd": 20.53
+  },
+  "weekend": {
+   "demand_mw": 20269.49,
+   "price_mean": 81.19,
+   "periods_over": 2.9,
+   "solar_mw": 3668.16,
+   "underlying_mw": 25417.62,
+   "days": 21,
+   "price_max": 180.0,
+   "demand_sd_mw": 1117.17,
+   "price_sd": 27.28
+  }
+ },
+ "baseline_slope_per_day": {
+  "demand_mw": -29.6,
+  "price_mean": 0.004,
+  "periods_over": 0.105,
+  "solar_mw": 11.624,
+  "underlying_mw": -15.708
+ },
+ "heatwaves": [
+  {
+   "n": 1,
+   "start": "2026-05-23",
+   "end": "2026-05-28",
+   "days": 6,
+   "demand_mw": 21134,
+   "demand_gwh_day": 507.2,
+   "demand_baseline_mw": 22133,
+   "demand_baseline_gwh_day": 531.2,
+   "demand_pct": -4.5,
+   "price_mean": 98.52,
+   "price_max": 178.99,
+   "price_baseline": 94.24,
+   "price_pct": 4.5,
+   "periods_over_per_day": 2.17,
+   "periods_over_total": 13,
+   "periods_over_baseline_per_day": 2.55,
+   "embedded_solar_mw": 5085,
+   "embedded_solar_baseline_mw": 3495,
+   "embedded_solar_pct": 45.5,
+   "demand_plus_embedded_mw": 27325,
+   "demand_plus_embedded_baseline_mw": 27112,
+   "demand_plus_embedded_pct": 0.8,
+   "days_price_10pct_above": 3,
+   "first_day_price_10pct_above": 1,
+   "daily_pct": [
+    {
+     "date": "2026-05-23",
+     "demand": -7.2,
+     "price": 36.0,
+     "demand_plus_embedded": -1.2
+    },
+    {
+     "date": "2026-05-24",
+     "demand": -10.7,
+     "price": 9.7,
+     "demand_plus_embedded": -3.9
+    },
+    {
+     "date": "2026-05-25",
+     "demand": -0.9,
+     "price": 24.0,
+     "demand_plus_embedded": 3.9
+    },
+    {
+     "date": "2026-05-26",
+     "demand": 1.8,
+     "price": 13.5,
+     "demand_plus_embedded": 3.9
+    },
+    {
+     "date": "2026-05-27",
+     "demand": -6.2,
+     "price": -6.1,
+     "demand_plus_embedded": 0.3
+    },
+    {
+     "date": "2026-05-28",
+     "demand": -4.6,
+     "price": -36.2,
+     "demand_plus_embedded": 1.4
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "start": "2026-06-21",
+   "end": "2026-06-27",
+   "days": 7,
+   "demand_mw": 23725,
+   "demand_gwh_day": 569.4,
+   "demand_baseline_mw": 21862,
+   "demand_baseline_gwh_day": 524.7,
+   "demand_pct": 8.5,
+   "price_mean": 118.08,
+   "price_max": 800.0,
+   "price_baseline": 99.97,
+   "price_pct": 18.1,
+   "periods_over_per_day": 7.71,
+   "periods_over_total": 54,
+   "periods_over_baseline_per_day": 6.2,
+   "embedded_solar_mw": 4879,
+   "embedded_solar_baseline_mw": 3840,
+   "embedded_solar_pct": 27.1,
+   "demand_plus_embedded_mw": 29651,
+   "demand_plus_embedded_baseline_mw": 27271,
+   "demand_plus_embedded_pct": 8.7,
+   "days_price_10pct_above": 2,
+   "first_day_price_10pct_above": 1,
+   "daily_pct": [
+    {
+     "date": "2026-06-21",
+     "demand": 1.7,
+     "price": 38.9,
+     "demand_plus_embedded": 0.5
+    },
+    {
+     "date": "2026-06-22",
+     "demand": 3.7,
+     "price": -5.2,
+     "demand_plus_embedded": 3.5
+    },
+    {
+     "date": "2026-06-23",
+     "demand": 8.2,
+     "price": 90.0,
+     "demand_plus_embedded": 8.1
+    },
+    {
+     "date": "2026-06-24",
+     "demand": 13.0,
+     "price": 0.3,
+     "demand_plus_embedded": 12.1
+    },
+    {
+     "date": "2026-06-25",
+     "demand": 11.5,
+     "price": -2.1,
+     "demand_plus_embedded": 13.3
+    },
+    {
+     "date": "2026-06-26",
+     "demand": 13.1,
+     "price": 7.3,
+     "demand_plus_embedded": 11.8
+    },
+    {
+     "date": "2026-06-27",
+     "demand": 7.5,
+     "price": -2.5,
+     "demand_plus_embedded": 11.2
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "start": "2026-07-06",
+   "end": "2026-07-17",
+   "days": 12,
+   "demand_mw": 22470,
+   "demand_gwh_day": 539.3,
+   "demand_baseline_mw": 21679,
+   "demand_baseline_gwh_day": 520.3,
+   "demand_pct": 3.6,
+   "price_mean": 107.81,
+   "price_max": 220.0,
+   "price_baseline": 103.16,
+   "price_pct": 4.5,
+   "periods_over_per_day": 5.75,
+   "periods_over_total": 69,
+   "periods_over_baseline_per_day": 8.35,
+   "embedded_solar_mw": 4962,
+   "embedded_solar_baseline_mw": 4044,
+   "embedded_solar_pct": 22.7,
+   "demand_plus_embedded_mw": 28595,
+   "demand_plus_embedded_baseline_mw": 27342,
+   "demand_plus_embedded_pct": 4.6,
+   "days_price_10pct_above": 3,
+   "first_day_price_10pct_above": 5,
+   "daily_pct": [
+    {
+     "date": "2026-07-06",
+     "demand": -3.2,
+     "price": -34.8,
+     "demand_plus_embedded": 2.8
+    },
+    {
+     "date": "2026-07-07",
+     "demand": 1.9,
+     "price": -4.7,
+     "demand_plus_embedded": 4.5
+    },
+    {
+     "date": "2026-07-08",
+     "demand": 10.4,
+     "price": 9.5,
+     "demand_plus_embedded": 8.9
+    },
+    {
+     "date": "2026-07-09",
+     "demand": 11.1,
+     "price": 5.5,
+     "demand_plus_embedded": 9.2
+    },
+    {
+     "date": "2026-07-10",
+     "demand": 10.0,
+     "price": 16.4,
+     "demand_plus_embedded": 7.7
+    },
+    {
+     "date": "2026-07-11",
+     "demand": 7.2,
+     "price": 43.2,
+     "demand_plus_embedded": 6.2
+    },
+    {
+     "date": "2026-07-12",
+     "demand": -4.2,
+     "price": -17.8,
+     "demand_plus_embedded": 3.3
+    },
+    {
+     "date": "2026-07-13",
+     "demand": -3.2,
+     "price": 3.0,
+     "demand_plus_embedded": 1.2
+    },
+    {
+     "date": "2026-07-14",
+     "demand": 1.0,
+     "price": 6.1,
+     "demand_plus_embedded": 2.3
+    },
+    {
+     "date": "2026-07-15",
+     "demand": 4.4,
+     "price": 9.6,
+     "demand_plus_embedded": 3.9
+    },
+    {
+     "date": "2026-07-16",
+     "demand": 4.8,
+     "price": 12.3,
+     "demand_plus_embedded": 3.7
+    },
+    {
+     "date": "2026-07-17",
+     "demand": 2.9,
+     "price": 9.9,
+     "demand_plus_embedded": 1.4
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "start": "2026-07-28",
+   "end": "2026-07-30",
+   "days": 3,
+   "demand_mw": 23697,
+   "demand_gwh_day": 568.7,
+   "demand_baseline_mw": 21630,
+   "demand_baseline_gwh_day": 519.1,
+   "demand_pct": 9.6,
+   "price_mean": 120.66,
+   "price_max": 253.9,
+   "price_baseline": 107.6,
+   "price_pct": 12.1,
+   "periods_over_per_day": 6,
+   "periods_over_total": 18,
+   "periods_over_baseline_per_day": 10.62,
+   "embedded_solar_mw": 3975,
+   "embedded_solar_baseline_mw": 4250,
+   "embedded_solar_pct": -6.5,
+   "demand_plus_embedded_mw": 29085,
+   "demand_plus_embedded_baseline_mw": 27551,
+   "demand_plus_embedded_pct": 5.6,
+   "days_price_10pct_above": 2,
+   "first_day_price_10pct_above": 2,
+   "daily_pct": [
+    {
+     "date": "2026-07-28",
+     "demand": 7.7,
+     "price": -3.3,
+     "demand_plus_embedded": 4.5
+    },
+    {
+     "date": "2026-07-29",
+     "demand": 11.5,
+     "price": 16.3,
+     "demand_plus_embedded": 7.4
+    },
+    {
+     "date": "2026-07-30",
+     "demand": 9.5,
+     "price": 23.4,
+     "demand_plus_embedded": 4.8
+    }
+   ]
+  }
+ ],
+ "all_heatwave_days": {
+  "days": 28,
+  "demand_mw": 22629,
+  "demand_gwh_day": 543.1,
+  "demand_baseline_mw": 21817,
+  "demand_baseline_gwh_day": 523.6,
+  "demand_pct": 3.7,
+  "price_mean": 109.76,
+  "price_max": 800.0,
+  "price_baseline": 100.93,
+  "price_pct": 8.8,
+  "periods_over_per_day": 5.5,
+  "periods_over_total": 154,
+  "periods_over_baseline_per_day": 6.81,
+  "embedded_solar_mw": 4862,
+  "embedded_solar_baseline_mw": 3897,
+  "embedded_solar_pct": 24.8,
+  "demand_plus_embedded_mw": 28639,
+  "demand_plus_embedded_baseline_mw": 27297,
+  "demand_plus_embedded_pct": 4.9
+ },
+ "all_heatwave_days_without_highest_price_day": {
+  "dropped": "2026-06-23",
+  "days": 27,
+  "demand_mw": 22558,
+  "demand_gwh_day": 541.4,
+  "demand_baseline_mw": 21784,
+  "demand_baseline_gwh_day": 522.8,
+  "demand_pct": 3.5,
+  "price_mean": 106.27,
+  "price_max": 317.0,
+  "price_baseline": 100.69,
+  "price_pct": 5.5,
+  "periods_over_per_day": 5.11,
+  "periods_over_total": 138,
+  "periods_over_baseline_per_day": 6.81,
+  "embedded_solar_mw": 4853,
+  "embedded_solar_baseline_mw": 3900,
+  "embedded_solar_pct": 24.4,
+  "demand_plus_embedded_mw": 28574,
+  "demand_plus_embedded_baseline_mw": 27267,
+  "demand_plus_embedded_pct": 4.8
+ },
+ "highest_price": {
+  "date": "2026-06-23",
+  "period": 42,
+  "starts_local": "20:30",
+  "price": 800.0,
+  "periods_over_450": {
+   "18:00": 454.5,
+   "18:30": 470.87,
+   "19:00": 720.9,
+   "19:30": 770.05,
+   "20:00": 789.0385562708333,
+   "20:30": 800.0,
+   "21:00": 550.0,
+   "21:30": 528.04
+  }
+ },
+ "days_price_10pct_above": {
+  "heatwave": [
+   10,
+   28
+  ],
+  "baseline": [
+   21,
+   64
+  ]
+ }
+}

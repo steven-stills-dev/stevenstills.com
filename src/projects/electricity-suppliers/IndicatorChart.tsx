@@ -19,7 +19,7 @@ export default function IndicatorChart({ indicator, title }: { indicator: Indica
   const all = data ? data.suppliers.flatMap((s) => Object.keys(data.indicators[s]).map((k) => value(s, k)!)) : [];
 
   return (
-    <Box icon="activity" title={title} sub={share ? "%" : "Ratio to daily mean"} className="es-box">
+    <Box title={title} sub={share ? "%" : "Ratio to daily mean"} className="es-box">
       {data ? (
         <>
           <div className="es-pair">

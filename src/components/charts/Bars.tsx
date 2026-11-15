@@ -7,8 +7,8 @@ import { ChartTip } from "./ChartTip";
 const PTOP = 20;
 const BW_MAX = 64;
 
-/** Pill bars over a full-height track, sized to the container, coloured along the brand ramp. */
-export default function PillBars({
+/** Bars sized to the container, coloured along the accent ramp. */
+export default function Bars({
   items, digits = 0, hover = true, unit = "", axis = true, padL = PAD_L, padR = PAD_R, yScale = 1,
 }: {
   items: { label: string; value: number }[];
@@ -25,7 +25,7 @@ export default function PillBars({
   const top = axis ? ((ticks[ticks.length - 1] || 1) / yScale) : (raw * 1.14 || 1);
   const span = base - PTOP;
   const ydig = tickDecimals(ticks.length > 1 ? ticks[1] - ticks[0] : 1);
-  // bars never grow past a pill width; a short series sits centred in the plot
+  // bars never grow past a set width; a short series sits centred in the plot
   const gap = Math.min(12, plotW * 0.02), bw = n ? Math.min(BW_MAX, (plotW - gap * (n - 1)) / n) : 0;
   const x0 = lx + (plotW - (n * bw + gap * (n - 1))) / 2;
   const bh = (v: number) => (v / top) * span;
@@ -58,9 +58,8 @@ export default function PillBars({
               const x = x0 + i * (bw + gap), bhi = bh(d.value), y = base - bhi;
               return (
                 <g key={i}>
-                  <rect x={x} y={PTOP} width={bw} height={span} rx={bw / 2} fill="var(--track)" />
-                  <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={bw / 2} fill={ramp(i, n)} />
-                  {hi === i && <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={bw / 2} fill="none" stroke="var(--ste-night)" strokeWidth={1.6} />}
+                  <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={2} fill={ramp(i, n)} />
+                  {hi === i && <rect x={x} y={y} width={bw} height={Math.max(bhi, 1)} rx={2} fill="none" stroke="var(--ste-night)" strokeWidth={1.6} />}
                   <text x={x + bw / 2} y={base + 13} textAnchor="middle" fontSize="10" fill="var(--ste-dusk)">{d.label}</text>
                 </g>
               );

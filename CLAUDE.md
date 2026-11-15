@@ -17,36 +17,43 @@ set to GitHub Actions in the repo settings).
 
 ## Design system
 
-Modelled on the Shuttle "Unsophisticated Investor" newsletter: clean white page,
-one reading column, Poppins throughout, rounded 24px shapes, tone-tile thumbnails.
+Ink on white, in the manner of a research publication: a serif display face over
+a plain sans, flat grey figure panels, 6px corners, one petrol accent that
+belongs to the data.
 
 - **Tokens** live in `src/styles.css` `:root`. Never hard-code a hex in a
   component; read the variable in SVG/CSS, or `token("--ste-...", ...)` for
   canvases (maplibre).
-- **Palette**: `--ste-primary` #E1FE73 lime (buttons, active nav, chips,
-  highlights), `--ste-secondary` #60D0B8 mint (chart
-  and map data marks), `--ste-tertiary` #BAF084 green (lime gradient end, third
-  series), `--ste-midday` #FFFFFF page, `--ste-day` #F1F2F1 grey panels,
-  `--ste-dusk` #6F8488 muted labels, `--ste-night` #29494F text and headings,
-  `--ste-midnight` #183036 deep teal numerals and dark card gradient.
-- **Panels** (`Box`): rounded 24px, `--panel` grey fill, no border, no shadow.
-- **Typography**: Poppins by default; hierarchy by size and weight, never colour.
-  Named roles in `:root` (`title, nav, headline, lede, header, caption,
-  kpilabel, body`); every text surface reads its `--t-<role>-*` variables.
-- **Thumbnails** (`Thumb`): 3:2 rounded tone tiles in four tones (lime
-  gradient, deep teal, mint, grey) cycling by list position.
+- **Palette**: `--ste-secondary` #0E7490 petrol (the accent: links, the
+  selected row, chart and map data marks), `--ste-primary` #CDEFF6 pale petrol
+  (highlights, ramp start), `--ste-tertiary` #5FB8CF mid petrol (third series),
+  `--ste-midday` #FFFFFF page, `--ste-day` #F4F3F0 grey panels, `--ste-dusk`
+  #5E6779 muted labels, `--ste-night` #1B2233 body text, `--ste-midnight`
+  #0A0E1A headlines, buttons and the footer band, `--ste-alert` #E5484D stress
+  marking only.
+- **Typography**: Newsreader (`--serif`) at weight 400 for headlines, ledes,
+  section headings, stat numerals and the wordmark; IBM Plex Sans (`--sans`)
+  for everything else. Weights 400 to 600, sentence case, tabular figures.
+- **Buttons** (`.btn`, `.links-row a`): Midnight fill with white text, `.ghost`
+  for the secondary action. Chips are 32px hairline controls, Midnight when on.
+- **Panels** (`Box`): `--panel` grey fill, 6px radius, no border, no shadow, a
+  plain title row with the unit on the right.
+- **Masthead** (`Nav`): serif wordmark, links and "Get in touch" over a
+  hairline rule.
+- **Footer**: full-width Midnight band with the email set large in the serif.
 - **Charts**: `src/components/charts/`. Sized to the container (`useSize`),
   nice ticks (`geom.ts`), hover tooltip (`ChartTip`). Secondary vs Night for
   two-series comparisons, no multi-colour palettes, no gridlines, title in the
   panel header, unit on the axis, nothing else. Never bake annotations into
   the SVG.
-- **Layout**: `.wrap` is 1880px for the header and footer. Home is one 59rem
-  column: headline, lede, lime button, feature panel (switched by clicking
-  the list, no auto-rotation), then "Projects" and "Writing" card lists. Articles use
-  `Article` + `Prose` for text and `Wide` for figures and maps; both are 59rem
-  so text and images share one width.
-- **Brand mark**: "SS" initials circle in `Nav` and `public/img/initials.svg`
-  (favicon), a placeholder until the logo arrives.
+- **Layout**: `.wrap` is 90rem with 48px gutters. Home is a two-column grid:
+  headline, lede, button and the "Projects" and "Writing" index rows on the
+  left, the selected entry's preview on a sticky stage on the right (switched
+  by clicking a row, no auto-rotation; below 900px it stacks and a tap opens
+  the entry). Articles are a 60rem column with one left edge: headline, `Prose`
+  at a 42rem reading measure, and `Wide` figures at the full 60rem.
+- **Brand mark**: serif wordmark in `Nav`; `public/img/initials.svg` (favicon)
+  is a placeholder until the logo arrives.
 
 ## Adding a project
 
@@ -58,8 +65,8 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
   `preview: lazy(() => import("./Preview"))`.
 - `Page.tsx`: the full page, built from `Article`, `Prose`, `Wide`, `Section`,
   `Fn`, `Footnotes`, `StatRow` and `Box`. Call `usePageMeta`.
-- `Preview.tsx`: what the home feature panel shows when the entry is clicked
-  in the list. Use the page's main map (for maplibre, `useMapLibre({ bounds,
+- `Preview.tsx`: what the home stage shows when the entry is clicked
+  in the index. Use the page's main map (for maplibre, `useMapLibre({ bounds,
   interactive: false })`, no controls, no popups, one fetch); with no map, the
   page's core chart. Export that figure from the page as a component taking an
   optional `h`, so the page and the preview share one source; the preview
@@ -67,8 +74,8 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
 - Page-scoped CSS in the same folder, class names prefixed with the slug.
 
 `src/projects/registry.ts` discovers every `meta.ts`, sorts newest first,
-generates the routes, and feeds the home page lists. Clicking a list entry
-previews it in the feature panel with its title, line and buttons beneath.
+generates the routes, and feeds the home page index. Clicking an index row
+previews it on the stage with its title, line and buttons beneath.
 Double-clicking the entry, clicking the preview or "Read the write-up" opens
 the article.
 
@@ -80,18 +87,29 @@ datasets go in `public/data/` with the fetch script that produced them in
 
 ## Content rules
 
-Every project page leads with the business insight, not the tech. Footnotes
-carry sources. Nothing conversational on a rendered page. Contact is domain
-email plus LinkedIn only.
+Titles are plain descriptive phrases in sentence case that say what the piece
+is about ("Tracking ships in the Strait of Hormuz"): no questions, no two-part
+titles, no drama. Every article opens with a clear description of the problem,
+moves on to the working out, and closes with a short summary the reader can
+act on. The voice is first person and reflective, personal but expert: what I
+found and what I think, with the evidence, in place of flat verdicts. Footnotes
+carry sources. Nothing conversational on a rendered page. Contact is email
+plus LinkedIn only.
+
+**Fact-check every claim.** Things compared must be the same kind of quantity
+in the same unit (never price in £/MWh against demand in MWh, MW against MWh,
+or a share against an absolute). Every number matches the page's data and its
+footnote, causation is only claimed where it is shown, and dates and totals
+add up. Cut a claim that cannot be repaired from the evidence.
 
 **Tone guide.** Before writing or editing any prose in this project (article
 body, ledes, headings, the `line` in each `meta.ts`, `usePageMeta`
-descriptions, About), run the `/markc` skill (`~/.claude/skills/markc/`). Its
-`tone-guide.md` is the Unsophisticated Investor template, first person
-singular, and the section 6 list of AI tells; `.claude/tone-guide.md` here is
-a symlink to it and is gitignored. Lint the result with
-`bash ~/.claude/skills/markc/check.sh <file>` and walk the guide's section 8
-checklist before finishing.
+descriptions, About), run the `/markc` skill (`~/.claude/skills/markc/`) for
+its prose rules and its section 6 list of AI tells; `.claude/tone-guide.md`
+here is a symlink to its `tone-guide.md` and is gitignored. The structure
+above replaces the guide's sections 2 and 8 (cold open, numbers ladder,
+claim-or-question titles, "What I take from this"). Lint the result with
+`bash ~/.claude/skills/markc/check.sh <file>`.
 
 ## Working rules
 

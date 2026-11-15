@@ -5,21 +5,17 @@ const LINKS: [string, string][] = [
   ["/about", "About"],
 ];
 
-/** Brand cell: initials badge, name and the pill nav. */
+/** Masthead: wordmark, primary links and the contact button. */
 export default function Nav() {
   return (
-    <>
-      <div className="brand">
-        <NavLink to="/" className="brand-link">
-          <span className="brand-mark" aria-hidden="true">SS</span>
-          <span>Steven Stills</span>
-        </NavLink>
-      </div>
-      <nav className="nav" aria-label="Primary">
+    <header className="mast-row">
+      <NavLink to="/" className="mast-name">Steven Stills</NavLink>
+      <nav className="mast-nav" aria-label="Primary">
         {LINKS.map(([to, label]) => (
           <NavLink key={to} to={to} end={to === "/"}>{label}</NavLink>
         ))}
       </nav>
-    </>
+      <a className="btn btn-s ghost mast-cta" href="mailto:stevenstills@icloud.com">Get in touch</a>
+    </header>
   );
 }
