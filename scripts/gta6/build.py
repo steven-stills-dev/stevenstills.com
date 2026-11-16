@@ -88,7 +88,7 @@ def main():
         "console_w": CONSOLE_W, "tv_w": TV_W, "watts": watts, "loop_kwh": round(watts * 3 / 1000, 1), "day_kwh": round(day_kwh, 1),
         "home_kwh": round(sum(home), 1), "home_after_kwh": round(sum(home_after), 1),
         "home_uplift_pct": round(100 * (sum(home_after) / sum(home) - 1)),
-        "slot_kwh": watts / 2000, "cost_p": round(day_kwh * UNIT_P), "unit_p": UNIT_P, "tdcv_kwh": TDCV_KWH,
+        "slot_kwh": watts / 2000, "cost_p": round(day_kwh * UNIT_P), "unit_p": UNIT_P, "tdcv_kwh": TDCV_KWH, "home_avg_w": round(TDCV_KWH * 1000 / 8760),
         "peak_gw": round(max(before) / 1000, 1), "peak_time": hhmm(peak_i),
         "added_peak_mw": round(max(added)), "added_peak_time": hhmm(eve), "eve_gw": round(before[eve] / 1000, 1),
         "added_peak_pct": round(100 * max(added) / before[eve], 1),

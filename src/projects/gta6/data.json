@@ -16,6 +16,7 @@
   "cost_p": 71,
   "unit_p": 26.32,
   "tdcv_kwh": 2500,
+  "home_avg_w": 285,
   "peak_gw": 41.1,
   "peak_time": "17:00",
   "added_peak_mw": 840,
