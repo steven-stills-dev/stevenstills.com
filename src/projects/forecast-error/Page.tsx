@@ -147,7 +147,7 @@ export default function ForecastError() {
     <Article kicker="Writing · forecasting" title={TITLE} lede={lede}>
       <Section title="Why does one forecast have several scores?" />
       <Prose>
-        <p>Every half hour the system operator publishes a forecast of national demand for the next day, and every half hour a measured outturn follows.<Fn n={1} /> The gap between them is the error, and I want one number that says how big it usually is. The trouble starts with the word "usually". Averaging percentage errors, weighting them by volume, keeping the sign or dropping it, and adding up to days or months first all give different answers from the same rows.</p>
+        <p>Every half hour the system operator publishes a forecast of national demand for the next day, and every half hour a measured outturn follows.<Fn n={1} /> The gap between them is the error, and I want one number that says how big it usually is. Averaging percentage errors, weighting them by volume, keeping the sign or dropping it, and adding up to days or months first all give different answers from the same rows.</p>
         <p>I took the forecast as published shortly before noon on the day before delivery for every day of 2024 and 2025, {f.rows.toLocaleString("en-GB")} half hours in all, and scored it against two outturns: Elexon's initial figure, published within minutes, and NESO's historic figure, which can be edited later.<Fn n={2} /> I write error as forecast minus outturn, so a positive number means the forecast was too high.</p>
       </Prose>
       <Wide>
@@ -174,7 +174,7 @@ export default function ForecastError() {
 
       <Section title="Why can a forecast be unbiased and still wrong in the same direction for months?" />
       <Prose>
-        <p>Over two years the bias, the signed total miss over total demand, is {f.bias_final}%, with an interval of {f.bias_lo}% to {f.bias_hi}% that straddles zero. That looks perfect, and Ofgem has shown that bias is a separate failing worth policing: in 2021 the system operator paid £1.5m after its week-ahead demand forecasts ran biased through much of 2017.<Fn n={7} /> The monthly view shows why one bias number is not enough. Monthly bias ranged from {f.bias_month_min}% to {f.bias_month_max}%, and the plain average of the monthly values is {f.bias_month_mean}%, because over- and under-forecast months cancel. The average size of the monthly bias, ignoring the sign, is {f.bias_month_absmean}%, and that is the figure that tells a desk how far one month's position can drift.</p>
+        <p>Over two years the bias, the signed total miss over total demand, is {f.bias_final}%, with an interval of {f.bias_lo}% to {f.bias_hi}% that straddles zero. On its own that looks like a clean result, but Ofgem has shown that bias is a separate failing worth policing: in 2021 the system operator paid £1.5m after its week-ahead demand forecasts ran biased through much of 2017.<Fn n={7} /> The monthly view shows why one bias number is not enough. Monthly bias ranged from {f.bias_month_min}% to {f.bias_month_max}%, and the plain average of the monthly values is {f.bias_month_mean}%, because over- and under-forecast months cancel. The average size of the monthly bias, ignoring the sign, is {f.bias_month_absmean}%, and that is the figure that tells a desk how far one month's position can drift.</p>
       </Prose>
       <Wide><MonthlyChart h={400} /></Wide>
       <Prose>
@@ -207,17 +207,15 @@ export default function ForecastError() {
 
       <Section title="What I would do with these figures" />
       <Prose>
-        <ul>
-          <li>Headline weighted MAPE, at a stated grain, with an interval: {f.wmape_final}% half-hourly ({f.wmape_lo}% to {f.wmape_hi}%) says far more than {f.grain_month}% monthly with no grain attached.</li>
-          <li>Report bias by month, with its average size ignoring the sign ({f.bias_month_absmean}% here), and never rely on a two-year bias of {f.bias_final}%.</li>
-          <li>Put a naive benchmark beside every score. A forecast at a MASE of {f.mase} is clearly earning its keep; a raw percentage alone cannot show that.</li>
-          <li>Before any score leaves the building, check duplicates, zero actuals, clock changes and date parsing, and state which outturn it was scored against.</li>
-        </ul>
+        <p>I would report weighted MAPE as the headline, at a stated grain and with an interval. Here that is {f.wmape_final}% half-hourly ({f.wmape_lo}% to {f.wmape_hi}%), and it should never sit beside a monthly {f.grain_month}% as if the two were the same measure.</p>
+        <p>I would report bias month by month, with its average size ignoring the sign ({f.bias_month_absmean}% here). I would not rely on a two-year bias of {f.bias_final}%, because over- and under-forecast months cancel inside it.</p>
+        <p>I would put a naive benchmark beside every score. A MASE of {f.mase} shows the forecast beating "the same half hour last week" by a wide margin, which a percentage alone cannot show.</p>
+        <p>Before I published any score I would check for duplicate rows, zero actuals, clock-change days and date parsing, and state which outturn the forecast was scored against.</p>
         <p>For how forecasting methods themselves have changed, see <a href="/ml-through-the-years">machine learning through the years</a>.</p>
       </Prose>
 
       <Footnotes notes={[
-        <>Elexon, <a href="https://www.elexon.co.uk/glossary/national-demand-forecast/" target="_blank" rel="noopener">glossary: National Demand Forecast</a>. The forecast is produced by the system operator from historically metered generation, includes transmission losses and excludes interconnectors, station load and pumped storage. I took the history from the Elexon Insights API (<a href="https://data.elexon.co.uk/bmrs/api/v1" target="_blank" rel="noopener">forecast/demand/day-ahead/history</a>), using for each delivery day the latest forecast published before 12:00 UTC the day before: in practice the 11:45 to 11:47 UTC publication.</>,
+        <>Elexon, <a href="https://www.elexon.co.uk/glossary/national-demand-forecast/" target="_blank" rel="noopener">glossary: National Demand Forecast</a>. The forecast is produced by the system operator from historically metered generation, includes transmission losses and excludes interconnectors, station load and pumped storage. I took the history from the Elexon Insights API (<a href="https://bmrs.elexon.co.uk/api-documentation/endpoint/forecast/demand/day-ahead/history" target="_blank" rel="noopener">forecast/demand/day-ahead/history</a>), using for each delivery day the latest forecast published before 12:00 UTC the day before: in practice the 11:45 to 11:47 UTC publication.</>,
         <>Initial outturn: Elexon Insights API, demand/outturn (INDO), the half-hour average measured on the transmission company's operational metering. Final outturn: NESO data portal, <a href="https://www.neso.energy/data-portal/historic-demand-data/historic_demand_data_2024" target="_blank" rel="noopener">historic demand data</a> 2024 and 2025, column ND, which NESO describes as equivalent to INDO; the portal notes that the data is populated 21 days in arrears and that demand may be edited retrospectively. {(f.missing_any).toLocaleString("en-GB")} half hours without all three values were left out.</>,
         <>Hyndman, R. J. and Athanasopoulos, G., <a href="https://otexts.com/fpp3/accuracy.html" target="_blank" rel="noopener">Forecasting: Principles and Practice</a>, 3rd edition, section 5.8, Evaluating point forecast accuracy.</>,
         <>Hyndman, R. J. and Koehler, A. B. (2006), <a href="https://robjhyndman.com/publications/another-look-at-measures-of-forecast-accuracy/" target="_blank" rel="noopener">Another look at measures of forecast accuracy</a>, International Journal of Forecasting 22(4), 679 to 688. Here MASE is the forecast's mean absolute error divided by that of the same half hour one week earlier, both over the same two years and against the final outturn.</>,

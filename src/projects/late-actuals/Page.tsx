@@ -66,12 +66,10 @@ export default function LateActuals() {
 
       <Section title="What I would do when actuals arrive late" />
       <Prose>
-        <ul>
-          <li>Write the rule into the feature code: lag at least horizon plus publication delay, rounded up to a whole week, with an assertion that fails the build when a lag reads an unpublished day. The naive design cost {F.gap.toFixed(2)} points of hidden error here.</li>
-          <li>Backtest with as-of frames that gate both the labels and the inputs by issue date, and treat a backtest that is flat across horizons as a leak until shown otherwise.</li>
-          <li>Choose the settlement run first and then the lags. Moving from a one-week to an eight-week delay cost the as-of model about half a point, so I would lag off a mature run whose values have stopped moving.</li>
-          <li>Check lag coverage on every forecast run. Empty lags pushed live error to {pc(F.leaky_live_nan)}, and nothing in the model complains.</li>
-        </ul>
+        <p>I would write the rule into the feature code: a lag of at least the horizon plus the publication delay, rounded up to a whole week, with an assertion that fails the build when a lag reads an unpublished day. The naive design hid {F.gap.toFixed(2)} points of error here.</p>
+        <p>I would backtest with as-of frames that gate both the labels and the inputs by issue date, and I would treat a backtest that is flat across horizons as a leak until shown otherwise.</p>
+        <p>I would choose the settlement run first and the lags second. Moving from a one-week to an eight-week delay cost the as-of model about half a point, so I would take lags from a mature run whose values have stopped moving.</p>
+        <p>I would check lag coverage on every forecast run. Empty lags pushed live error to {pc(F.leaky_live_nan)}, and nothing in the model raises an error when it happens.</p>
       </Prose>
 
       <Footnotes notes={[

@@ -183,7 +183,7 @@ export default function WinterReplay() {
       <Wide><MarginChart h={400} controls /></Wide>
       <Prose>
         <p>With price fixed, a warm winter is the danger. {F.worst_winter} replayed into the 2026 climate would cost {m(F.worst_winter_margin)} and {F.best_winter} would add {m(F.best_winter_margin)}. The fitted one-in-ten is a loss of {m(F.m_1in10)}, or £{fmt(-F.m_1in10_per_customer, 2)} a customer, and the one-in-twenty is {m(F.m_1in20)}. The middle winter is itself a small loss of {m(F.m_p50, 2)}, because the replayed winters have a long cold tail, which leaves the typical one a touch warmer than the average.</p>
-        <p>Switch to the price what-if and the hedge slider comes alive. With the calmer {fmt(F.calm_slope, 1)}% slope, cold winters now cost too, because the extra gas is bought dear, and each 10 points of cover above normal volume deepens the one-in-ten loss by about {m(F.mv_cost_per_10pts, 2)}, from {m(F.mv_1in10_100)} at 100% to {m(F.mv_1in10_120)} at 120%. Cover below 100% looks cheaper here only because the model ignores price moves unrelated to weather, so I wouldn't read it as a case for under-hedging.</p>
+        <p>Switch to the price what-if and the hedge slider starts to matter. With the calmer {fmt(F.calm_slope, 1)}% slope, cold winters now cost too, because the extra gas is bought dear, and each 10 points of cover above normal volume deepens the one-in-ten loss by about {m(F.mv_cost_per_10pts, 2)}, from {m(F.mv_1in10_100)} at 100% to {m(F.mv_1in10_120)} at 120%. Cover below 100% looks cheaper here only because the model ignores price moves unrelated to weather, so I wouldn't read it as a case for under-hedging.</p>
       </Prose>
 
       <Section title="How sure can I be of a one-in-ten from 35 winters?" />
