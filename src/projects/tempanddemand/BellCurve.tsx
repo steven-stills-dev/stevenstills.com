@@ -17,7 +17,7 @@ interface ModeData {
 /** One year's smoothed values by day of year; null where there is no data. */
 export interface Line { name: string; values: (number | null)[] }
 
-/** Monthly normals and the last 365 days by month, °C, as on the forecasting dashboard. */
+/** Monthly normals and the last 365 days by month, °C. */
 export interface Normals {
   n30: number[]; n10: number[]; n5: number[]; last12: (number | null)[];
   /** gaps to the 30-year normal, from unrounded values */
@@ -44,6 +44,8 @@ export interface BellData {
   cwvYears: { normal: (number | null)[]; years: { name: string; end: number; values: (number | null)[] }[] };
   /** one gas year from 1 October: National Gas's seasonal normal LDZ forecast and the actual, 7-day smoothed, GWh */
   sndYear: { name: string; forecast: (number | null)[]; actual: (number | null)[] };
+  /** one gas year from 1 October: cumulative demand lost to weather warmer than the seasonal normal, TWh, with its band */
+  weatherCum: { central: number[]; lo: number[]; hi: number[] };
 }
 
 export const CATS = [

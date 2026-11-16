@@ -16,6 +16,8 @@ Writes to public/data/heatwave/:
   - city_tmax.csv             daily maximum temperature per city, °C
   - demand_price_daily.csv    one row per settlement date
   - demand_price_summary.json each hot spell against its trend and day-type baseline
+Writes src/projects/heatwave/data.json: each day's demand against temperature, a LOESS fit and the bootstrap intervals.
+Responses are cached in scripts/_cache/ (fetch_cache.py); delete that folder to fetch afresh.
 """
 
 from __future__ import annotations
@@ -23,19 +25,26 @@ from __future__ import annotations
 import csv
 import io
 import json
+import random
+import sys
 import time
 import urllib.parse
-import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
-from statistics import linear_regression, mean, stdev
+from statistics import correlation, linear_regression, mean, stdev
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import fetch_cache  # noqa: E402
 
 OUT = Path(__file__).resolve().parents[2] / "public" / "data" / "heatwave"
 START, END = date(2026, 5, 1), date(2026, 7, 31)
 ELEXON = "https://data.elexon.co.uk/bmrs/api/v1"
 OPEN_METEO = "https://archive-api.open-meteo.com/v1/archive"
 NESO = "https://api.neso.energy/dataset/8f2fe0af-871c-488d-8bad-960426f24601/resource/8a4a771c-3929-4e56-93ad-cdf13219dea5/download/demanddataupdate_2026.csv"
-AGENT = "heatwave-build/1.0"
+PAGE = Path(__file__).resolve().parents[2] / "src" / "projects" / "heatwave" / "data.json"
+BOOT, SEED = 5000, 1  # bootstrap resamples of the window's calendar weeks
+WARM_C = 24.0         # ten-city mean daily maximum above which the LOESS curve turns upward
+SPAN = 0.6            # LOESS window, share of the days
 
 # Met Office heatwave definition: at least three consecutive days at or above the
 # county threshold, which runs from 25 to 28°C. 28°C is the highest county value,
@@ -56,17 +65,13 @@ DAYS = [START + timedelta(n) for n in range((END - START).days + 1)]
 
 
 def get(url: str, parse=json.load) -> object:
-    """Fetch a URL and parse the body, retrying on failure."""
-    for attempt in range(5):
+    """Fetch a URL through the on-disk cache and parse the body."""
+    for attempt in range(3):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": AGENT})
-            with urllib.request.urlopen(req, timeout=60) as res:
-                return parse(res)
-        except Exception:
-            if attempt == 4:
-                raise
-            time.sleep(3 * (attempt + 1))
-    raise AssertionError("unreachable")
+            return parse(io.BytesIO(fetch_cache.get(url)))
+        except ValueError:  # a cache file caught half-written by another run
+            time.sleep(2)
+    raise ValueError(f"unparseable response from {url}")
 
 
 def fetch_tmax() -> dict[str, list[float]]:
@@ -199,6 +204,91 @@ def summarise(rows: list[dict], fit: dict[str, dict]) -> dict:
     }
 
 
+def effects(rows: list[dict]) -> tuple[dict[str, dict], dict[str, float]]:
+    """Refit the baseline on a set of days and return it with the mean heatwave-day gap for each quantity."""
+    fit = fit_baseline([r for r in rows if not r["heatwave"]])
+    hot = [r for r in rows if r["heatwave"]]
+    out = {}
+    for k in ("demand_mw", "underlying_mw", "price_mean"):
+        base, value = mean(expected(r, k, fit) for r in hot), mean(r[k] for r in hot)
+        out[k], out[k + "_pct"] = value - base, pct(value, base)
+    return fit, out
+
+
+def loess(xs: list[float], ys: list[float], grid: list[float]) -> list[float]:
+    """Evaluate a local linear fit with tricube weights over the nearest SPAN of the points."""
+    k, out = max(3, int(SPAN * len(xs))), []
+    for g in grid:
+        reach = sorted(abs(x - g) for x in xs)[k - 1] or 1.0
+        w = [(1 - min(1.0, abs(x - g) / reach) ** 3) ** 3 for x in xs]
+        sw = sum(w)
+        mx, my = sum(a * x for a, x in zip(w, xs)) / sw, sum(a * y for a, y in zip(w, ys)) / sw
+        sxx = sum(a * (x - mx) ** 2 for a, x in zip(w, xs))
+        out.append(my + (sum(a * (x - mx) * (y - my) for a, x, y in zip(w, xs, ys)) / sxx if sxx else 0.0) * (g - mx))
+    return out
+
+
+def warm_slope(rows: list[dict], fit: dict[str, dict], cut: float = WARM_C) -> float:
+    """Return the rise in demand with embedded generation, % of baseline per °C, on days at or above the cut."""
+    warm = [r for r in rows if r["tmax"] >= cut]
+    return linear_regression([r["tmax"] for r in warm], [pct(r["underlying_mw"], expected(r, "underlying_mw", fit)) for r in warm]).slope
+
+
+def page_data(rows: list[dict]) -> dict:
+    """Build the temperature scatter, its LOESS fit and week-block bootstrap intervals for the article."""
+    quantile = lambda a, q: sorted(a)[round(q * (len(a) - 1))]
+    fit, point = effects(rows)
+    dev = lambda r, f: pct(r["underlying_mw"], expected(r, "underlying_mw", f))
+    lo_t, hi_t = min(r["tmax"] for r in rows), max(r["tmax"] for r in rows)
+    grid = [round(lo_t + (hi_t - lo_t) * i / 30, 2) for i in range(31)]
+    curve = loess([r["tmax"] for r in rows], [dev(r, fit) for r in rows], grid)
+    # days in one week move together, so resample whole ISO weeks and refit the baseline each time
+    weeks: dict[int, list[dict]] = {}
+    for r in rows:
+        weeks.setdefault(date.fromisoformat(r["date"]).isocalendar().week, []).append(r)
+    rng, draws, curves, slopes, no_spike = random.Random(SEED), [], [], [], []
+    spike = max((r for r in rows if r["heatwave"]), key=lambda r: r["price_max"])
+    while len(draws) < BOOT:
+        s = [r for w in rng.choices(list(weeks), k=len(weeks)) for r in weeks[w]]
+        cold_kinds = [sum(1 for r in s if not r["heatwave"] and r["day_type"] == kind) for kind in ("weekday", "weekend")]
+        if min(cold_kinds) < 3 or sum(1 for r in s if r["heatwave"]) < 3 or sum(1 for r in s if r["tmax"] >= WARM_C) < 5:
+            continue  # too few days of one kind to fit a baseline or a slope
+        f, e = effects(s)
+        draws.append(e)
+        slopes.append(warm_slope(s, f))
+        no_spike.append(effects([r for r in s if r is not spike])[1]["price_mean"])
+        if len(curves) < 1000:
+            curves.append(loess([r["tmax"] for r in s], [dev(r, f) for r in s], grid))
+    ci = lambda a: [round(quantile(a, 0.025), 2), round(quantile(a, 0.975), 2)]
+    cold = sorted(dev(r, fit) for r in rows if not r["heatwave"])
+    hot = [dev(r, fit) for r in rows if r["heatwave"]]
+    series = [dev(r, fit) for r in rows]
+    facts = {
+        "weeks": len(weeks), "resamples": BOOT,
+        **{k: round(v, 2) for k, v in point.items()},
+        **{k + "_ci": ci([d[k] for d in draws]) for k in point},
+        "price_mean_without_spike_ci": ci(no_spike),
+        "warm_cut_c": WARM_C, "warm_days": sum(1 for r in rows if r["tmax"] >= WARM_C),
+        "warm_slope_pct_per_c": round(warm_slope(rows, fit), 2), "warm_slope_ci": ci(slopes),
+        "warm_slope_mw_per_c": round(warm_slope(rows, fit) / 100 * mean(expected(r, "underlying_mw", fit) for r in rows if r["tmax"] >= WARM_C)),
+        "warm_slope_by_cut": {str(c): round(warm_slope(rows, fit, c), 2) for c in (22.0, 23.0, 24.0, 25.0)},
+        "cool_days_range_pct": [round(min(dev(r, fit) for r in rows if r["tmax"] < WARM_C), 1), round(max(dev(r, fit) for r in rows if r["tmax"] < WARM_C), 1)],
+        "cool_days_p10_p90_pct": [round(quantile([dev(r, fit) for r in rows if r["tmax"] < WARM_C], q), 1) for q in (0.1, 0.9)],
+        "baseline_p90_pct": round(quantile(cold, 0.9), 1),
+        "heatwave_days_above_baseline_p90": sum(v > quantile(cold, 0.9) for v in hot),
+        "lag1_autocorrelation": round(correlation(series[:-1], series[1:]), 2),
+        "tmax_range_c": [round(lo_t, 1), round(hi_t, 1)],
+    }
+    assert facts["underlying_mw_ci"][0] < facts["underlying_mw"] < facts["underlying_mw_ci"][1]
+    assert abs(facts["price_mean"] - 8.83) < 0.01 and abs(facts["underlying_mw_pct"] - 4.9) < 0.05  # the published gaps
+    return {
+        "points": [{"x": round(r["tmax"], 1), "y": round(dev(r, fit), 1), "label": r["date"], "hi": bool(r["heatwave"])} for r in rows],
+        "fit": [{"x": g, "y": round(y, 2), "lo": round(quantile([c[i] for c in curves], 0.025), 2),
+                 "hi": round(quantile([c[i] for c in curves], 0.975), 2)} for i, (g, y) in enumerate(zip(grid, curve))],
+        "facts": facts,
+    }
+
+
 def main() -> None:
     """Fetch the three sources, write the daily table and print each hot spell against baseline."""
     OUT.mkdir(parents=True, exist_ok=True)
@@ -222,6 +312,7 @@ def main() -> None:
             "periods_over": sum(p > HIGH_PRICE for p in prices[d]),
             "solar_mw": embedded[d][0], "wind_mw": embedded[d][1],
             "underlying_mw": mean(demand[d]) + sum(embedded[d]),
+            "tmax": mean(tmax[c][(d - START).days] for c in CITIES),
         })
     for r in rows:  # 48 half-hours: daily energy in GWh is mean MW times 24 hours
         assert abs(r["energy_gwh"] - r["demand_mw"] * 24 / 1000) < 1e-6
@@ -283,6 +374,9 @@ def main() -> None:
     assert summary["all_heatwave_days"]["days"] + sum(b["days"] for b in base.values()) == len(DAYS) == 92
     (OUT / "demand_price_summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     print(json.dumps(summary, indent=1))
+    page = page_data(rows)
+    PAGE.write_text(json.dumps(page, separators=(",", ":")) + "\n")
+    print(json.dumps(page["facts"], indent=1))
 
 
 if __name__ == "__main__":

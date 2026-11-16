@@ -1,0 +1,114 @@
+{
+ "meta": {
+  "source": "Elexon Insights API, Market Index Data (MID), provider APXMIDP; supplier profiles from Elexon S0142 (P114 data)",
+  "method": "shape cost against the trimmed-mean shape at the season's mean price by half hour; interval from resampling 7-day blocks of price days with replacement, each supplier's seasonal shape held fixed",
+  "units": "£/MWh"
+ },
+ "facts": {
+  "draws": 2000,
+  "block_days": 7,
+  "interval": "5th to 95th percentile",
+  "sum_days": 183,
+  "sum_suppliers": 10,
+  "sum_excludes_zero": 8,
+  "sum_widest_half_width": 0.19,
+  "sum_median_half_width": 0.13,
+  "win_days": 182,
+  "win_suppliers": 10,
+  "win_excludes_zero": 9,
+  "win_widest_half_width": 0.23,
+  "win_median_half_width": 0.09
+ },
+ "rows": [
+  {
+   "supplier": "British Gas",
+   "sum": -0.85,
+   "sum_lo": -1.0,
+   "sum_hi": -0.7,
+   "win": 0.26,
+   "win_lo": 0.09,
+   "win_hi": 0.4
+  },
+  {
+   "supplier": "E.ON Next",
+   "sum": -1.08,
+   "sum_lo": -1.21,
+   "sum_hi": -0.94,
+   "win": -0.83,
+   "win_lo": -0.94,
+   "win_hi": -0.73
+  },
+  {
+   "supplier": "Ecotricity",
+   "sum": -0.73,
+   "sum_lo": -0.93,
+   "sum_hi": -0.55,
+   "win": -0.57,
+   "win_lo": -0.82,
+   "win_hi": -0.35
+  },
+  {
+   "supplier": "Fuse Energy",
+   "sum": 1.17,
+   "sum_lo": 1.01,
+   "sum_hi": 1.33,
+   "win": 0.31,
+   "win_lo": 0.23,
+   "win_hi": 0.39
+  },
+  {
+   "supplier": "OVO Energy",
+   "sum": 0.9,
+   "sum_lo": 0.78,
+   "sum_hi": 1.03,
+   "win": -0.09,
+   "win_lo": -0.18,
+   "win_hi": 0.01
+  },
+  {
+   "supplier": "Octopus Energy",
+   "sum": 0.43,
+   "sum_lo": 0.26,
+   "sum_hi": 0.58,
+   "win": -0.77,
+   "win_lo": -0.9,
+   "win_hi": -0.63
+  },
+  {
+   "supplier": "Outfox Energy",
+   "sum": 0.03,
+   "sum_lo": -0.03,
+   "sum_hi": 0.09,
+   "win": 0.32,
+   "win_lo": 0.27,
+   "win_hi": 0.37
+  },
+  {
+   "supplier": "ScottishPower",
+   "sum": -0.49,
+   "sum_lo": -0.56,
+   "sum_hi": -0.42,
+   "win": -0.22,
+   "win_lo": -0.26,
+   "win_hi": -0.18
+  },
+  {
+   "supplier": "So Energy",
+   "sum": 0.17,
+   "sum_lo": 0.12,
+   "sum_hi": 0.23,
+   "win": 0.46,
+   "win_lo": 0.4,
+   "win_hi": 0.53
+  },
+  {
+   "supplier": "Utilita",
+   "sum": -0.04,
+   "sum_lo": -0.11,
+   "sum_hi": 0.04,
+   "win": 0.42,
+   "win_lo": 0.38,
+   "win_hi": 0.47
+  }
+ ]
+}

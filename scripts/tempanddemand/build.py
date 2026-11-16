@@ -1,6 +1,7 @@
 """Build public/data/tempanddemand/bell.json from HadCET daily temperature and National Gas LDZ demand.
 
 Run: uv run --with pandas --with numpy --with openpyxl scripts/tempanddemand/build.py
+Every figure quoted in the article is written to the `facts` object in the output.
 LDZ offtake is cached in ldz_gwh.csv because the gas portal only keeps five rolling years.
 """
 import io
@@ -35,8 +36,11 @@ SND_BOOK = "https://www.nationalgas.com/sites/default/files/documents/CWV%20and%
 SND_CACHE = Path(__file__).with_name("snd.csv")  # National Gas seasonal normal LDZ demand forecast, GWh
 SND_YEAR = 2024  # the last full gas year, October 2024 to September 2025
 GAS = [(2015, 2017), (2022, 2025)]  # complete years in the public daily data
-ERA5 = "https://archive-api.open-meteo.com/v1/archive"  # ECMWF ERA5 via Open-Meteo, as the forecasting dashboard uses
-ERA5_POINT = (52.48, -1.89)  # Birmingham, the dashboard's central England proxy
+ERA5 = "https://archive-api.open-meteo.com/v1/archive"  # ECMWF ERA5 via Open-Meteo
+ERA5_POINT = (52.48, -1.89)  # Birmingham, as a central England sample
+CAP = 14  # CWV above which LDZ demand stops responding to weather
+CAPS = (13, 14, 15)  # the cap and one degree either side, for the sensitivity band
+BOOT, SEED = 2000, 1  # bootstrap resamples of calendar months
 END = "2026-08-27"  # data cut-off, the day before the article's publish date
 
 
@@ -246,6 +250,83 @@ def snd_gap(gas: pd.Series, normal: pd.Series, c: pd.DataFrame) -> None:
               f"weather {weather:.1f} on {len(k)} days, other {gap - weather:.1f}")
 
 
+def gas_year_of(idx: pd.DatetimeIndex) -> np.ndarray:
+    """Label each date with the calendar year in which its gas year starts."""
+    return np.where(idx.month >= 10, idx.year, idx.year - 1)
+
+
+def capped_slope(d: pd.DataFrame, cap: float) -> float:
+    """Slope of daily LDZ demand on the actual CWV, GWh a day per degree, on days below the cap."""
+    f = d[d.actual < cap]
+    return float(np.polyfit(f.actual, f.act, 1)[0])
+
+
+def weather_share(gas: pd.Series, normal: pd.Series, c: pd.DataFrame) -> tuple[dict, dict]:
+    """Demand lost to weather warmer than the seasonal normal through SND_YEAR, cumulative in TWh by gas day, with a
+    band from a month-block bootstrap of the fit and a cap one degree either side; plus the figures quoted in the text."""
+    d = pd.concat([normal.rename("snd"), gas.rename("act"), c], axis=1).sort_index().dropna()
+    year = d[gas_year_of(d.index) == SND_YEAR]
+
+    def lost(slope: float, cap: float) -> pd.Series:
+        return -slope * (year.actual.clip(upper=cap) - year.normal.clip(upper=cap)) / 1e3
+
+    def cumulative(daily: pd.Series) -> np.ndarray:
+        return daily.groupby(gas_day(daily.index)).sum().reindex(range(365), fill_value=0).cumsum().values
+
+    slope = capped_slope(d, CAP)
+    central = lost(slope, CAP)
+    # residuals run in spells (see lag1 below), so resample whole calendar months and refit
+    months = [g for _, g in d.groupby(d.index.to_period("M"))]
+    rng = np.random.default_rng(SEED)
+    slopes, runs = [], {cap: [] for cap in CAPS}
+    for _ in range(BOOT):
+        b = pd.concat([months[i] for i in rng.integers(0, len(months), len(months))])
+        slopes.append(capped_slope(b, CAP))
+        for cap in CAPS:
+            runs[cap].append(cumulative(lost(capped_slope(b, cap), cap)))
+    totals = [r[-1] for r in runs[CAP]]
+    fit = d[d.actual < CAP]
+    cut = fit.act.mean() - slope * fit.actual.mean()
+    resid = (fit.act - (cut + slope * fit.actual)).asfreq("D")
+    by_year = [capped_slope(g, CAP) for _, g in d.groupby(gas_year_of(d.index)) if (g.actual < CAP).sum() > 200]
+    rest, test = fit[gas_year_of(fit.index) != SND_YEAR], fit[gas_year_of(fit.index) == SND_YEAR]
+    s2, c2 = np.polyfit(rest.actual, rest.act, 1)  # out of sample: fit without SND_YEAR, score on it
+    by_month = central.groupby(central.index.month).sum()
+    facts = {
+        "slope": round(slope, 1), "slope_ci": [round(float(v), 1) for v in np.percentile(slopes, [2.5, 97.5])],
+        "slope_by_gas_year": [round(min(by_year), 1), round(max(by_year), 1)],
+        "weather_twh": round(float(central.sum()), 1), "weather_ci": [round(float(v), 1) for v in np.percentile(totals, [2.5, 97.5])],
+        "weather_by_cap": {str(cap): round(float(lost(capped_slope(d, cap), cap).sum()), 1) for cap in CAPS},
+        "weather_days": int(len(year)), "spring_twh": round(float(by_month.loc[[3, 4, 5]].sum()), 1),
+        "december_twh": round(float(by_month.loc[12]), 1), "january_twh": round(float(by_month.loc[1]), 1),
+        "to_february_twh": round(float(central[:f"{SND_YEAR + 1}-02-28"].sum()), 1),
+        "resid_lag1": round(float(resid.autocorr(1)), 2),
+        "holdout_mape": round(float(((test.act - (c2 + s2 * test.actual)).abs() / test.act).mean() * 100), 1),
+        "holdout_bias_gwh": round(float((test.act - (c2 + s2 * test.actual)).mean())),
+    }
+    lo, hi = np.percentile(runs[CAPS[0]], 2.5, axis=0), np.percentile(runs[CAPS[-1]], 97.5, axis=0)
+    assert facts["weather_ci"][0] < facts["weather_twh"] < facts["weather_ci"][1] and lo[-1] < facts["weather_twh"] < hi[-1]
+    chart = {"central": [round(float(v), 2) for v in cumulative(central)],
+             "lo": [round(float(v), 2) for v in lo], "hi": [round(float(v), 2) for v in hi]}
+    return chart, facts
+
+
+def temp_facts(mean_t: pd.Series, max_t: pd.Series, gas: pd.Series) -> dict:
+    """The demand and temperature figures quoted in the text: slope below 14°C, the warm-day floor, yearly and banded means."""
+    j = pd.concat([mean_t.rename("t"), max_t.rename("hi"), gas.rename("g")], axis=1, join="inner").dropna()
+    f = j["2022":"2025"][lambda x: x.t < 14]
+    slope, cut = np.polyfit(f.t, f.g, 1)
+    r2 = 1 - ((f.g - (cut + slope * f.t)) ** 2).sum() / ((f.g - f.g.mean()) ** 2).sum()
+    band = lambda a, b: round(float(j[str(a):str(b)][lambda x: (x.t >= 4) & (x.t < 6)].g.mean()))
+    full = gas[:str(gas.index.max().year - 1)]
+    return {
+        "slope_gwh_per_c": round(float(slope)), "slope_r2": round(float(r2), 2),
+        "floor_gwh": round(float(j["2022":"2025"][lambda x: x.hi >= 22].g.mean())),
+        "yearly_gwh": {str(y): round(float(v)) for y, v in full.groupby(full.index.year).mean().items()},
+        "band_4_6c_gwh": {f"{a}-{b}": band(a, b) for a, b in GAS},
+    }
+
+
 def pairs(t: pd.Series, g: pd.Series) -> list[dict]:
     """Days with both a temperature and a gas figure, grouped by year from FIRST, as [°C, GWh, day of year]."""
     j = pd.concat([t.rename("t"), g.rename("g")], axis=1, join="inner")[str(FIRST):].dropna()
@@ -266,7 +347,7 @@ def era5() -> pd.Series:
 
 def normals(t: pd.Series) -> dict:
     """Monthly 30-, 10- and 5-year normals, the last 365 days by month, and their gaps to the 30-year normal,
-    on the forecasting dashboard's windows and rounding: values to 0.1, gaps from unrounded values."""
+    with values rounded to 0.1 and gaps taken from unrounded values."""
     last = t.index.max()
     y = last.year
     windows = {"n30": (1991, 2020), "n10": (y - 10, y - 1), "n5": (y - 5, y - 1)}
@@ -303,6 +384,8 @@ def main() -> None:
                     "forecast": by_gas_year(snd(), SND_YEAR, 7, 0), "actual": by_gas_year(gas, SND_YEAR, 7, 0)},
         "normals": normals(era5()[:END]),
     }
+    data["weatherCum"], share = weather_share(gas, snd(), cw)
+    data["facts"] = {**share, **temp_facts(mean.t, scored["max"].t, gas)}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, separators=(",", ":"), ensure_ascii=False))
     print(f"wrote {OUT} ({OUT.stat().st_size / 1024:.0f} KB), CET to {last.date()}")
@@ -311,6 +394,7 @@ def main() -> None:
         print(f"gas {a}-{b}: {c.count()} days, mean {c.mean():.0f} GWh/d, Jan {c[c.index.month == 1].mean():.0f}, Jul {c[c.index.month == 7].mean():.0f}")
     print("cwv by gas year", data["cwv"])
     snd_gap(gas, snd(), cw)
+    print("facts", json.dumps(data["facts"], indent=1))
     n = data["normals"]
     print("normals", n["windows"], "last12 from", n["last12From"], "to", n["last"])
     for i, mon in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):

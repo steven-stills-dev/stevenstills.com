@@ -1,9 +1,11 @@
 import { Article, Prose, Section, Wide, Fn, Footnotes, StatRow } from "../../components/Article";
 import Box from "../../components/Box";
 import LineChart from "../../components/charts/LineChart";
+import Histogram from "../../components/charts/Histogram";
 import { ramp } from "../../components/charts/geom";
 import { usePageMeta } from "../../lib/meta";
 import BatteryAnim from "./BatteryAnim";
+import data from "./data.json";
 import "./batteries.css";
 
 /* ── Solar generation against demand: hourly profiles, 00:00 -> 24:00 (arbitrary MW) ── */
@@ -83,15 +85,14 @@ export function ChargeChart({ h }: { h?: number }) {
 }
 
 const NOTES = [
-  <>UK daytime power prices fell below overnight prices for the first time on record in Q2 2025, after a record-sunny spring lifted solar output. <a href="https://reports.electricinsights.co.uk/" target="_blank" rel="noopener">Drax Electric Insights, Q2 2025</a>.</>,
+  <>UK daytime power prices fell below overnight prices for the first time on record in Q2 2025, after a record-sunny spring lifted solar output. <a href="https://reports.electricinsights.co.uk/?p=2499" target="_blank" rel="noopener">Drax Electric Insights, Q2 2025, "Power prices turned upside down"</a>.</>,
   <>MCS certified over 40,000 domestic battery-storage installations in 2025, almost double the previous record. <a href="https://mcscertified.com/uk-homes-installing-a-small-scale-renewable-every-90-seconds/" target="_blank" rel="noopener">MCS, 2025 installation records</a>.</>,
-  <>Twenty-nine GB energy suppliers failed between July 2021 and May 2022, affecting nearly four million households. <a href="https://www.icaew.com/insights/viewpoints-on-the-news/2022/aug-2022/energy-supplier-collapses-highlight-bigger-sector-crisis" target="_blank" rel="noopener">ICAEW, on the supplier collapses</a>.</>,
-  <>The day-ahead peak-to-trough spread a two-hour GB battery could capture ran from under £40/MWh (Feb 2024) to about £70/MWh (Aug 2024). <a href="https://timera-energy.com/" target="_blank" rel="noopener">Timera Energy</a>.</>,
-  <>Two-hour GB BESS revenues benchmarked near £50k/MW/year in 2024 and about £73k/MW/year over the twelve months to April 2026. <a href="https://modoenergy.com/research/en/how-does-battery-energy-storage-make-money" target="_blank" rel="noopener">Modo Energy, GB BESS benchmarks</a>.</>,
-  <>System (imbalance) prices are published per settlement period by <a href="https://www.elexon.co.uk/" target="_blank" rel="noopener">Elexon</a> on the open Insights API. The £78–£158/MWh range is my average by half-hour across fifteen settlement days, 6–24 July 2026, from that API. The chart's 20:30 example is a £139/MWh day-ahead peak against a £150/MWh imbalance price. The imbalance and day-ahead (APX) wholesale series come from a live half-hourly dashboard I run, and the chart shape is illustrative.</>,
+  <>Twenty-nine GB energy suppliers failed between July 2021 and May 2022, affecting nearly four million households. <a href="https://www.nao.org.uk/reports/the-energy-supplier-market/" target="_blank" rel="noopener">National Audit Office, The energy supplier market, June 2022</a>.</>,
+  <>A typical two-hour GB BESS earned £73,145/MW/year over the twelve months to April 2026, across stacked revenue streams. <a href="https://modoenergy.com/research/en/how-does-battery-energy-storage-make-money" target="_blank" rel="noopener">Modo Energy, GB BESS benchmarks</a>.</>,
+  <>System (imbalance) prices are published per settlement period by <a href="https://www.elexon.co.uk/" target="_blank" rel="noopener">Elexon</a> on the open Insights API. The £78 to £158/MWh range is my average by half-hour across fifteen settlement days, 6–24 July 2026, from that API. The chart's 20:30 example is a £139/MWh day-ahead peak against a £150/MWh imbalance price. The imbalance and day-ahead (APX) wholesale series come from a live half-hourly dashboard I run, and the chart shape is illustrative.</>,
   <>Comparing 10,000 Australian battery-plus-solar homes with 10,000 similar solar-only homes: average grid draw of ~0.3&nbsp;kW against ~1.0&nbsp;kW across the 4–9pm window. This is a fall in grid draw in those hours, not a fall in the home's consumption. <a href="https://www.solarquotes.com.au/blog/20000-homes-home-batteries/" target="_blank" rel="noopener">SolarQuotes, what 20,000 homes reveal</a>.</>,
-  <>My model, so treat accordingly. The shaded band on both modelled-day charts is the P10&ndash;P90 range across fleet draws. 300 Monte&nbsp;Carlo draws of 400-home fleets; stylised double-peak domestic shape; consumption ~8&nbsp;kWh/day (winter +25%); solar 2.5–5&nbsp;kWp with beta-distributed cloud; usable capacity 5.2–13.5&nbsp;kWh at 3–5&nbsp;kW; 85% round trip; greedy self-consumption dispatch, with a staggered 00:00–05:00 grid-charging window in the smart-tariff case. Drift is priced at the July 2026 average cash-out prices in note 6. Modelled estimates, not observed data.</>,
-  <>Market-wide Half-Hourly Settlement began migrating meters in October 2025, passed two million by February 2026, and targets ~80% by October 2026 with full cutover in 2027. <a href="https://www.elexon.co.uk/2026/02/16/more-than-two-million-meters-have-now-transitioned-to-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, migration progress</a>; <a href="https://www.elexon.co.uk/bsc/operational/market-wide-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, MHHS</a>.</>,
+  <>My model, so treat accordingly. The shaded band on both modelled-day charts is the P10&ndash;P90 range across fleet draws. 300 Monte&nbsp;Carlo draws of 400-home fleets; stylised double-peak domestic shape; consumption ~8&nbsp;kWh/day (winter +25%); solar 2.5–5&nbsp;kWp with beta-distributed cloud; usable capacity 5.2–13.5&nbsp;kWh at 3–5&nbsp;kW; 85% round trip; greedy self-consumption dispatch, with a staggered 00:00–05:00 grid-charging window in the smart-tariff case. Drift is priced at the July 2026 average cash-out prices in note 5. The daily figures price the same surplus at each day's system prices, 1 April to 30 September 2026, and against the APX market index price for the same half-hours on the 182 days with trades in every one; both series are from the Elexon Insights API. The surplus is held at the modelled average day, so the daily figures leave out any link between sunnier days and prices. Modelled estimates, not observed data.</>,
+  <>Market-wide Half-Hourly Settlement began migrating meters in October 2025, passed two million by February 2026, and had completed 23,179,061 migrations, 68.56% of meter points, by the week ending 18 September 2026; implementation completes in May 2027. <a href="https://www.elexon.co.uk/2026/02/16/more-than-two-million-meters-have-now-transitioned-to-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, migration progress</a>; <a href="https://www.elexon.co.uk/bsc/documents/groups/mhhs-transitional-operations-group/mhhs-transitional-operations-group-meeting-49-slide-deck-25-sept-2026/" target="_blank" rel="noopener">Elexon, Transitional Operations Group meeting 49, 25 September 2026</a>; <a href="https://www.elexon.co.uk/bsc/operational/market-wide-half-hourly-settlement/" target="_blank" rel="noopener">Elexon, MHHS</a>.</>,
 ];
 
 const title = "Home batteries and settlement risk for suppliers";
@@ -101,7 +102,7 @@ export default function Batteries() {
   usePageMeta(title, lede);
 
   return (
-    <Article kicker="Opinion · energy markets · updated 12 Nov 2026" title={title} lede={lede}>
+    <Article kicker="Opinion · energy markets · updated 16 Nov 2026" title={title} lede={lede}>
 
       <Prose>
         <p>A supplier buys most of its power a day ahead, against a forecast of what its customers will use in each half-hour. Whatever its meters draw above or below that purchase is settled afterwards, at a price the supplier doesn't control. A home battery changes the hours in which a household draws from the grid, so a forecast built on the household's old shape tends to be wrong in the same direction in the same half-hours. I wanted to know how large that error could be for a supplier with a growing number of battery homes.</p>
@@ -116,7 +117,7 @@ export default function Batteries() {
       </Wide>
 
       <Prose>
-        <p>A battery charges through the cheap midday and overnight hours and discharges into the expensive hours. It earns the gap between the price it charged at and the price it later displaced, and a modern pack returns roughly 85 to 92% of what it takes in.</p>
+        <p>A battery charges through the cheap midday and overnight hours and discharges into the expensive hours. It earns the gap between the price it charged at and the price it later displaced, less the energy lost on the round trip, which I set at 15% in the model below.</p>
       </Prose>
 
       <Wide>
@@ -124,15 +125,15 @@ export default function Batteries() {
       </Wide>
 
       <Prose>
-        <p>The day-ahead peak-to-trough spread a two-hour GB battery could capture ran from under £40/MWh in February 2024 to about £70/MWh that August.<Fn n={4} /> Two-hour GB batteries benchmarked near £50k per MW per year in 2024 and about £73k over the twelve months to April 2026.<Fn n={5} /> Those are grid-scale benchmarks, so I use them only to show that the trade has paid.</p>
+        <p>A typical two-hour GB battery earned about £73k per MW per year over the twelve months to April 2026.<Fn n={4} /> That is a grid-scale benchmark, so I use it only to show that the trade has paid.</p>
       </Prose>
 
-      <StatRow stats={[{ num: "~£50k", label: "per MW / year, stacked" }]} />
+      <StatRow stats={[{ num: "~£73k", label: "per MW / year, stacked" }]} />
 
       <Section title="How settlement prices a forecast error" />
 
       <Prose>
-        <p>Every half-hour, a supplier settles the difference between what it bought and what its meters drew, at Elexon's cash-out price.<Fn n={6} /> When the forecast is wrong in a consistent direction because the shape of the book has changed, the residual is a position that settles at whatever the cash-out price turns out to be. Across the fifteen July 2026 settlement days I pulled, the average cash-out price by half-hour ran from £78/MWh in the middle of the day to £158/MWh at eight in the evening.<Fn n={6} k="b" /></p>
+        <p>Every half-hour, a supplier settles the difference between what it bought and what its meters drew, at Elexon's cash-out price.<Fn n={5} /> When the forecast is wrong in a consistent direction because the shape of the book has changed, the residual is a position that settles at whatever the cash-out price turns out to be. Across the fifteen July 2026 settlement days I pulled, the average cash-out price by half-hour ran from £78/MWh in the middle of the day to £158/MWh at eight in the evening.<Fn n={5} k="b" /></p>
       </Prose>
 
       <Wide>
@@ -152,8 +153,8 @@ export default function Batteries() {
       <Section title="How far a battery moves a household's demand" />
 
       <Prose>
-        <p>In Australia, data from 20,000 homes shows battery households drawing about 0.3&nbsp;kW from the grid across the 4 to 9pm window, against about 1.0&nbsp;kW for otherwise similar solar-only homes.<Fn n={7} /></p>
-        <p>Britain doesn't yet have an equivalent public dataset, so I built a simple stochastic model. I simulated fleets of 400 households, with 300 Monte&nbsp;Carlo draws per scenario: daily consumption of about 8&nbsp;kWh, solar between 2.5 and 5&nbsp;kWp with cloud variation, usable battery capacity between 5.2 and 13.5&nbsp;kWh, an 85% round trip, and a battery serving its own household.<Fn n={8} /></p>
+        <p>In Australia, data from 20,000 homes shows battery households drawing about 0.3&nbsp;kW from the grid across the 4 to 9pm window, against about 1.0&nbsp;kW for otherwise similar solar-only homes.<Fn n={6} /></p>
+        <p>Britain doesn't yet have an equivalent public dataset, so I built a simple stochastic model. I simulated fleets of 400 households, with 300 Monte&nbsp;Carlo draws per scenario: daily consumption of about 8&nbsp;kWh, solar between 2.5 and 5&nbsp;kWp with cloud variation, usable battery capacity between 5.2 and 13.5&nbsp;kWh, an 85% round trip, and a battery serving its own household.<Fn n={7} /></p>
       </Prose>
 
       <Section title="What the battery does to a summer day" />
@@ -176,7 +177,7 @@ export default function Batteries() {
       </Wide>
 
       <Prose>
-        <p>The shaded band is the range between the 10th and 90th percentile of fleet draws.<Fn n={8} k="b" /> A solar-only home puts about 35% of its import through the 4 to 9pm window. With the battery the modelled evening share falls to about 4%, and the median half-hour of import moves from 18:30 into the small hours.</p>
+        <p>The shaded band is the range between the 10th and 90th percentile of fleet draws.<Fn n={7} k="b" /> A solar-only home puts about 35% of its import through the 4 to 9pm window. With the battery the modelled evening share falls to about 4%, and the median half-hour of import moves from 18:30 into the small hours.</p>
       </Prose>
 
       <Section title="What changes in winter" />
@@ -203,15 +204,26 @@ export default function Batteries() {
       <Section title="What the forecast error is worth at cash-out" />
 
       <Prose>
-        <p>If a supplier kept forecasting a battery home on a solar-only shape, my summer model has it buying about 1.8&nbsp;kWh per home per day, all of it from 15:30 onwards, that the home no longer draws from the grid. That surplus is worth roughly 26p a day per home at July 2026 average cash-out prices, and comes to about 89&nbsp;MWh a day across a 50,000-home book.<Fn n={8} k="c" /> The supplier's gain or loss on it is the difference between the cash-out price and the price it paid a day ahead, which the model does not price.</p>
+        <p>If a supplier kept forecasting a battery home on a solar-only shape, my summer model has it buying about 1.8&nbsp;kWh per home per day, all of it from 15:30 onwards, that the home no longer draws from the grid. That surplus is worth roughly 26p a day per home at July 2026 average cash-out prices, and comes to about 89&nbsp;MWh a day across a 50,000-home book.<Fn n={7} k="c" /> The supplier's gain or loss on it is the difference between the cash-out price and the price it paid a day ahead, which the model does not price.</p>
+        <p>One month's average hides the spread, so I priced the same surplus at each day's cash-out prices from 1 April to 30 September 2026.<Fn n={7} k="d" /> The chart shows the value of the surplus on each of the 183 days: the median day is 24p a home, four days in five fall between 19p and 33p, and one day reached 97p. Against Elexon's market index price for the same half-hours, which I use as a stand-in for what the supplier paid, the supplier gained 0.4p on the median day and lost money on 43% of days, with four days in five between a 2.5p loss and a 3.5p gain.</p>
+      </Prose>
+
+      <Wide>
+        <Box title="Daily Value of the Forecast Surplus" sub="p per home per day" h={380}>
+          <Histogram bins={data.bins} unit="p" yUnit="days" xTicks={[0, 25, 50, 75, 100]}
+            label="Histogram of the daily value of the modelled surplus at cash-out prices, 183 days from April to September 2026: most days fall between 15p and 35p a home, with one day near 97p" />
+        </Box>
+      </Wide>
+
+      <Prose>
         <p>I don't think the pence per home are the main concern. The error runs in one direction, it is synchronised by tariffs and it is correlated with the weather, so whole cohorts of homes move together. I think that is how small per-meter errors add up to balancing swings.</p>
       </Prose>
 
       <Section title="What I would do about battery homes" />
 
       <Prose>
-        <p>This is an opinion backed by a toy model and early data, so I hold it loosely. I expect the data to show a third kind of domestic demand profile: a battery home that draws almost nothing from the grid between mid-morning and midnight in summer, and that takes most of its winter import in one overnight block when it is on a smart tariff. Market-wide Half-Hourly Settlement has been migrating meters since October 2025, passed two million by February 2026, targets around 80% by October 2026 and completes in 2027,<Fn n={9} /> so each battery home will soon be settled on its own metered half-hours.</p>
-        <p>So I would segment the book by what's bolted to the house, set up a check that detects a change in a cohort's shape quickly, and treat every new device class as a settlement question from its first day on the book. I'd rather follow battery homes through to settlement now, while it's still cheap to be wrong.</p>
+        <p>This is an opinion backed by a toy model and early data, so I hold it loosely. I expect the data to show a third kind of domestic demand profile: a battery home that draws almost nothing from the grid between mid-morning and midnight in summer, and that takes most of its winter import in one overnight block when it is on a smart tariff. Market-wide Half-Hourly Settlement has been migrating meters since October 2025, passed two million by February 2026, had moved 69% of meter points by 18 September 2026 and completes in 2027,<Fn n={8} /> so each battery home will soon be settled on its own metered half-hours.</p>
+        <p>So I would segment the book by what's bolted to the house, set up a check that detects a change in a cohort's shape quickly, and treat every new device class as a settlement question from its first day on the book. I would size the exposure from the daily range and its worst day, and keep the monthly average for context. I'd rather follow battery homes through to settlement now, while it's still cheap to be wrong.</p>
       </Prose>
 
       <Footnotes notes={NOTES} />

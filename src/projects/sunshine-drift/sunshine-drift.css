@@ -1,0 +1,4 @@
+.sd-fig { display: flex; flex-direction: column; gap: 12px; height: 100%; }
+.sd-fig > .box { flex: 1 1 auto; }
+.sd-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sd-readout { margin: 0; font-size: .8125rem; color: var(--ste-dusk); font-variant-numeric: tabular-nums; }

@@ -1,0 +1,97 @@
+{
+ "meta": {
+  "source": "DESNZ, Renewable Energy Planning Database, quarterly extract; operational sites, technology Wind Onshore, installed capacity summed by the database's Region field",
+  "url": "https://assets.publishing.service.gov.uk/media/6af42ff0a4004bdbe54e54a5/REPD_Publication_Q3_2026.csv",
+  "sites": "published megawatts from the sources in the article's notes; blank where none is published for the site on its own"
+ },
+ "facts": {
+  "extract": "REPD_Publication_Q3_2026",
+  "records_to": "23 October 2026",
+  "scotland_mw": 10202,
+  "england_mw": 2871,
+  "south_east_mw": 113,
+  "london_mw": 13,
+  "north_east_mw": 474,
+  "wales_mw": 1220,
+  "offshore_mw": 16011
+ },
+ "wind": {
+  "east-midlands": 398,
+  "east": 452,
+  "london": 13,
+  "north-east": 474,
+  "north-west": 467,
+  "northern-ireland": 1216,
+  "scotland": 10202,
+  "south-east": 113,
+  "south-west": 294,
+  "wales": 1220,
+  "west-midlands": 8,
+  "yorkshire": 652
+ },
+ "sites": [
+  {
+   "site": "Cambois",
+   "region": "North East",
+   "status": "First phase consented",
+   "mw": 720,
+   "wind": 474
+  },
+  {
+   "site": "Airdrie",
+   "region": "Scotland",
+   "status": "AI Growth Zone",
+   "mw": 500,
+   "wind": 10202
+  },
+  {
+   "site": "Culham",
+   "region": "South East",
+   "status": "AI Growth Zone",
+   "mw": 100,
+   "wind": 113
+  },
+  {
+   "site": "Cobalt Park",
+   "region": "North East",
+   "status": "AI Growth Zone",
+   "mw": "",
+   "wind": 474
+  },
+  {
+   "site": "Trawsfynydd",
+   "region": "Wales",
+   "status": "AI Growth Zone",
+   "mw": "",
+   "wind": 1220
+  },
+  {
+   "site": "Anglesey",
+   "region": "Wales",
+   "status": "AI Growth Zone",
+   "mw": "",
+   "wind": 1220
+  },
+  {
+   "site": "Bridgend",
+   "region": "Wales",
+   "status": "AI Growth Zone",
+   "mw": "",
+   "wind": 1220
+  },
+  {
+   "site": "Slough",
+   "region": "South East",
+   "status": "Existing cluster",
+   "mw": 1000,
+   "wind": 113
+  },
+  {
+   "site": "Docklands",
+   "region": "London",
+   "status": "Existing cluster",
+   "mw": "",
+   "wind": 13
+  }
+ ]
+}
