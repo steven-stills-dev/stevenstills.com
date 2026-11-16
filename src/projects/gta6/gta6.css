@@ -4,3 +4,5 @@
 .gta6-pics .photo:first-child { aspect-ratio: 4 / 5; }
 .gta6-pics .photo:last-child { aspect-ratio: 16 / 9; }
 @media (max-width: 900px) { .gta6-pics { grid-template-columns: 1fr; } }
+.article:has(.gta6-pics) .headline { text-wrap: pretty; }
+.article:has(.gta6-pics) .lede { max-width: none; }

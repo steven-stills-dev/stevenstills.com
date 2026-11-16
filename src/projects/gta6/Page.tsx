@@ -105,11 +105,11 @@ export default function Gta6() {
         <p>The broadband has felt it already. Virgin Media O2 said the pre-load on 10 November beat its record for evening peak traffic by 3.8%.<Fn n={4} /></p>
       </Prose>
 
-      <Section title="A PlayStation and a telly about double what a home is drawing" />
+      <Section title="A PlayStation and a TV about double what a home is drawing" />
       <Prose>
         <p>Bad news for the PC crowd: there is no PC version at launch.<Fn n={1} k="b" /> There is no disc either. The box in the shops has a download code in it.<Fn n={5} /> So this is a console story.</p>
         <p>Sony's own numbers put a PlayStation 5 at 197 to 219 watts (W) while you play.<Fn n={6} /> An Xbox Series X is 154 W.<Fn n={7} /> I've called it {f.console_w} W for the console and thrown in {f.tv_w} W for the screen, so {f.watts} W a player.</p>
-        <p>That looked like a lot to me, so I checked it twice. It is right, and the reason is that homes use less than you'd think. A typical household gets through {fmt(f.tdcv_kwh)} kilowatt hours (kWh) a year, which works out at about {f.home_avg_w} W on average across the day and night.<Fn n={8} /> So a console and a telly really do about double what the house is drawing while they are on.</p>
+        <p>That looked like a lot to me, so I checked it twice. It is right, and the reason is that homes use less than you'd think. A typical household gets through {fmt(f.tdcv_kwh)} kilowatt hours (kWh) a year, which works out at about {f.home_avg_w} W on average across the day and night.<Fn n={8} /> So a console and a TV really do about double what the house is drawing while they are on.</p>
         <p>I've assumed play comes in three-hour loops, which is about the stretch between snacks and life. One loop is {fmt(f.loop_kwh, 1)} kWh. Take the day off, fit in three, and you add {fmt(f.day_kwh, 1)} kWh to a home that normally uses {fmt(f.home_kwh, 1)} kWh a day, so {f.home_uplift_pct}% more. That costs {f.cost_p}p, so the electricity is not the expensive part of the day.<Fn n={9} /></p>
       </Prose>
       <Wide><HomeChart h={360} /></Wide>
