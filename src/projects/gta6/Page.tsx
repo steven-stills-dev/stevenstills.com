@@ -122,7 +122,7 @@ export default function Gta6() {
       <Wide><NationalChart /></Wide>
       <Prose>
         <p>If you are squinting at that chart trying to find the difference, that is the answer.</p>
-        <p>Television has done far worse. The biggest TV pickup on NESO's list is 2,800 MW, after a missed penalty in England's 1990 World Cup semi-final. Half-time in the Euro 2024 final was 1,300 MW and the 1966 final 600 MW.<Fn n={11} /> A pickup lands within minutes. In my version of Thursday the load builds over 90 minutes, which I'd guess is a much easier evening for the control room.</p>
+        <p>Television has done far worse. The biggest TV pickup on NESO's list is 2,800 MW, after a missed penalty in England's 1990 World Cup semi-final. Half-time in the Euro 2024 final was 1,300 MW and the 1966 final 600 MW.<Fn n={11} /> The thing with a TV pickup is that it all lands at once, when everyone gets up at half-time to put the kettle on. My GTA crowd drifts in over an hour and a half as people get home from work, which I'd guess makes for a much calmer evening in the control room.</p>
         <p>If all {fmt(f.plan_to_play / 1e6, 1)} million played at the same moment it would be {fmt(f.all_mw)} MW, which would beat the 1990 record. Luckily some of them have work in the morning.</p>
       </Prose>
 
