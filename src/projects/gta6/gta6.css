@@ -1,0 +1,6 @@
+.gta6-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0 0; }
+.gta6-credit { margin: 6px 0 0; font-size: .75rem; color: var(--ste-dusk); }
+.gta6-pics { display: grid; grid-template-columns: .45fr 1fr; gap: 16px; }
+.gta6-pics .photo:first-child { aspect-ratio: 4 / 5; }
+.gta6-pics .photo:last-child { aspect-ratio: 16 / 9; }
+@media (max-width: 900px) { .gta6-pics { grid-template-columns: 1fr; } }
