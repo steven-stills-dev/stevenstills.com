@@ -68,13 +68,13 @@ def irradiance():
 def irradiance_forecast():
     """Return hourly day-ahead forecast shortwave radiation (W/m2, UTC), mean of the ten sites.
 
-    Open-Meteo previous-runs API, `_previous_day1`: the value forecast one day earlier. Available from March 2024.
+    Open-Meteo previous-runs API, `_previous_day2`: the value forecast 48 hours before valid time, so it was available before the day-ahead demand forecast. Available from March 2024.
     """
     lat = ",".join(str(v[0]) for v in SITES.values())
     lon = ",".join(str(v[1]) for v in SITES.values())
     url = ("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon +
-           "&start_date=2024-03-07&end_date=" + END + "&hourly=shortwave_radiation_previous_day1&timezone=GMT")
+           "&start_date=2024-03-07&end_date=" + END + "&hourly=shortwave_radiation_previous_day2&timezone=GMT")
     js = json.loads(get(url))
     t = pd.to_datetime(js[0]["hourly"]["time"])
-    a = np.array([j["hourly"]["shortwave_radiation_previous_day1"] for j in js], dtype=float)
+    a = np.array([j["hourly"]["shortwave_radiation_previous_day2"] for j in js], dtype=float)
     return pd.Series(np.nanmean(a, axis=0), index=t, name="ghi_fc")
