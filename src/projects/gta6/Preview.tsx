@@ -1,6 +1,6 @@
-import { PlayersMap } from "./Page";
+import { HomeChart } from "./Page";
 
-/** Home preview: likely players by GSP group. */
+/** Home preview: one home's electricity use on launch day. */
 export default function Preview() {
-  return <PlayersMap />;
+  return <HomeChart />;
 }
