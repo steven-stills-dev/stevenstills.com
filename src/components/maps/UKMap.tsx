@@ -137,7 +137,7 @@ export default function UKMap({
                   d={rg.d}
                   fill={fillFor(v)}
                   vectorEffect="non-scaling-stroke"
-                  tabIndex={0}
+                  tabIndex={0} role="img"
                   aria-label={`${rg.name}: ${text}`}
                   data-region={rg.key}
                   onMouseEnter={hover(rg.key, rg.name, text)}
@@ -179,7 +179,7 @@ export default function UKMap({
                       stroke={on ? "var(--ste-night)" : "var(--ste-midday)"}
                       strokeWidth={on ? 2 : 1}
                       vectorEffect="non-scaling-stroke"
-                      tabIndex={0}
+                      tabIndex={0} role="img"
                       aria-label={p.label}
                       onMouseEnter={hover(id, toneLabel(tone), p.label)}
                       onMouseMove={hover(id, toneLabel(tone), p.label)}

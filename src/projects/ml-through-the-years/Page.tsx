@@ -7,6 +7,7 @@ import BoostDemo from "./BoostDemo";
 import ModelStepper from "./ModelStepper";
 import TreeGrowth from "./TreeGrowth";
 import { DEMO } from "./demo-data";
+import data from "./data.json";
 import "./ml.css";
 
 /* ── Average national demand (INDO), non-holiday weekdays, Oct 2024 to Sep 2025, GW by half-hour ── */
@@ -24,15 +25,13 @@ const BH_FORECAST: Record<string, number[]> = {
   "Gradient boosting": BH_ACTUAL.map((v, k) => +(v + 0.35 * Math.sin(k * 0.9)).toFixed(1)),
 };
 
-/* ── Illustrative forecast error by month, Oct to Sep ── */
-const MONTHS = ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"];
-const ERR_OLD = [3.1, 2.8, 3.0, 2.7, 2.8, 3.4, 4.3, 4.9, 5.4, 5.6, 5.2, 4.2];
-const ERR_GBM = [2.4, 2.3, 2.5, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.7, 2.6, 2.5];
+/* ── Measured forecast error by month, Oct 2024 to Sep 2025 (scripts/ml-through-the-years/build.py) ── */
+const MONTHS = data.months;
 
 const HH = Array.from({ length: 48 }, (_, k) => `${String(Math.floor(k / 2)).padStart(2, "0")}:${k % 2 ? "30" : "00"}`);
 const HH_TICKS = [{ i: 0, label: "00:00" }, { i: 12, label: "06:00" }, { i: 24, label: "12:00" }, { i: 36, label: "18:00" }, { i: 47, label: "24:00" }];
 const MONTH_TICKS = MONTHS.map((label, i) => ({ i, label }));
-const NIGHT = "var(--ste-night)", SECONDARY = "var(--ste-secondary)";
+const NIGHT = "var(--ste-night)", SECONDARY = "var(--ste-secondary)", TERTIARY = "var(--ste-tertiary)";
 
 /** Winter and summer demand shape; also the home preview. */
 export function DemandShapeChart({ h }: { h?: number }) {
@@ -66,7 +65,8 @@ const NOTES = [
   <>Elexon deployed the MHHS central systems on 22 September 2025, with meter migration from 22 October 2025, about 80% of meters by October 2026 and completion in May 2027, processing "up to 500 billion half-hourly readings per year". {a("https://www.elexon.co.uk/2025/09/24/market-wide-half-hourly-settlement-reaches-major-milestone/", "Elexon, 24 September 2025")}.</>,
   <>Gradient-based One-Side Sampling, Exclusive Feature Bundling and leaf-wise growth; up to 9 times faster than histogram-based XGBoost (Allstate: 2.63 against 0.28 seconds per iteration). {a("https://papers.nips.cc/paper_files/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf", "Ke et al., LightGBM, NeurIPS 2017")}.</>,
   <>Initial National Demand Outturn (INDO), averaged by half-hour over weekdays that were not bank holidays, winter October 2024 to March 2025 and summer April to September 2025. {a("https://bmrs.elexon.co.uk/api-documentation/endpoint/datasets/INDO", "Elexon Insights API, INDO")}.</>,
-  <>The bank holiday, monthly error and boosting charts are illustrative shapes, not model output.</>,
+  <>The bank holiday and boosting charts are illustrative shapes, not model output.</>,
+  <>A backtest on public national data, which is smoother than any one supplier's portfolio. Demand is half-hourly national demand with the published estimates of embedded wind and solar generation added back, 1 October 2021 to 30 September 2025, from {a("https://www.neso.energy/data-portal/historic-demand-data", "NESO, Historic Demand Data")}; temperature is the mean of six cities from the {a("https://open-meteo.com/en/docs/historical-weather-api", "Open-Meteo Historical Weather API")}. The models were given the temperature that occurred, so a forecast made from a weather forecast would score worse. The regression has terms for half-hour by day type, weekday, month, bank holidays and Christmas week, temperature and its square by half-hour, the mean temperature of the previous 24 hours, a trend and demand a week earlier. LightGBM had the same inputs and fixed settings (600 trees, learning rate 0.05, 31 leaves), with nothing tuned on the test year. Error is the mean absolute percentage error over 365 days; in gigawatts the mean absolute errors were 0.85, 0.92 and 1.39. The range for the gap comes from resampling whole days 5,000 times and taking the middle 95%, which treats days as independent. Regression had the lower error in October, November and July. The worst days were 24 November 2024 for boosting and 1 January 2025 for regression. On national demand as published, net of embedded generation, the three models scored 5.0%, 6.0% and 8.3%.</>,
   <>J. Friedman, Greedy function approximation: a gradient boosting machine, Annals of Statistics 29(5), October 2001. {a("https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boosting-machine/10.1214/aos/1013203451.full", "Project Euclid")}.</>,
 ];
 
@@ -77,7 +77,7 @@ export default function Page() {
   const [bh, setBh] = useState("SARIMA");
 
   return (
-    <Article kicker="Opinion · machine learning" title={title} lede={lede}>
+    <Article kicker="Opinion · machine learning · updated 16 Nov 2026" title={title} lede={lede}>
       <Prose>
         <p>A supplier's demand forecast gives a number for every half-hour, and the money is made or lost on the days it is badly wrong. Three things have made those days hard to avoid: bank holidays, the change between winter and summer in how demand responds to temperature, and the volume of half-hourly meter data to retrain on.</p>
       </Prose>
@@ -136,22 +136,24 @@ export default function Page() {
         </Box>
       </Wide>
       <Prose>
-        <p>The trees also learn a different response to temperature at each time of year, and in my experience the summer drift goes.<Fn n={12} k="b" /></p>
+        <p>The trees also learn a different response to temperature at each time of year, and in my experience the summer drift goes.</p>
+        <p>I tested this on public data with three models: Great Britain's national demand, October 2024 to September 2025, with each month forecast by models refitted on everything before it.<Fn n={13} /> The chart shows the error of each model by month. Gradient boosting averaged 2.8%, a linear regression 3.1% and a seasonal naive forecast (last week's value for the same half-hour) 4.5%. The gap between boosting and regression, 0.3 percentage points, is small but holds when I resample the test days (0.1 to 0.4), and it is wider from May to August (0.4) than from November to February (0.2). On the eight bank holidays the errors were 3.5%, 5.2% and 14.3%.</p>
       </Prose>
       <Wide>
         <Box title="Forecast Error by Month" sub="%" h={380}>
           <LineChart labels={MONTHS} ticks={MONTH_TICKS} unit="%" digits={1}
-            series={[{ name: "Gradient boosting", values: ERR_GBM }, { name: "SARIMA", values: ERR_OLD, color: NIGHT }]} />
+            series={[{ name: "Gradient boosting", values: data.by_month.gbm }, { name: "Linear regression", values: data.by_month.linear, color: NIGHT }, { name: "Seasonal naive", values: data.by_month.naive, color: TERTIARY }]} />
           <div className="legend">
             <span><i style={{ background: SECONDARY }} />Gradient boosting</span>
-            <span><i style={{ background: NIGHT }} />SARIMA</span>
+            <span><i style={{ background: NIGHT }} />Linear regression</span>
+            <span><i style={{ background: TERTIARY }} />Seasonal naive</span>
           </div>
         </Box>
       </Wide>
 
       <Section title="How a boosted tree learns" />
       <Prose>
-        <p>Jerome Friedman set out gradient boosting in 2001.<Fn n={13} /> It starts with a single guess, say average demand, then fits a small tree to the residuals (actual minus forecast), adds a fraction of the tree's answer to the forecast and repeats, so each new tree only learns what the previous trees got wrong.</p>
+        <p>Jerome Friedman set out gradient boosting in 2001.<Fn n={14} /> It starts with a single guess, say average demand, then fits a small tree to the residuals (actual minus forecast), adds a fraction of the tree's answer to the forecast and repeats, so each new tree only learns what the previous trees got wrong.</p>
       </Prose>
       <Prose><Eq>Fₘ(x) = Fₘ₋₁(x) + η · fₘ(x)</Eq></Prose>
       <Prose>
@@ -195,7 +197,7 @@ export default function Page() {
 
       <Section title="How I would choose a demand forecasting model now" />
       <Prose>
-        <p>Over nine years the average error has improved a little. The bigger gain is that the very bad days that used to turn up every year have gone. I would judge a new model by how often it has a bad day before its average error, choose one I can retrain quickly at the data volume I expect, and keep checking the two conditions gradient boosting depends on. SARIMA had a fifty-year run and I'd be surprised if tree models get half that, so I would keep a benchmark running alongside.</p>
+        <p>Over nine years the average error has improved a little. The bigger gain is that the very bad days that used to turn up every year have gone. On public national demand the gain was narrower: days with an error above 5% were as common under boosting (36) as under regression (34), and what improved was the worst day, 8.5% against 12.0%. I would judge a new model by how often it has a bad day before its average error, choose one I can retrain quickly at the data volume I expect, and keep checking the two conditions gradient boosting depends on. SARIMA had a fifty-year run and I'd be surprised if tree models get half that, so I would keep a benchmark running alongside.</p>
       </Prose>
 
       <Footnotes notes={NOTES} />

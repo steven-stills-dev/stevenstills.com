@@ -12,7 +12,7 @@ export default function Box({
   children: ReactNode;
 }) {
   return (
-    <div className={"box" + (className ? " " + className : "")} style={h != null ? { height: h } : undefined}>
+    <div className={"box" + (className ? " " + className : "")} style={h != null ? { height: h } : undefined} role={title ? "figure" : undefined} aria-label={title}>
       {title && (
         <div className="box-h">
           {title}

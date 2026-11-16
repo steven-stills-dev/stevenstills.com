@@ -1,7 +1,9 @@
 import { Article, Prose, Section, Wide, Fn, Footnotes, StatRow } from "../../components/Article";
 import Box from "../../components/Box";
 import UKMap, { type UKMapPoint } from "../../components/maps/UKMap";
+import DataTable from "../../components/charts/DataTable";
 import { usePageMeta } from "../../lib/meta";
+import data from "./data.json";
 
 // planned sites carry published megawatts, existing ones carry the cluster
 // they sit in. Coordinates are town level.
@@ -27,13 +29,16 @@ export function SitesMap({ h }: { h?: number }) {
   );
 }
 
-// operational onshore wind, MW, DESNZ planning database Q1 2026
-const WIND: Record<string, number> = {
-  "scotland": 9994, "wales": 1220, "northern-ireland": 1195,
-  "yorkshire": 652, "north-east": 474, "north-west": 467, "east": 452,
-  "east-midlands": 398, "south-west": 285, "south-east": 113,
-  "london": 13, "west-midlands": 8,
-};
+// operational onshore wind by region, MW, from scripts/data-centre-demand/build.py
+const WIND: Record<string, number> = data.wind;
+
+const SITE_COLUMNS = [
+  { key: "site", label: "Site" },
+  { key: "mw", label: "Published", unit: "MW" },
+  { key: "wind", label: "Regional wind", unit: "MW", tint: true },
+  { key: "region", label: "Region" },
+  { key: "status", label: "Status" },
+];
 
 const WIND_BANDS = [
   { max: 100, label: "Under 100 MW" },
@@ -50,7 +55,7 @@ export default function DataCentres() {
 
   return (
     <Article
-      kicker="Opinion · energy markets & AI"
+      kicker="Opinion · energy markets & AI · updated 16 Nov 2026"
       title="Data centre demand and grid connections in Britain"
       lede="Data centres are asking for about 50GW of grid connections, about the whole of Britain's peak demand. I map the announced sites against the onshore wind to see where the new demand would connect."
     >
@@ -65,11 +70,11 @@ export default function DataCentres() {
 
       <Section title="Where the onshore wind is" />
       <Prose>
-        <p>The first map shows operational onshore wind by region in the first quarter of 2026, from the Renewable Energy Planning Database that DESNZ, the energy department, publishes.<Fn n={2} /> Scotland holds 9,994&nbsp;MW. England, all of it, holds 2,862&nbsp;MW, with 113&nbsp;MW in the South East and 13&nbsp;MW in London. Offshore wind, another 15,129&nbsp;MW, is filed as offshore and not to a land region, so the map leaves it out.<Fn n={2} k="b" /></p>
+        <p>The first map shows operational onshore wind by region in October 2026, from the Renewable Energy Planning Database that DESNZ, the energy department, publishes.<Fn n={2} /> Scotland holds 10,202&nbsp;MW. England, all of it, holds 2,871&nbsp;MW, with 113&nbsp;MW in the South East and 13&nbsp;MW in London. Offshore wind, another 16,011&nbsp;MW, is filed as offshore and not to a land region, so the map leaves it out.<Fn n={2} k="b" /></p>
       </Prose>
 
       <Wide>
-        <Box title="Onshore Wind Capacity" sub="MW, operational, Q1 2026" h={620}>
+        <Box title="Onshore Wind Capacity" sub="MW, operational, October 2026" h={620}>
           <UKMap
             values={WIND}
             bands={WIND_BANDS}
@@ -80,24 +85,35 @@ export default function DataCentres() {
 
       <Section title="Where the data centres are proposed" />
       <Prose>
-        <p>The second map shows two existing clusters, at Slough and in Docklands, and seven announced or planned sites, with the three that have published megawatts drawn larger.<Fn n={3} /> The two largest, Cambois and Airdrie, are both in the north. Cambois is in the North East of England, which holds 474&nbsp;MW of the onshore wind, so the wind map on its own does not put Cambois next to the wind. Northumberland County Council consented the first phase of the Cambois campus on 2 December 2025, a scheme that could scale to 720&nbsp;MW. North Lanarkshire was designated an AI Growth Zone in January 2026, around the site DataVita runs at Airdrie, and is reported as unlocking around 500&nbsp;MW.<Fn n={3} k="b" /></p>
+        <p>The second map shows two existing clusters, at Slough and in Docklands, and seven announced or planned sites, with the three that have published megawatts drawn larger.<Fn n={3} /> The two largest, Cambois and Airdrie, are both in the north. Cambois is in the North East of England, which holds 474&nbsp;MW of the onshore wind, so the wind map on its own does not put Cambois next to the wind. Northumberland County Council consented the first phase of the Cambois campus on 2 December 2025, a scheme that could scale to 720&nbsp;MW. North Lanarkshire was designated an AI Growth Zone in January 2026, around the site DataVita runs at Airdrie, where the government says DataVita plans more than 500&nbsp;MW of on-site power.<Fn n={3} k="b" /></p>
       </Prose>
 
       <Wide>
         <SitesMap h={620} />
       </Wide>
 
+      <Prose>
+        <p>The table shows each site beside the onshore wind operating in its region, and either column can be sorted. Airdrie is the only site with published megawatts in a region holding more than 1,500&nbsp;MW of onshore wind. Cambois's 720&nbsp;MW would be more than the 474&nbsp;MW of onshore wind operating in the whole of the North East, and Culham and the Slough cluster share a region with 113&nbsp;MW. A region is a coarse measure of distance, so I read the table as a first sort of the sites and no more.</p>
+      </Prose>
+
+      <Wide>
+        <Box title="Data Centre Sites and Regional Onshore Wind" sub="MW">
+          <DataTable columns={SITE_COLUMNS} rows={data.sites} sortBy="wind"
+            caption="Announced, planned and existing data centre sites with their published megawatts and the operational onshore wind in the same region" />
+        </Box>
+      </Wide>
+
       <Section title="What I would watch at Cambois and Airdrie" />
       <Prose>
         <p>I think a big load on the wind's side of the constraint is the more useful place for new demand to connect, because I understand that wind to be the generation switched off when the network is full. I have not measured that. The Drax report makes a similar point, that "greater priority should go to regions with strong existing grid connections and low-carbon generation".<Fn n={1} k="c" /></p>
-        <p>Both sites are still plans, and I would watch whether those megawatts are built and connected. If I were choosing a site for a large load, I would look at the wind map before the existing clusters.</p>
+        <p>Both sites are still plans, and I would watch whether those megawatts are built and connected. If I were choosing a site for a large load, I would look at the wind map before the existing clusters. Among the sites with published megawatts, the table puts Airdrie first on that test.</p>
       </Prose>
 
       <Footnotes
         notes={[
           <>NESO reports 140 data centre proposals seeking around 50GW of grid connections, equal to Britain's entire peak demand; 1.7GW of the UK's 2.4GW of data centres lie within 20 miles of London. <a href="https://reports.electricinsights.co.uk/?p=2687" target="_blank" rel="noopener">Drax Electric Insights Q1 2026, "Britain's AI ambitions depend on the grid"</a>.</>,
-          <>Renewable Energy Planning Database, Q1 2026 extract, operational sites only, summed by the database's own region field. Offshore wind, another 15,129&nbsp;MW, is excluded because the database files it as offshore rather than to a land region. <a href="https://www.gov.uk/government/publications/renewable-energy-planning-database-monthly-extract" target="_blank" rel="noopener">DESNZ, Renewable Energy Planning Database</a>. Map boundaries are the ONS ITL1 regions, January 2025; contains OS and National Statistics data &copy; Crown copyright and database right 2025.</>,
-          <>Northumberland County Council consented the first phase of the QTS/Blackstone Cambois campus on 2 December 2025, a scheme that could scale to 720&nbsp;MW across up to ten buildings. Culham is the UK's first designated AI Growth Zone, with roughly 100&nbsp;MW of initial dual-resilient power and stated plans to scale beyond. North Lanarkshire was designated an AI Growth Zone on 29 January 2026, around DataVita's data centre site in Airdrie, and is reported as unlocking around 500&nbsp;MW of data centre capacity. Cobalt Park is in the North East AI Growth Zone designated in September 2025, Anglesey and Trawsfynydd are the two bases of the North Wales zone confirmed in November 2025, and Bridgend is the western end of the South Wales zone announced in the same month; no megawatts are published for those four sites on their own. Slough has more than 30 operating data centres with around 1&nbsp;GW of capacity, on figures from the operator Kao Data, and Telehouse runs several data centres in London's Docklands. Sites are plotted at town level, and the three dots with published megawatts are drawn larger in that order. <a href="https://bebeez.eu/en/news/approval-given-to-first-phase-of-10bn-data-center-in-northumberland-england/" target="_blank" rel="noopener">DCD, on the Northumberland consent, republished by BeBeez, 8 Dec 2025</a>; <a href="https://culham.org.uk/invest-at-culham-campus/expression-of-interest/" target="_blank" rel="noopener">Culham Campus</a>; <a href="https://www.gov.uk/government/news/more-than-3400-jobs-and-targeted-support-for-local-communities-to-help-tackle-the-cost-of-living-as-lanarkshire-named-latest-ai-growth-zone" target="_blank" rel="noopener">UK Government, on Lanarkshire, 29 Jan 2026</a>; <a href="https://www.datacenterdynamics.com/en/news/new-ai-growth-zone-in-north-lanarkshire-scotland-could-unlock-500mw-of-data-center-capacity/" target="_blank" rel="noopener">DCD, on North Lanarkshire</a>; <a href="https://www.gov.uk/government/news/north-east-england-set-for-billions-in-investment-and-thousands-of-jobs-as-uk-and-us-ink-tech-partnership" target="_blank" rel="noopener">UK Government, on the North East, 16 Sep 2025</a>; <a href="https://www.gov.uk/government/news/ai-growth-zones-to-create-thousands-of-jobs-and-unlock-up-to-100-billion-in-investment-as-new-site-confirmed-for-north-wales" target="_blank" rel="noopener">UK Government, on North Wales, 13 Nov 2025</a>; <a href="https://www.gov.uk/government/news/ai-to-power-national-renewal-as-government-announces-billions-of-additional-investment-and-new-plans-to-boost-uk-businesses-jobs-and-innovation" target="_blank" rel="noopener">UK Government, on South Wales, 20 Nov 2025</a>; <a href="https://dcnnmagazine.com/?p=19793" target="_blank" rel="noopener">DCNN, on Kao Data's Slough figures</a>; <a href="https://www.telehouse.com/?p=1075" target="_blank" rel="noopener">Telehouse, on its Docklands sites</a>.</>,
+          <>Renewable Energy Planning Database, Q3 2026 extract with records updated to 23 October 2026, operational sites only, summed by the database's own region field. Offshore wind, another 16,011&nbsp;MW, is excluded because the database files it as offshore rather than to a land region. <a href="https://www.gov.uk/government/publications/renewable-energy-planning-database-monthly-extract" target="_blank" rel="noopener">DESNZ, Renewable Energy Planning Database</a>. Map boundaries are the ONS ITL1 regions, January 2025; contains OS and National Statistics data &copy; Crown copyright and database right 2025.</>,
+          <>Northumberland County Council consented the first phase of the QTS/Blackstone Cambois campus on 2 December 2025, a scheme that could scale to 720&nbsp;MW across up to ten buildings. Culham is the UK's first designated AI Growth Zone, with roughly 100&nbsp;MW of initial dual-resilient power and stated plans to scale beyond. North Lanarkshire was designated an AI Growth Zone on 29 January 2026, around DataVita's data centre site in Airdrie, and the government's announcement says DataVita plans to generate more than 500&nbsp;MW of on-site power within four years; the map and the table carry that figure for Airdrie. Cobalt Park is in the North East AI Growth Zone designated in September 2025, Anglesey and Trawsfynydd are the two bases of the North Wales zone confirmed in November 2025, and Bridgend is the western end of the South Wales zone announced in the same month; no megawatts are published for those four sites on their own. Slough has more than 30 operating data centres with around 1&nbsp;GW of capacity, on figures from the operator Kao Data, and Telehouse runs several data centres in London's Docklands. Sites are plotted at town level, and the three dots with published megawatts are drawn larger in that order. In the table a blank means no figure is published for the site on its own, and Slough's 1,000&nbsp;MW is the Kao Data figure of around 1&nbsp;GW. <a href="https://bebeez.eu/en/news/approval-given-to-first-phase-of-10bn-data-center-in-northumberland-england/" target="_blank" rel="noopener">DCD, on the Northumberland consent, republished by BeBeez, 8 Dec 2025</a>; <a href="https://culham.org.uk/invest-at-culham-campus/expression-of-interest/" target="_blank" rel="noopener">Culham Campus</a>; <a href="https://www.gov.uk/government/news/more-than-3400-jobs-and-targeted-support-for-local-communities-to-help-tackle-the-cost-of-living-as-lanarkshire-named-latest-ai-growth-zone" target="_blank" rel="noopener">UK Government, on Lanarkshire, 29 Jan 2026</a>; <a href="https://www.gov.uk/government/news/north-east-england-set-for-billions-in-investment-and-thousands-of-jobs-as-uk-and-us-ink-tech-partnership" target="_blank" rel="noopener">UK Government, on the North East, 16 Sep 2025</a>; <a href="https://www.gov.uk/government/news/ai-growth-zones-to-create-thousands-of-jobs-and-unlock-up-to-100-billion-in-investment-as-new-site-confirmed-for-north-wales" target="_blank" rel="noopener">UK Government, on North Wales, 13 Nov 2025</a>; <a href="https://www.gov.uk/government/news/ai-to-power-national-renewal-as-government-announces-billions-of-additional-investment-and-new-plans-to-boost-uk-businesses-jobs-and-innovation" target="_blank" rel="noopener">UK Government, on South Wales, 20 Nov 2025</a>; <a href="https://dcnnmagazine.com/?p=19793" target="_blank" rel="noopener">DCNN, on Kao Data's Slough figures</a>; <a href="https://www.telehouse.com/?p=1075" target="_blank" rel="noopener">Telehouse, on its Docklands sites</a>.</>,
         ]}
       />
 

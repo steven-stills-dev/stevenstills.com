@@ -1,0 +1,6 @@
+.wr-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 12px; }
+.wr-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.wr-controls .slider { margin: 0; flex: 1 1 260px; }
+.wr-read { margin: 0; font-size: .8125rem; color: var(--ste-night); font-variant-numeric: tabular-nums; flex: 1 0 100%; }
+.legend i.wr-band { background: color-mix(in srgb, var(--ste-secondary) 18%, var(--ste-midday)); }
+.wr-map .amap-bar b { min-width: 0; white-space: nowrap; }

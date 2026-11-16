@@ -1,0 +1,6 @@
+.la-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.la-controls { margin-top: 12px; }
+.la-readout { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .8125rem; color: var(--ste-dusk); }
+.la-readout b { color: var(--ste-midnight); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: 6px; }
+.la-t { font-size: 12px; fill: var(--ste-night); }
+.la-ax { fill: var(--ste-dusk); font-variant-numeric: tabular-nums; }

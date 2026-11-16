@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Article, Prose, Section, Wide, Fn, Footnotes } from "../../components/Article";
 import Box from "../../components/Box";
 import AreaChart from "../../components/charts/AreaChart";
+import LineChart from "../../components/charts/LineChart";
 import HormuzMap from "../../components/maps/HormuzMap";
 import { dlabel, MON } from "../../lib/format";
 import { usePageMeta } from "../../lib/meta";
+import data from "./data.json";
 import "./hormuz.css";
 
 /* Both series run daily from 1 Feb 2026 (index 0) to 16 Apr 2026 (index 74). */
@@ -27,6 +29,11 @@ const TICKS = ISO.reduce<{ i: number; label: string }[]>((acc, d, i) => {
 }, []);
 const GAS = SAP.map((v) => v * KWH_PER_THERM);
 
+/* Share of days with an absolute daily change in the System Average Price at or below each size (scripts/hormuz/build.py). */
+const MOVE_LABELS = data.grid.map((g) => `Up to ${g.toFixed(1)} p/therm`);
+const MOVE_TICKS = [{ i: 0, label: "0" }, { i: 20, label: "10" }, { i: 40, label: "20" }, { i: 60, label: "30 p/therm" }];
+const NIGHT = "var(--ste-night)", SECONDARY = "var(--ste-secondary)";
+
 export default function Hormuz() {
   const [view, setView] = useState<"live" | "app">("live");
   const lede = "In March 2026 daily tanker transits through the Strait of Hormuz fell to single figures, and on 13 April the UK wholesale gas contract for the month ahead rose about 10% in morning trading after the United States announced a blockade of Iranian ports. I built a live map of around 1,300 ships to see what the vessels were doing, and I compare the tanker counts with the daily gas price.";
@@ -34,7 +41,7 @@ export default function Hormuz() {
 
   return (
     <Article
-      kicker="Project · energy markets · updated 12 Nov 2026"
+      kicker="Project · energy markets · updated 16 Nov 2026"
       title="Tracking ships in the Strait of Hormuz"
       lede={lede}
     >
@@ -82,11 +89,27 @@ export default function Hormuz() {
 
       <Prose>
         <p>It was 121.5p on 13 April. The rise of about 10% that day was in the front-month contract, which is a different price from the daily average.<Fn n={1} k="b" /> On 17 June, the day a US-Iran agreement to reopen the strait was signed, the System Average Price was 102.7p, and on 20 June Iran said it had closed the strait again.<Fn n={4} /></p>
+        <p>The chart shows the share of days on which the System Average Price moved by no more than each amount, for the 26 days before 28 February and the 48 days from it. The median move (the middle one by size) rose only from 2.4p to 3.5p, but moves above 5p went from 3 days in 26 to 18 in 48.<Fn n={5} /></p>
+      </Prose>
+
+      <Wide>
+        <Box title="Size of Daily Gas Price Moves" sub="% of days" h={380}>
+          <LineChart labels={MOVE_LABELS} ticks={MOVE_TICKS} unit="%" digits={0} yMax={100} yTicks={[0, 25, 50, 75, 100]}
+            series={[{ name: "From 28 February", values: data.after }, { name: "Before 28 February", values: data.before, color: NIGHT }]} />
+          <div className="legend">
+            <span><i style={{ background: SECONDARY }} />From 28 February</span>
+            <span><i style={{ background: NIGHT }} />Before 28 February</span>
+          </div>
+        </Box>
+      </Wide>
+
+      <Prose>
+        <p>One event gives one before and one after. The comparison shows large daily moves becoming about three times as common. It cannot show the cause. The only 48-day windows since January 2018 with at least as large a share of moves above 5p ended in 2021, 2022 or 2023.<Fn n={5} k="b" /></p>
       </Prose>
 
       <Section title="What the tanker transit counts show" />
       <Prose>
-        <p>IMF PortWatch counts the tankers passing through the strait each day from AIS data.<Fn n={5} /> The count ran at between 19 and 69 a day through February, fell to 5 on the first of March, and stayed at 5 or fewer for the seven weeks to mid-April. It was still between 0 and 4 a day in the second half of May.</p>
+        <p>IMF PortWatch counts the tankers passing through the strait each day from AIS data.<Fn n={6} /> The count ran at between 19 and 69 a day through February, fell to 5 on the first of March, and stayed at 5 or fewer for the seven weeks to mid-April. After rising to 12 on 18 April and 23 on 29 April, it was back between 0 and 4 a day in the second half of May.</p>
       </Prose>
 
       <Wide>
@@ -101,7 +124,7 @@ export default function Hormuz() {
 
       <Section title="What I would watch when a shipping route is at risk" />
       <Prose>
-        <p>The next time news about a shipping route is followed by a jump in the gas price, I would look at the daily tanker count first, because it shows what the ships are already doing. I would read any count built on AIS as a lower bound, since jamming and ships going dark take vessels out of the data. I think a tracker like this is most useful while the market is still deciding what the strait is worth: in the second half of May 2026 the System Average Price was still above 110p.<Fn n={3} k="b" /></p>
+        <p>The next time news about a shipping route is followed by a jump in the gas price, I would look at the daily tanker count first, because it shows what the ships are already doing. I would read any count built on AIS as approximate, since ships that go dark drop out of the data and jamming can add crossings that never happened.<Fn n={7} /> I would size day-to-day price risk from the weeks after the event, when 38% of days moved by more than 5p, and not from the month before, when 12% did. I think a tracker like this is most useful while the market is still deciding what the strait is worth: in the second half of May 2026 the System Average Price was still above 110p.<Fn n={3} k="b" /></p>
       </Prose>
 
       <Footnotes notes={[
@@ -109,7 +132,9 @@ export default function Hormuz() {
         <>The 2026 Iran-US confrontation over the strait. <a href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" rel="noopener">2026 Strait of Hormuz crisis, overview</a>; <a href="https://researchbriefings.files.parliament.uk/documents/CBP-10636/CBP-10636.pdf" target="_blank" rel="noopener">UK Parliament research briefing CBP-10636</a>.</>,
         <>Daily gas prices are the <a href="https://www.ons.gov.uk/economy/economicoutputandproductivity/output/datasets/systemaveragepricesapofgas" target="_blank" rel="noopener">System Average Price (SAP) of gas</a>, series "SAP actual day", the average price of gas traded on Great Britain's On-the-Day Commodity Market, published by the Office for National Statistics from National Gas Transmission data. Edition of 5 November 2026, covering January 2018 to November 2026, retrieved 11 November 2026; the chart shows 1 February to 16 April 2026. Published in pence per kilowatt hour and converted to pence per therm at 29.3071 kWh a therm.</>,
         <>A US-Iran agreement to reopen the strait was announced on 14 June 2026 and signed electronically on 17 June; on 20 June Iran said it had closed the strait again. <a href="https://worldoil.com/news/2026/6/14/u-s-iran-strike-deal-to-reopen-strait-of-hormuz-sending-oil-lower/" target="_blank" rel="noopener">World Oil, 14 Jun 2026</a>; <a href="https://gcaptain.com/trump-signs-interim-iran-deal-as-focus-shifts-to-hormuz/" target="_blank" rel="noopener">gCaptain (Bloomberg), 17 Jun 2026</a>; <a href="https://worldoil.com/news/2026/6/20/iran-closes-strait-of-hormuz-again-citing-lebanon-ceasefire-violations/" target="_blank" rel="noopener">World Oil, 20 Jun 2026</a>.</>,
-        <>Daily tanker-transit counts are from <a href="https://portwatch.imf.org/" target="_blank" rel="noopener">IMF PortWatch</a>, "Daily Chokepoints Data" for the Strait of Hormuz (field <em>n_tanker</em>), built on AIS data from the UN Global Platform. Static snapshot, 1 February to 30 June 2026, retrieved 11 November 2026; the chart shows 1 February to 16 April 2026. AIS coverage in the region was degraded during the crisis by GPS jamming and vessels going dark, so counts are a lower bound.</>,
+        <>Daily moves are the change in the System Average Price (note 3) from one day to the next, in pence per therm: 26 changes from 2 to 27 February 2026 and 48 from 28 February to 16 April. The largest were a rise of 31.1p on 3 March and a fall of 31.5p on 10 March. The share of moves above 5p rose by 26 percentage points; resampling the days 10,000 times puts that rise between 7 and 44 points, and the ratio of the two medians between 1.0 and 3.7. Resampling treats the days as independent, which prices in a volatile spell are not, so the true ranges are wider. Of the 2,932 windows of 48 days in the same series between January 2018 and 27 February 2026, 18.5% had at least as large a share of moves above 5p, and every one of those windows ended in 2021, 2022 or 2023.</>,
+        <>Daily tanker-transit counts are from <a href="https://portwatch.imf.org/" target="_blank" rel="noopener">IMF PortWatch</a>, "Daily Chokepoints Data" for the Strait of Hormuz (field <em>n_tanker</em>), built on AIS data from the UN Global Platform. Static snapshot, 1 February to 30 June 2026, retrieved 11 November 2026; the chart shows 1 February to 16 April 2026. AIS coverage in the region was degraded during the crisis by GPS jamming and vessels going dark, so the counts are approximate (note 7).</>,
+        <>Windward, a maritime analytics firm, found that jamming added false crossings to its own AIS record of the strait: 393 of the 642 transits logged in August 2026 were false. That is a finding about Windward's record, and I have not found an equivalent check of the PortWatch counts. <a href="https://windward.ai/knowledge-base/gps-jamming-and-false-transits-in-the-strait-of-hormuz/" target="_blank" rel="noopener">Windward, GPS Jamming and False Transits in the Strait of Hormuz</a>.</>,
       ]} />
     </Article>
   );

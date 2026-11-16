@@ -216,3 +216,25 @@ sup.fn a:hover { text-decoration: underline; }
   .row-t { font-size: .9375rem; }
   .photo-pair { grid-template-columns: 1fr; }
 }
+
+/* Chart kit: heat map legend, sortable table, what-if slider, animated map */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.heat-legend { align-items: center; gap: 8px; color: var(--ste-dusk); }
+.heat-legend i { width: 120px; height: 10px; margin: 0; box-shadow: inset 0 0 0 1px var(--hairline); }
+.dtable-wrap { overflow-x: auto; }
+.dtable { width: 100%; border-collapse: collapse; font-size: .8125rem; font-variant-numeric: tabular-nums; }
+.dtable th, .dtable td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--hairline); white-space: nowrap; }
+.dtable .num { text-align: right; }
+.dtable th button { font: inherit; font-weight: 600; color: var(--ste-midnight); background: none; border: 0; padding: 0; cursor: pointer; }
+.dtable th .u { font-weight: 400; color: var(--ste-dusk); }
+.slider { display: flex; align-items: center; gap: 12px; font-size: .8125rem; color: var(--ste-night); margin-bottom: 12px; }
+.slider input { flex: 1; min-width: 80px; accent-color: var(--ste-secondary); }
+.slider b { min-width: 5.5rem; text-align: right; font-weight: 600; color: var(--ste-midnight); font-variant-numeric: tabular-nums; }
+.amap { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; gap: 12px; }
+.amap-bar { display: flex; align-items: center; gap: 12px; font-size: .8125rem; }
+.amap-bar input { flex: 1; accent-color: var(--ste-secondary); }
+.amap-bar b { min-width: 7rem; text-align: right; font-weight: 600; color: var(--ste-midnight); font-variant-numeric: tabular-nums; }
+.amap-stills { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; flex: 1; min-height: 0; }
+.amap-stills figure { margin: 0; display: flex; flex-direction: column; min-height: 220px; }
+.amap-stills figcaption { text-align: center; font-size: .75rem; color: var(--ste-dusk); }
+@media print { .amap-bar { display: none; } }
