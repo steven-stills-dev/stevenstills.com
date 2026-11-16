@@ -196,8 +196,10 @@ export default function BellCurvePage() {
   return (
     <Article kicker="Writing · climate & energy · updated 16 Nov 2026" title={title} lede={lede}>
       <Prose>
-        <p>Most of the gas on Britain's local networks goes to homes and small businesses whose meters are read monthly at best. The industry allocates each day's demand to those meters with a formula in the Uniform Network Code, built on the seasonal normal: the weather, and the demand that goes with it, treated as typical for each day of the year.<Fn n={1} /></p>
-        <p>A supplier that buys gas against a forecast built on the seasonal normal holds gas for demand that does not arrive whenever the weather runs warmer. How warm 2026 has been made me want to know how far the weather has moved from the published seasonal normal, and what that gap is worth in gas.</p>
+        <p>Most people in energy call gas the easier forecast, and for most of the year I'd agree.</p>
+        <p>Easier comes with a catch, though. Every gas forecast leans on a view of what normal weather looks like, and the industry keeps that view still for years at a time, on purpose.</p>
+        <p>Most of the gas on Britain's local networks goes to homes and small businesses whose meters are read monthly at best. The industry shares each day's demand out to those meters with a formula in the Uniform Network Code, and the formula rests on the weather, and the demand that goes with it, that counts as typical for each day of the year.<Fn n={1} /> It is called the seasonal normal.</p>
+        <p>A supplier that buys gas against a forecast built on that normal ends up holding gas for demand that never arrives whenever the weather runs warm. How warm 2026 has been made me want to know how far the weather has drifted from the published seasonal normal, and what the gap is worth in gas.</p>
       </Prose>
 
       <Section title="Where the seasonal normal sits in the allocation formula" />
@@ -228,7 +230,7 @@ export default function BellCurvePage() {
 
       <Section title="How gas demand responds to temperature" />
       <Prose>
-        <p>Most people in energy call gas the easier forecast, and for most of the year I'd agree. As the days warm up, gas demand falls by about 146 GWh a day for every degree of daily mean temperature, until daytime highs pass about 22°C. There it levels off near 500 GWh a day, the gas for hot water, cooking and industry that no weather switches off.<Fn n={5} k="c" /></p>
+        <p>For most of the year gas lives up to its easy reputation. As the days warm up, gas demand falls by about 146 GWh a day for every degree of daily mean temperature, until daytime highs pass about 22°C. There it levels off near 500 GWh a day, the gas for hot water, cooking and industry that no weather switches off.<Fn n={5} k="c" /></p>
       </Prose>
       {data && (
         <Wide>
@@ -241,7 +243,7 @@ export default function BellCurvePage() {
         </Wide>
       )}
       <Prose>
-        <p>From 2015 to 2021 the networks carried an average of between 1,410 and 1,490 GWh a day. In 2022 the average fell to 1,270 GWh a day, and it has stayed between 1,210 and 1,230 GWh a day in each full year since.<Fn n={8} /> The drop holds at the same temperature. On days with a mean temperature of 4 to 6°C the networks took an average of 2,240 GWh a day in 2015 to 2017 and 2,060 GWh a day in 2022 to 2025.<Fn n={8} k="b" /></p>
+        <p>From 2015 to 2021 the networks carried an average of between 1,410 and 1,490 GWh a day. In 2022 the average fell to 1,270 GWh a day, and it has stayed between 1,210 and 1,230 GWh a day in each full year since.<Fn n={8} /> The drop holds at the same temperature, too: on days with a mean temperature of 4 to 6°C the networks took an average of 2,240 GWh a day in 2015 to 2017 and 2,060 GWh a day in 2022 to 2025.<Fn n={8} k="b" /></p>
       </Prose>
       {data && (
         <Wide>
@@ -318,7 +320,9 @@ export default function BellCurvePage() {
 
       <Section title="Tracking the gap between weather and the seasonal normal" />
       <Prose>
-        <p>One risk in a gas forecast that I can measure is the seasonal normal. By my estimate the weather running warmer than it accounted for some 19 TWh of the 64 TWh shortfall in 2024/25, and I would correct the other 45 TWh separately, as an error in the forecast's level. For the weather part I would track the gap between the actual weather and the seasonal normal every month and trim the gas forecast by the demand that gap explains, starting with spring. That only works for a supplier with decent meter read performance to support it, and one that is not beholden to the gas allocation algorithms in the first place.</p>
+        <p>So gas is still the easier forecast, with one catch I can now put a number on. By my estimate the weather running warmer than the seasonal normal accounted for some 19 TWh of the 64 TWh shortfall in 2024/25, about £630m of gas at that year's average price. I would correct the other 45 TWh separately, as an error in the forecast's level.</p>
+        <p>For the weather part I would track the gap between the actual weather and the seasonal normal every month, and trim the gas forecast by the demand that gap explains. That only works for a supplier with decent meter read performance to support it, and one that is not beholden to the gas allocation algorithms in the first place.</p>
+        <p>I went looking for how far the weather had drifted and found a normal that has sat on the cool side of the weather since 2022. If you buy gas against it, start with March to May: spring has come in warmer than the seasonal normal in every gas year since, and the normal is only reviewed once every five years.</p>
       </Prose>
 
       <Footnotes notes={[

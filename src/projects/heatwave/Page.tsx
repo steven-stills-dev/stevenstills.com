@@ -44,15 +44,22 @@ export default function Heatwave() {
         </Box>
       </Prose>
 
+      <Prose>
+        <p>This summer I built a web app to watch the heat arrive: a map of the temperature forecast across the UK and western Europe, the chance of a heatwave over the next week and fortnight, and the imbalance price running alongside.</p>
+        <p>What it couldn't show was demand, because I never gave it a demand feed, which is a little awkward for someone who has forecast demand since 2016.</p>
+        <p>A heatwave reaches a supplier in two ways, through the volume its customers use and through the price it pays on any imbalance, and my tracker was only watching the price.</p>
+        <p>So once it was offline I went back for the demand data, to see whether the heat really moved demand and the imbalance price, or whether it only looked as if it should.</p>
+      </Prose>
+
       <Section title="Why a heatwave is a risk for a retail supplier" />
       <Prose>
         <p>A retail supplier buys electricity ahead of time against a forecast of what its customers will use. Any difference is settled half-hour by half-hour (each half-hour is a settlement period) at the imbalance price, quoted in £/MWh. A hot spell can reach a supplier through the volume of demand, in MWh, and through the price paid on each MWh of imbalance.</p>
-        <p>The UK had four heatwaves before August 2026: one in May, one in June and two in July.<Fn n={1} /> My tracker ran from late June to the end of July, so it was live for the last three. It had no demand feed, so for this page I pulled demand and price data for all four.</p>
+        <p>The UK had four heatwaves before August 2026: one in May, one in June and two in July.<Fn n={1} /> My tracker ran from late June to the end of July, so it was live for the last three. For this page I pulled demand and price data for all four.</p>
       </Prose>
 
       <Section title="How the tracker worked" />
       <Prose>
-        <p>I built a web app that put the temperature forecast on a map, drawn at the 850hPa pressure level.</p>
+        <p>The map at the centre of the app drew the temperature forecast at the 850hPa pressure level.</p>
       </Prose>
 
       <Wide>
@@ -87,9 +94,10 @@ export default function Heatwave() {
 
       <Section title="What I would watch when a heatwave is forecast" />
       <Prose>
-        <p>I would watch the imbalance price in each half-hour, since daily means smooth over evenings like 23 June. A supplier that had bought less electricity than its customers used between 18:00 and 22:00 that evening settled the shortfall at £454.50 to £800/MWh, on a day when the mean price was £204.23/MWh.</p>
+        <p>So the heat did move demand, once the solar on local networks is added back, and the imbalance price gap is too small to tell from chance, apart from one evening in June. The half my tracker never watched turned out to be the half that answered most clearly.</p>
+        <p>I would still watch the imbalance price in each half-hour, since daily means smooth over evenings like 23 June. A supplier that had bought less electricity than its customers used between 18:00 and 22:00 that evening settled the shortfall at £454.50 to £800/MWh, on a day when the mean price was £204.23/MWh.</p>
         <p>For demand I would use the figure with embedded solar and wind added back, which was above baseline in all four heatwaves, by between 0.8% and 8.7%. I would scale that figure by the forecast temperature, at about 1.2% for each degree above 24°C. I would also check how thin margins are and how much plant is on outage before the heat arrives.</p>
-        <p>Four heatwaves is a small sample, so I would repeat these measurements in the next hot summer before relying on them.</p>
+        <p>Four heatwaves is a small sample, so I would repeat these measurements in the next hot summer before relying on them. If you are building something to watch the next one, give it a demand feed on day one.</p>
       </Prose>
 
       <Footnotes notes={[

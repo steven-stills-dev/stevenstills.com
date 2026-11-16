@@ -79,7 +79,11 @@ export default function Page() {
   return (
     <Article kicker="Opinion · machine learning · updated 16 Nov 2026" title={title} lede={lede}>
       <Prose>
+        <p>In 2016 I built my first half-hourly demand forecasts with classic statistical models. I spent lockdown building neural networks, and today I forecast with gradient boosting.</p>
+        <p>Written down like that, it reads like someone following the evidence. I wasn't quick about it. The forecasting competitions were already pointing at trees, and I still built a few LSTMs through 2020 and 2021.</p>
+        <p>Where I've done better is the bad days: over nine years, the very bad days that used to turn up every year have gone.</p>
         <p>A supplier's demand forecast gives a number for every half-hour, and the money is made or lost on the days it is badly wrong. Three things have made those days hard to avoid: bank holidays, the change between winter and summer in how demand responds to temperature, and the volume of half-hourly meter data to retrain on.</p>
+        <p>This is how I got from the first model to the last, and what each of those three had to do with it.</p>
       </Prose>
 
       <Section title="SARIMA and linear regression, 2016 to 2020" />
@@ -197,7 +201,9 @@ export default function Page() {
 
       <Section title="How I would choose a demand forecasting model now" />
       <Prose>
-        <p>Over nine years the average error has improved a little. The bigger gain is that the very bad days that used to turn up every year have gone. On public national demand the gain was narrower: days with an error above 5% were as common under boosting (36) as under regression (34), and what improved was the worst day, 8.5% against 12.0%. I would judge a new model by how often it has a bad day before its average error, choose one I can retrain quickly at the data volume I expect, and keep checking the two conditions gradient boosting depends on. SARIMA had a fifty-year run and I'd be surprised if tree models get half that, so I would keep a benchmark running alongside.</p>
+        <p>So was the slow move worth it? Over nine years the average error has improved a little, and the bigger gain is that those very bad days have gone. On public national demand the gain was narrower: days with an error above 5% were as common under boosting (36) as under regression (34), and what improved was the worst day, 8.5% against 12.0%.</p>
+        <p>If you are choosing a model now, I'd judge it by how often it has a bad day before looking at its average error, pick one you can retrain quickly at the data volume you expect, and keep checking the two conditions gradient boosting depends on.</p>
+        <p>SARIMA had a fifty-year run and I'd be surprised if tree models get half that. I was slow to let go of the LSTM, so this time the SARIMA benchmark stays switched on.</p>
       </Prose>
 
       <Footnotes notes={NOTES} />

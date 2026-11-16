@@ -65,7 +65,10 @@ export default function DataCentres() {
       </div>
 
       <Prose>
-        <p>NESO, the electricity system operator, reports around 140 data centre proposals asking for roughly 50GW of grid connections, about the whole of Britain's peak demand.<Fn n={1} /> Around two-thirds of the existing data centre capacity, 1.7GW of 2.4GW, sits within twenty miles of London.<Fn n={1} k="b" /> Most of the onshore wind is at the other end of the country, and the network can carry only so much power from north to south, a limit the industry calls a constraint. I mapped the wind and the announced sites.</p>
+        <p>Since 2016 most of my working days have gone on how much energy people will use. This piece is about where.</p>
+        <p>NESO, the electricity system operator, reports around 140 data centre proposals asking for roughly 50GW of grid connections, about the whole of Britain's peak demand.<Fn n={1} /> That is a second Britain's worth of peak, queuing to plug in some computers.</p>
+        <p>With a number that size, where it plugs in starts to matter as much as how much. Around two-thirds of the existing data centre capacity, 1.7GW of 2.4GW, sits within twenty miles of London.<Fn n={1} k="b" /> Most of the onshore wind is at the other end of the country, and the network can carry only so much power from north to south, a limit the industry calls a constraint.</p>
+        <p>So I mapped the wind and the announced sites.</p>
       </Prose>
 
       <Section title="Where the onshore wind is" />
@@ -105,8 +108,9 @@ export default function DataCentres() {
 
       <Section title="What I would watch at Cambois and Airdrie" />
       <Prose>
-        <p>I think a big load on the wind's side of the constraint is the more useful place for new demand to connect, because I understand that wind to be the generation switched off when the network is full. I have not measured that. The Drax report makes a similar point, that "greater priority should go to regions with strong existing grid connections and low-carbon generation".<Fn n={1} k="c" /></p>
-        <p>Both sites are still plans, and I would watch whether those megawatts are built and connected. If I were choosing a site for a large load, I would look at the wind map before the existing clusters. Among the sites with published megawatts, the table puts Airdrie first on that test.</p>
+        <p>So where would the new demand land? Among the sites with published megawatts, mostly a long way from the wind. Only Airdrie sits in a region with more than 1,500&nbsp;MW of onshore wind; Cambois would outgrow the North East's wind on its own, and Culham shares the South East's 113&nbsp;MW with the Slough cluster.</p>
+        <p>I think a big load on the wind's side of the constraint is the more useful place for new demand to connect, because I understand that wind to be the generation switched off when the network is full. I have not measured that, though the Drax report makes a similar point, that "greater priority should go to regions with strong existing grid connections and low-carbon generation".<Fn n={1} k="c" /></p>
+        <p>Cambois and Airdrie are both still plans, and I would watch whether those megawatts are built and connected. I came in on how much and leave on where, and the 50GW is still only a list of requests. If you are choosing a site for a large load, look at the wind map before the existing clusters, and on that test Airdrie comes first.</p>
       </Prose>
 
       <Footnotes

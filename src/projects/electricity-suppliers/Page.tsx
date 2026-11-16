@@ -21,9 +21,11 @@ export default function ElectricitySuppliers() {
   return (
     <Article kicker="Writing · energy markets · updated 16 Nov 2026" title={title} lede={lede}>
       <Prose>
-        <p>For almost three decades most British homes were not settled on the electricity they used in each half hour. Elexon's profiles gave every profiled home in the same class and region the same shape, whichever supplier it was with,<Fn n={1} /> and in November 2020 suppliers had elected to settle fewer than 1% of metering points on their actual reads.<Fn n={2} /> Ofgem's description of the result is that a supplier "would be indifferent about whether a customer consumed during peak periods or off-peak periods".<Fn n={3} /></p>
-        <p>Market-wide half-hourly settlement (MHHS) began moving meters in October 2025, and a migrated home is settled on what it uses in each half hour at that half hour's price. Ofgem's March 2026 analysis of nine suppliers put the gap between them at about £3.90 a customer.<Fn n={3} k="b" /> A typical home uses 2,500&nbsp;kWh a year,<Fn n={4} /> so a supplier whose customers' shape costs £1/MWh more than its rivals' carries roughly £2.50 a customer a year.</p>
-        <p>While meters are migrating, the settled history blends profiled and measured demand, so a shape can change because of customers or because of how their meters are settled. I look at how the shapes and half-hourly prices have moved since 2021, and what each shape costs.</p>
+        <p>A demand forecast gives a number for every half hour, and for most of the time I've been making them, settlement ignored the half hours for most of Britain's homes.</p>
+        <p>For almost three decades most British homes were not settled on the electricity they used in each half hour. Elexon's profiles gave every profiled home in the same class and region the same shape, whichever supplier it was with,<Fn n={1} /> and in November 2020 suppliers had elected to settle fewer than 1% of metering points on their actual reads.<Fn n={2} /> Ofgem's description of the result is that a supplier "would be indifferent about whether a customer consumed during peak periods or off-peak periods".<Fn n={3} /> A home's real evening could look nothing like its profile, and settlement would never see it.</p>
+        <p>That is changing. Market-wide half-hourly settlement (MHHS) began moving meters in October 2025, and a migrated home is settled on what it uses in each half hour at that half hour's price. Ofgem's March 2026 analysis of nine suppliers put the gap between them at about £3.90 a customer.<Fn n={3} k="b" /> A typical home uses 2,500&nbsp;kWh a year,<Fn n={4} /> so a supplier whose customers' shape costs £1/MWh more than its rivals' carries roughly £2.50 a customer a year.</p>
+        <p>The shape of a customer's day has a price now.</p>
+        <p>While meters are migrating, the settled history blends profiled and measured demand, so a shape can change because of customers or because of how their meters are settled. With that caveat, I went back to 2021 to see how ten suppliers' shapes and the half-hourly prices have moved, and what each shape costs.</p>
       </Prose>
 
       <Section title="How ten suppliers' demand shapes have changed" />
@@ -40,7 +42,7 @@ export default function ElectricitySuppliers() {
         <IndicatorChart indicator="overnight_share" title="Share of Demand 00:00-07:00" />
       </Wide>
       <Prose>
-        <p>Octopus Energy has the largest change. In summer 2021, 21.1% of its settled demand fell between midnight and 07:00, in summer 2025 26.7% and this summer 29.2%.<Fn n={5} k="b" /> The summer share also rose at seven of the other eight suppliers with data for both 2021 and 2025.</p>
+        <p>Octopus Energy has the largest change: in summer 2021, 21.1% of its settled demand fell between midnight and 07:00, in summer 2025 26.7% and this summer 29.2%.<Fn n={5} k="b" /> The summer share also rose at seven of the other eight suppliers with data for both 2021 and 2025.</p>
         <p>I think electric cars explain most of the overnight rise. Battery electric cars on British roads rose from 652,341 at the end of 2022 to 1,797,809 in SMMT's count for 2025.<Fn n={7} /> Ofgem counted 653,000 households on a smart EV tariff in July 2025,<Fn n={8} /> and Octopus says more than half of them are its own, on a tariff that charges between 23:30 and 05:30.<Fn n={9} /></p>
       </Prose>
 
@@ -112,6 +114,7 @@ export default function ElectricitySuppliers() {
       <Prose>
         <p>The cheapest summer half hours have moved from the night to the early afternoon, so I would move the cheap window with the seasons, with summer EV and battery tariffs charging in the early afternoon. The overnight chart is consistent with customers moving when a tariff asks them to, and the Cosy evidence suggests heat pump homes are the winter equivalent.<Fn n={12} k="b" /> I would also hedge the shape the book has now at half-hourly or at least four-hour granularity, in place of baseload plus an evening peak block, and rebuild it as each tranche migrates. I would price a shape gap into tariffs and hedges only where its range excludes zero, which on these figures is most of them.</p>
         <p>On the data, I would forecast on measured demand and treat the migrated share of my own book as an input until migration completes; the new settlement timetable starts on 2 July 2027.<Fn n={18} /> I would check every settlement run against the final one, since BFY Group, a consultancy, found in 2024 that volumes at the first reconciliation run were typically 8% above the final run,<Fn n={19} /> and watch the correction factor in each GSP group weekly.</p>
+        <p>For years I forecast half hours for a settlement system that gave every profiled home in the same class and region the same shape. That is ending as meters migrate, and for nine of the ten suppliers the shape's cost against baseload already runs to several times the imbalance I hear so much about. If you run a book, start with the summer night: it was the cheapest part of the day in summer 2021, and by summer 2025 it cost about £15/MWh more than the early afternoon.</p>
       </Prose>
 
       <Footnotes

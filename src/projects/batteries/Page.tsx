@@ -105,9 +105,10 @@ export default function Batteries() {
     <Article kicker="Opinion · energy markets · updated 16 Nov 2026" title={title} lede={lede}>
 
       <Prose>
-        <p>A supplier buys most of its power a day ahead, against a forecast of what its customers will use in each half-hour. Whatever its meters draw above or below that purchase is settled afterwards, at a price the supplier doesn't control. A home battery changes the hours in which a household draws from the grid, so a forecast built on the household's old shape tends to be wrong in the same direction in the same half-hours. I wanted to know how large that error could be for a supplier with a growing number of battery homes.</p>
+        <p>I've been responsible for trade desks for over a decade, and the habit that work leaves is following every new product through to settlement, because that is where somebody ends up paying for it.</p>
         <p>In the second quarter of 2025, after a record-sunny spring lifted solar output, daytime power prices in the UK fell below overnight prices for the first time on record.<Fn n={1} /> A home battery is the product built for that price gap, and in 2025 MCS certified more than 40,000 of them, almost double the previous record.<Fn n={2} /></p>
-        <p>I've been responsible for trade desks for over a decade, and the habit that work leaves is to follow every product through to settlement. Between July 2021 and May 2022 twenty-nine GB suppliers failed, affecting nearly four million households.<Fn n={3} /> I would like the industry to be able to show, with data, that home batteries are not adding large balancing swings on top of what settlement already absorbs.</p>
+        <p>A supplier buys most of its power a day ahead, against a forecast of what its customers will use in each half-hour, and whatever its meters draw above or below that purchase is settled afterwards at a price it doesn't control. A battery moves the hours in which a household draws from the grid, so a forecast built on the household's old shape tends to be wrong in the same direction in the same half-hours.</p>
+        <p>That is where the habit kicks in. Between July 2021 and May 2022 twenty-nine GB suppliers failed, affecting nearly four million households,<Fn n={3} /> and I'd like the industry to be able to show, with data, that home batteries aren't adding large balancing swings on top of what settlement already absorbs. So I wanted to know how large that error could be for a supplier with a growing number of battery homes.</p>
       </Prose>
 
       <Section title="Why the product case works" />
@@ -183,7 +184,7 @@ export default function Batteries() {
       <Section title="What changes in winter" />
 
       <Prose>
-        <p>If the battery only does self-consumption, winter barely changes: the modelled evening share edges from 43% to 42%. On a smart tariff that charges it from the grid overnight, total grid import rises about 15%, because of the round-trip losses on the energy charged from the grid, and almost all of it moves into one synchronised overnight block. The modelled fleet draws a peak of about 3.5&nbsp;kW per home at 3am, roughly sixteen times the natural overnight draw.</p>
+        <p>If the battery only does self-consumption, winter barely changes: the modelled evening share edges from 43% to 42%. On a smart tariff that charges it from the grid overnight, total grid import rises about 15%, because of the round-trip losses on the energy charged from the grid, and almost all of it moves into one synchronised overnight block. The modelled fleet draws a peak of about 3.5&nbsp;kW per home at 3am, roughly sixteen times the natural overnight draw, from homes where everyone is fast asleep.</p>
       </Prose>
 
       <Wide>
@@ -223,7 +224,8 @@ export default function Batteries() {
 
       <Prose>
         <p>This is an opinion backed by a toy model and early data, so I hold it loosely. I expect the data to show a third kind of domestic demand profile: a battery home that draws almost nothing from the grid between mid-morning and midnight in summer, and that takes most of its winter import in one overnight block when it is on a smart tariff. Market-wide Half-Hourly Settlement has been migrating meters since October 2025, passed two million by February 2026, had moved 69% of meter points by 18 September 2026 and completes in 2027,<Fn n={8} /> so each battery home will soon be settled on its own metered half-hours.</p>
-        <p>So I would segment the book by what's bolted to the house, set up a check that detects a change in a cohort's shape quickly, and treat every new device class as a settlement question from its first day on the book. I would size the exposure from the daily range and its worst day, and keep the monthly average for context. I'd rather follow battery homes through to settlement now, while it's still cheap to be wrong.</p>
+        <p>So I would segment the book by what's bolted to the house, set up a check that detects a change in a cohort's shape quickly, and treat every new device class as a settlement question from its first day on the book. I would size the exposure from the daily range and its worst day, and keep the monthly average for context.</p>
+        <p>So how large could the error be? Small in pence, about 24p a home on the median day, but it all runs one way from 15:30 onwards, whole cohorts of homes make it together, and in winter the same homes on a smart tariff pile into one overnight block. That is why the trade desk habit applies: I'd rather follow battery homes through to settlement now, while it's still cheap to be wrong. If you're adding them to a book this winter, start by checking what your forecast thinks they're doing at 3am.</p>
       </Prose>
 
       <Footnotes notes={NOTES} />
