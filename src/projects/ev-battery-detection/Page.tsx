@@ -162,7 +162,7 @@ export default function EvBatteryDetection() {
     <Article kicker="Writing · smart meter data" title={TITLE} lede={lede}>
       <Section title="What am I trying to find out?" />
       <Prose>
-        <p>An electric car or a home battery shifts a household's demand between hours more than anything else in the house, and under half-hourly settlement a supplier pays for each hour (I covered the battery case in <a href="/batteries">home batteries and settlement risk</a>). Customers rarely tell their supplier when they buy either. The Department for Transport counted 1,737,000 licensed zero emission cars in the UK at the end of 2025.<Fn n={1} /></p>
+        <p>An electric car or a home battery shifts a household's demand between hours more than anything else in the house, and under half-hourly settlement a supplier pays for each half hour (I covered the battery case in <a href="/batteries">home batteries and settlement risk</a>). Customers rarely tell their supplier when they buy either. The Department for Transport counted 1,737,000 licensed zero emission cars in the UK at the end of 2025.<Fn n={1} /></p>
         <p>I wanted to know whether simple rules can tell a car from a battery from a timed immersion heater using half-hourly import readings alone, and whether unsupervised clustering (grouping homes by similarity without being told the answer) finds the same groups. Ofgem's 2022 changes to the supply licence let suppliers use half-hourly data collected for settlement for forecasting, with personal data anonymised and aggregated as early as is reasonably practicable, and for developing products aimed at broad market segments.<Fn n={2} /> I read that as room to count and forecast segments. Homes that opt out to daily data are invisible to any of this.</p>
         <p>Every household here is synthetic and illustrative: a generator I wrote builds 300 homes of each of six types over a 30-day month, with ordinary use anchored to Ofgem's typical 2,500 kWh a year, about 6.85 kWh a day.<Fn n={3} /> None is a real customer, and because I made them, I know which device each one has.</p>
       </Prose>
@@ -195,7 +195,7 @@ export default function EvBatteryDetection() {
       </Prose>
       <Wide><ScoreTable /></Wide>
       <Prose>
-        <p>An equal mix of types flatters precision. The car rule flagged 25.7% of homes without a car, so if 5% of homes had one, Bayes' rule (combining recall, that false alarm rate and how common cars are) puts precision at 15.4%.</p>
+        <p>An equal mix of types flatters precision. The car rule flagged 25.7% of homes without a car, all of them heater or battery homes, so if 5% of homes had a car and the rest kept this mix, Bayes' rule (combining recall, that false alarm rate and how common cars are) puts precision at 15.4%.</p>
         <p>The chart shows precision and recall as I add noise to each home's ordinary use, as a log standard deviation (roughly the proportional swing per half hour), at the threshold the slider sets. A car threshold of 0.8 demands high-power nights: precision reaches 100% and recall falls to 48.9%, with 82.0% of 7 kW cars found and none at 3.6 kW. The chart opens on the battery rule, whose recall falls from 79.2% to 65.2% as noise rises; noise barely moves the car rule.</p>
       </Prose>
       <Wide><TradeOffChart /></Wide>
@@ -210,7 +210,7 @@ export default function EvBatteryDetection() {
       <Section title="What I would do with these rules" />
       <Prose>
         <p>I would use the battery flag for forecast segments. Its precision held at 100% in every test here and clustering found the same homes. It missed 21.8% of batteries, more with solar, so I would treat homes that fail the unoccupied test on most days as a possibly-solar segment instead of dropping them.</p>
-        <p>I would not act on the car flag at 0.5 alone: at 5% ownership about 85% of its flags would be wrong. The 0.8 threshold gives near-certain 7 kW cars; the rest are candidates to confirm. I would also swap the fixed 23:30 to 05:30 window for each tariff's own off-peak hours.</p>
+        <p>I would not act on the car flag at 0.5 alone: at 5% ownership, with heaters and batteries as common as here, about 85% of its flags would be wrong. The 0.8 threshold gives near-certain 7 kW cars; the rest are candidates to confirm. I would also swap the fixed 23:30 to 05:30 window for each tariff's own off-peak hours.</p>
         <p>I would use clustering on a median day only as a cross-check, because it cannot see intermittent charging. Before trusting any of these numbers I would score the rules on a labelled sample of real homes, because rules tuned on my own generator will flatter themselves on it. And I would keep the flags in aggregate forecast segments; anything aimed at one household should start by asking the customer.<Fn n={7} /></p>
       </Prose>
 

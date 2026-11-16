@@ -157,7 +157,9 @@ def main():
     facts["rev_total"] = r(100 * (A1.sum() - A0.sum()) / A0.sum(), 2)
 
     # profile by half hour, weekday against weekend (periods 1-48 only)
-    p = df[df.sp <= 48]
+    # clock-change days (46 or 50 periods) misalign period and clock time: leave them out of half-hour views
+    n_sp = df.groupby("date").sp.transform("max")
+    p = df[n_sp == 48]
     profile = {}
     for m, fn in (("wmape", wmape), ("mape", mape), ("bias", bias)):
         profile[m] = {}
