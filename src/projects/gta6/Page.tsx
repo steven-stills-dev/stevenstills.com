@@ -24,9 +24,10 @@ function Legend({ items }: { items: [string, string][] }) {
   return <div className="legend">{items.map(([n, c]) => <span key={n}><i style={{ background: c }} />{n}</span>)}</div>;
 }
 
-function HomeChart() {
+/** One home's half-hourly use with and without a day of play; also the home preview. */
+export function HomeChart({ h }: { h?: number }) {
   return (
-    <Box title="Household Electricity Use on Launch Day" sub="kWh per half hour" h={360}>
+    <Box title="Household Electricity Use on Launch Day" sub="kWh per half hour" h={h}>
       <LineChart labels={HH} ticks={HH_TICKS} unit="kWh" digits={2} yMin={0} yMax={0.6} yTicks={[0, 0.2, 0.4, 0.6]}
         series={[{ name: "Launch day", values: data.home_after, color: SECONDARY }, { name: "Ordinary Thursday", values: data.home, color: NIGHT }]} />
       <Legend items={[["Launch day", SECONDARY], ["Ordinary Thursday", NIGHT]]} />
@@ -44,8 +45,8 @@ function NationalChart() {
   );
 }
 
-/** Launch-day players by GSP group, as a rate or as evening load; also the home preview. */
-export function PlayersMap({ h }: { h?: number }) {
+/** Launch-day players by GSP group, as a rate or as evening load. */
+function PlayersMap({ h }: { h?: number }) {
   const [m, setM] = useState<MapKey>("Players per 1,000 residents");
   const key = MAPS[m];
   const vals = data.table.map((r) => r[key]);
@@ -106,7 +107,7 @@ export default function Gta6() {
         <p>Sony puts a PlayStation 5 at 197 to 219 watts (W) during play.<Fn n={6} /> Microsoft measured the Xbox Series X at 154 W.<Fn n={7} /> I have used {f.console_w} W for the console and allowed {f.tv_w} W for the television.</p>
         <p>I assumed play comes in three-hour loops, about the stretch between snacks and life. One loop uses {fmt(f.loop_kwh, 1)} kilowatt hours (kWh). Someone with the day off who plays three loops adds {fmt(f.day_kwh, 1)} kWh to a typical home's {fmt(f.home_kwh, 1)} kWh a day, which is {f.home_uplift_pct}% more.<Fn n={8} /> At the price cap rate that costs {f.cost_p}p.<Fn n={9} /></p>
       </Prose>
-      <Wide><HomeChart /></Wide>
+      <Wide><HomeChart h={360} /></Wide>
 
       <Section title={`Launch-day consoles add ${fmt(f.added_peak_mw)} MW to the evening`} />
       <Prose>
