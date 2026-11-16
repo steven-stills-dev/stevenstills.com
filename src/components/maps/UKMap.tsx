@@ -7,7 +7,7 @@
  */
 import { useRef, useState, type FocusEvent, type MouseEvent } from "react";
 import { useSize } from "../../lib/useSize";
-import { UK_GEO, project } from "./uk-geo";
+import { UK_GEO, project, type UKGeo } from "./uk-geo";
 import "./UKMap.css";
 
 export interface UKMapBand { max: number; label: string }
@@ -45,6 +45,8 @@ export interface UKMapProps {
   points?: UKMapPoint[];
   /** legend rows for the point tones */
   pointLegend?: { tone: UKMapTone; label: string }[];
+  /** geometry to draw (default the twelve ITL1 regions) */
+  geo?: UKGeo;
 }
 
 interface Tip { id: string; title: string; value: string; x: number; y: number }
@@ -58,7 +60,7 @@ const TONE: Record<UKMapTone, string> = { primary: "var(--ste-secondary)", night
 const mix = (pct: number) => `color-mix(in srgb, var(--ste-secondary) ${pct}%, var(--ste-midday))`;
 
 export default function UKMap({
-  values, domain, bands, format, legendTitle, noDataLabel, shetland = false, points, pointLegend,
+  values, domain, bands, format, legendTitle, noDataLabel, shetland = false, points, pointLegend, geo = UK_GEO,
 }: UKMapProps) {
   const wrap = useRef<HTMLDivElement>(null);
   const [frame, size] = useSize<HTMLDivElement>();
@@ -67,9 +69,9 @@ export default function UKMap({
   const nd = noDataLabel ?? "No data";
 
   // frame the geometry, cropping Shetland unless asked for
-  const top = shetland ? 0 : UK_GEO.shetlandCut;
+  const top = shetland ? 0 : geo.shetlandCut;
   const vx = -SIDE, vy = top - PAD;
-  const vw = UK_GEO.width + 2 * SIDE, vh = UK_GEO.height - top + 2 * PAD;
+  const vw = geo.width + 2 * SIDE, vh = geo.height - top + 2 * PAD;
   // map units per screen pixel: dots and labels scale by it to hold a steady size
   const pxPerUnit = size.w > 0 && size.h > 0 ? Math.min(size.w / vw, size.h / vh) : 560 / vh;
   const k = 1 / pxPerUnit;
@@ -110,9 +112,9 @@ export default function UKMap({
 
   const cw = wrap.current?.clientWidth ?? 0;
   const tipLeft = tip ? (cw ? Math.max(56, Math.min(cw - 56, tip.x)) : tip.x) : 0;
-  const active = tip ? UK_GEO.regions.find((rg) => rg.key === tip.id) : undefined;
+  const active = tip ? geo.regions.find((rg) => rg.key === tip.id) : undefined;
 
-  const showNoData = !!noDataLabel && UK_GEO.regions.some((rg) => values[rg.key] == null);
+  const showNoData = !!noDataLabel && geo.regions.some((rg) => values[rg.key] == null);
   const hasLegend = !!legendTitle || !!bands || !!range || showNoData || !!pointLegend?.length;
   const toneLabel = (tone: UKMapTone) => pointLegend?.find((l) => l.tone === tone)?.label ?? "Site";
 
@@ -128,7 +130,7 @@ export default function UKMap({
           aria-label={legendTitle ? `Map of the United Kingdom: ${legendTitle}` : "Map of the United Kingdom"}
         >
           <g stroke="var(--ste-dusk)" strokeOpacity={0.5} strokeWidth={1} strokeLinejoin="round">
-            {UK_GEO.regions.map((rg) => {
+            {geo.regions.map((rg) => {
               const v = values[rg.key];
               const text = v == null ? nd : fmt(v);
               return (
