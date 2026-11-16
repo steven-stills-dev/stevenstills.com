@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "public" / "data" / "electricity-suppliers"
 CACHE = Path(os.environ.get("PRICE_CACHE", "/tmp/claude-1000/-home-stevenstills-py-stevenstills-com/462d8352-c0f7-4238-9ab7-1f92e2f2c61c/scratchpad/prices"))
 # Half-hourly S0142 party data (read only); the exact and imbalance steps are skipped when it is absent.
-HH = Path(os.environ.get("HH_SOURCE", "/home/stevenstills/python/local-work/competition-analysis"))
+HH = Path(os.environ.get("HH_SOURCE", "data/hh"))
 API = "https://data.elexon.co.uk/bmrs/api/v1"
 START, END = pd.Timestamp("2021-04-01"), pd.Timestamp("2026-09-12")
 IMB_START = pd.Timestamp("2024-09-13")

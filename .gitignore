@@ -5,3 +5,5 @@ dist/
 *.log
 .claude/
 scripts/gcf/*.parquet
+scripts/*/cache/
+scripts/_cache/
