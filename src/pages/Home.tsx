@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import Layout from "../components/Layout";
@@ -6,33 +6,22 @@ import { PROJECTS, fmtDate } from "../projects/registry";
 import type { ProjectMeta } from "../projects/types";
 import { usePageMeta } from "../lib/meta";
 
-/** Index rows: title, kind and date, with the summary line on the selected row. A click shows the entry on the stage; a double click opens it. */
-function Rows({ items, active, onPick }: { items: ProjectMeta[]; active: string; onPick: (slug: string) => void }) {
-  const navigate = useNavigate();
-  return (
-    <ul className="rows">
-      {items.map((p) => (
-        <li key={p.slug}>
-          <button type="button" className={"row" + (p.slug === active ? " on" : "")} aria-pressed={p.slug === active} onClick={() => onPick(p.slug)} onDoubleClick={() => navigate(`/${p.slug}`)}>
-            <span className="row-t">{p.title}</span>
-            <span className="row-k">{p.kind === "project" ? "Project" : "Writing"}</span>
-            <span className="row-d">{fmtDate(p.date)}</span>
-            {p.slug === active && <span className="row-l">{p.line}</span>}
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const CARDS = 4;
+const kind = (p: ProjectMeta) => (p.kind === "project" ? "Project" : "Writing");
 
 export default function Home() {
   usePageMeta("Steven Stills", "Projects and writing on energy markets and forecasting. Each piece takes one problem, shows the working and ends with what I'd do about it.");
   const navigate = useNavigate();
-  const pinned = PROJECTS.filter((p) => p.pinned);
-  const rest = PROJECTS.filter((p) => !p.pinned);
-  const [active, setActive] = useState((pinned[0] ?? PROJECTS[0])?.slug ?? "");
-  // in the single-column layout the stage sits above the index, out of view, so a tap opens the entry
-  const pick = (slug: string) => (window.matchMedia("(max-width: 900px)").matches ? navigate(`/${slug}`) : setActive(slug));
+  // the cards under the stage: pinned entries first, then the newest, each one a switch for the stage
+  const cards = [...PROJECTS.filter((p) => p.pinned), ...PROJECTS.filter((p) => !p.pinned)].slice(0, CARDS);
+  const [active, setActive] = useState(cards[0]?.slug ?? "");
+  const stage = useRef<HTMLElement>(null);
+  // in the single-column layout the stage sits well above the cards, so a tap opens the entry
+  const pick = (slug: string) => {
+    if (window.matchMedia("(max-width: 900px)").matches) return navigate(`/${slug}`);
+    setActive(slug);
+    stage.current?.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
 
   const feat = PROJECTS.find((p) => p.slug === active);
   const Preview = feat?.preview;
@@ -50,7 +39,7 @@ export default function Home() {
         </section>
 
         {feat && (
-          <section className="stage">
+          <section className="stage" ref={stage}>
             <div className="stage-in">
               <div className="stage-view">
                 {Preview && (
@@ -74,16 +63,36 @@ export default function Home() {
           </section>
         )}
 
-        <div className="lists">
-          {pinned.length > 0 && (
-            <>
-              <h2 className="lists-h">Highlights</h2>
-              <Rows items={pinned} active={active} onPick={pick} />
-            </>
-          )}
-          <h2 className="lists-h">Projects and writing</h2>
-          <Rows items={rest} active={active} onPick={pick} />
-        </div>
+        <section className="cards" aria-label="Highlights and latest">
+          <h2 className="lists-h">Highlights and latest</h2>
+          <ul className="card-row">
+            {cards.map((p) => (
+              <li key={p.slug}>
+                <button type="button" className={"card" + (p.slug === active ? " on" : "")} aria-pressed={p.slug === active} onClick={() => pick(p.slug)} onDoubleClick={() => navigate(`/${p.slug}`)}>
+                  <span className="card-m">{kind(p)} · {fmtDate(p.date)}</span>
+                  <span className="card-t">{p.title}</span>
+                  <span className="card-l">{p.line}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="index" aria-label="All projects and writing">
+          <h2 className="lists-h">All projects and writing</h2>
+          <ul className="irows">
+            {PROJECTS.map((p) => (
+              <li key={p.slug}>
+                <Link className="irow" to={`/${p.slug}`}>
+                  <span className="irow-d">{fmtDate(p.date)}</span>
+                  <span className="irow-t">{p.title}</span>
+                  <span className="irow-l">{p.line}</span>
+                  <span className="irow-k">{kind(p)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </Layout>
   );
