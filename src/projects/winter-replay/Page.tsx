@@ -125,9 +125,15 @@ export default function WinterReplay() {
 
   return (
     <Article kicker="Writing · weather risk" title={TITLE} lede={lede}>
+      <Prose>
+        <p>A gas supplier gets the planning and very little of the testing. It buys most of its winter gas months ahead, and by the time the first cold morning shows whether the plan holds, the plan has already been paid for.</p>
+        <p>I've forecast demand since 2016, from classic statistical models through to gradient boosting, and not one of those models can tell me in September what January will be like.</p>
+        <p>What I can do is replay the winters Britain has already had. Every winter since {F.first_winter} goes through the same made-up hedge book, to see what a one-in-ten winter does to its margin.</p>
+      </Prose>
+
       <Section title="What is weather risk for a gas supplier?" />
       <Prose>
-        <p>A supplier buys most of its winter gas months ahead, sized to the volume it expects in a normal winter. Customers then use whatever the weather asks of them. In a cold winter the supplier sells more gas than it bought and has to buy the rest at the day's price. In a mild one it sells less and has gas left over. I wanted one number for that exposure, with an honest range, built from the weather Britain has actually had.</p>
+        <p>A supplier buys most of its winter gas months ahead, sized to the volume it expects in a normal winter. Customers then use whatever the weather asks of them. In a cold winter the supplier sells more gas than it bought and has to buy the rest at the day's price. In a mild one it sells less and has gas left over. I wanted one number for that exposure, with an honest range around it.</p>
         <p>The book is made up, and every figure from it is illustrative:<Fn n={1} /> {fmt(F.customers)} households, a round number chosen for the arithmetic, on Ofgem's typical {fmt(F.tdcv)} kWh a year, {fmt(F.portfolio_twh_year, 2)} TWh in all, paying the October to December 2026 cap rate of {fmt(F.tariff_ex_vat, 2)} p/kWh before VAT. The replay holds customer behaviour fixed; how households respond to price is a separate question I looked at in <a href="/price-response">measuring price response</a>.</p>
       </Prose>
       <Wide>
@@ -197,10 +203,11 @@ export default function WinterReplay() {
 
       <Section title="What I would do with these figures" />
       <Prose>
-        <p>I would price the weather premium near the top of the band. On this book that means holding about £{fmt(F.boot_1in10_hi_per_customer, 2)} a customer against a warm winter, the upper end of the bootstrap range, in place of the £{fmt(-F.m_1in10_per_customer, 2)} point estimate, because 35 winters can't narrow it further.</p>
-        <p>I would hedge to normal-weather volume and stop there. With price fixed, extra cover buys no protection against weather. If the calmer price slope holds, every 10 points above 100% costs about {m(F.mv_cost_per_10pts, 2)} at one-in-ten.</p>
-        <p>I would rerun the price gate each autumn as winter months accumulate. Outside the crisis winters it already passes, so I expect to switch weather-driven price on soon, and when it does the one-in-ten at full cover rises to {m(F.mv_1in10_100)}, which is the figure I would then hold the premium against.</p>
-        <p>I would keep one fixed, detrended normal and replay whole winters. The industry's seasonal normal is revised from time to time,<Fn n={7} /> which moves the baseline under any year-on-year comparison, and its one-in-twenty peak day answers a different question, about the single coldest day a network must supply.<Fn n={8} /></p>
+        <p>So the weather alone can take about {m(F.m_1in10)} off this book in a one-in-ten winter, and with price fixed the one to fear is the warm one. Thirty-five winters can only place that loss between {m(F.boot_1in10_hi)} and {m(F.boot_1in10_lo)}, so I would price the weather premium near the top of the band. On this book that means holding about £{fmt(F.boot_1in10_hi_per_customer, 2)} a customer against a warm winter, the upper end of the bootstrap range, in place of the £{fmt(-F.m_1in10_per_customer, 2)} point estimate.</p>
+        <p>I would hedge to normal-weather volume and stop there, because with price fixed, extra cover buys no protection against weather. If the calmer price slope holds, every 10 points above 100% costs about {m(F.mv_cost_per_10pts, 2)} at one-in-ten.</p>
+        <p>The price gate wants rerunning each autumn as winter months accumulate. Outside the crisis winters it already passes, so I expect to switch weather-driven price on soon, and when I do the one-in-ten at full cover rises to {m(F.mv_1in10_100)}, which is the figure I would then hold the premium against.</p>
+        <p>I would also keep one fixed, detrended normal and replay whole winters. The industry's seasonal normal is revised from time to time,<Fn n={7} /> which moves the baseline under any year-on-year comparison, and its one-in-twenty peak day answers a different question, about the single coldest day a network must supply.<Fn n={8} /></p>
+        <p>If you run a book like this one, put the replay through again each autumn before the hedge goes on, because after that the only test left is the winter itself.</p>
       </Prose>
 
       <Footnotes notes={[

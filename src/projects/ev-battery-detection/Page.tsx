@@ -160,6 +160,12 @@ export default function EvBatteryDetection() {
 
   return (
     <Article kicker="Writing · smart meter data" title={TITLE} lede={lede}>
+      <Prose>
+        <p>My day job runs on gradient boosting these days. For this piece I went the other way on purpose, with rules simple enough to read out loud.</p>
+        <p>They did well enough, but the car rule also flagged a good many immersion heaters along the way. Its mistakes are the most useful part of this piece.</p>
+        <p>What I was looking for are the two devices a supplier would most like to know about and is least often told. Electric cars and home batteries.</p>
+      </Prose>
+
       <Section title="What am I trying to find out?" />
       <Prose>
         <p>An electric car or a home battery shifts a household's demand between hours more than anything else in the house, and under half-hourly settlement a supplier pays for each half hour (I covered the battery case in <a href="/batteries">home batteries and settlement risk</a>). Customers rarely tell their supplier when they buy either. The Department for Transport counted 1,737,000 licensed zero emission cars in the UK at the end of 2025.<Fn n={1} /></p>
@@ -195,7 +201,7 @@ export default function EvBatteryDetection() {
       </Prose>
       <Wide><ScoreTable /></Wide>
       <Prose>
-        <p>An equal mix of types flatters precision. The car rule flagged 25.7% of homes without a car, all of them heater or battery homes, so if 5% of homes had a car and the rest kept this mix, Bayes' rule (combining recall, that false alarm rate and how common cars are) puts precision at 15.4%.</p>
+        <p>An equal mix of types flatters precision: the car rule flagged 25.7% of homes without a car, all of them heater or battery homes, so if 5% of homes had a car and the rest kept this mix, Bayes' rule (combining recall, that false alarm rate and how common cars are) puts precision at 15.4%.</p>
         <p>The chart shows precision and recall as I add noise to each home's ordinary use, as a log standard deviation (roughly the proportional swing per half hour), at the threshold the slider sets. A car threshold of 0.8 demands high-power nights: precision reaches 100% and recall falls to 48.9%, with 82.0% of 7 kW cars found and none at 3.6 kW. The chart opens on the battery rule, whose recall falls from 79.2% to 65.2% as noise rises; noise barely moves the car rule.</p>
       </Prose>
       <Wide><TradeOffChart /></Wide>
@@ -212,6 +218,7 @@ export default function EvBatteryDetection() {
         <p>I would use the battery flag for forecast segments. Its precision held at 100% in every test here and clustering found the same homes. It missed 21.8% of batteries, more with solar, so I would treat homes that fail the unoccupied test on most days as a possibly-solar segment instead of dropping them.</p>
         <p>I would not act on the car flag at 0.5 alone: at 5% ownership, with heaters and batteries as common as here, about 85% of its flags would be wrong. The 0.8 threshold gives near-certain 7 kW cars; the rest are candidates to confirm. I would also swap the fixed 23:30 to 05:30 window for each tariff's own off-peak hours.</p>
         <p>I would use clustering on a median day only as a cross-check, because it cannot see intermittent charging. Before trusting any of these numbers I would score the rules on a labelled sample of real homes, because rules tuned on my own generator will flatter themselves on it. And I would keep the flags in aggregate forecast segments; anything aimed at one household should start by asking the customer.<Fn n={7} /></p>
+        <p>So simple rules can find a battery, and once cars are as rare as 5% of homes, a car rule on its own mostly flags heaters and batteries. After years of neural networks and gradient boosting, it took only a three-level tree to reproduce the clusters for 97.4% of homes. If you try this on your own meters, start with the evening: a battery home's quiet 16:00 to 23:00 is the cleanest signal in this piece.</p>
       </Prose>
 
       <Footnotes notes={[

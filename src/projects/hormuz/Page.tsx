@@ -36,7 +36,7 @@ const NIGHT = "var(--ste-night)", SECONDARY = "var(--ste-secondary)";
 
 export default function Hormuz() {
   const [view, setView] = useState<"live" | "app">("live");
-  const lede = "In March 2026 daily tanker transits through the Strait of Hormuz fell to single figures, and on 13 April the UK wholesale gas contract for the month ahead rose about 10% in morning trading after the United States announced a blockade of Iranian ports. I built a live map of around 1,300 ships to see what the vessels were doing, and I compare the tanker counts with the daily gas price.";
+  const lede = "In March 2026 daily tanker transits through the Strait of Hormuz fell to single figures, and on 13 April the UK wholesale gas contract for the month ahead rose about 10% in morning trading after the United States announced a blockade of Iranian ports. I built a live map of the tankers and LNG carriers in and around the strait, the attacks reported on shipping and the routes that avoid it, and I compare the tanker counts with the daily gas price.";
   usePageMeta("Tracking ships in the Strait of Hormuz", lede);
 
   return (
@@ -51,30 +51,19 @@ export default function Hormuz() {
         </div>
       </Prose>
 
+      <Prose>
+        <p>For the last 16 years my work has been statistical models of energy, and the charts and diagrams that explain what is going on inside them.</p>
+        <p>From 27 February to 8 March 2026, Great Britain's daily gas price roughly doubled. The news said Iran had closed the Strait of Hormuz to shipping. A closure announced in a statement says little about what the ships are already doing, and the price data couldn't tell me either.</p>
+        <p>I went looking at the ships themselves. Ships broadcast their identity and position, and some of those signals are published free of charge.</p>
+        <p>So I built a tracker of my own. It started as a map of tankers and has grown since into a record of a waterway under attack: the strikes reported on ships, the pipelines that carry oil around the strait, the tankers that have sailed on to ports elsewhere and the places where GPS is being jammed.</p>
+        <p>The gas price comes first, because that is where the strait showed up for UK buyers.</p>
+      </Prose>
+
       <Section title="Why the strait mattered to UK gas buyers" />
       <Prose>
         <p>On 13 April 2026, the front-month UK wholesale gas contract (the contract for delivery in the following month) rose about 10% in morning trading, to around 120p a therm, after the United States announced a naval blockade of Iranian ports.<Fn n={1} /></p>
-        <p>On 28 February 2026 the United States and Israel began strikes on Iran, and within days Iran declared the strait closed to shipping.<Fn n={2} /></p>
-        <p>An announcement of that kind says little about what the ships are already doing, so I wanted a plain read on whether energy trade through the strait was flowing or under stress.</p>
+        <p>On 28 February 2026 the United States and Israel began strikes on Iran, and within days Iran declared the strait closed to shipping.<Fn n={2} /> I wanted a plain read on whether energy trade through the strait was flowing or under stress, measured from the ships and not from the statements.</p>
       </Prose>
-
-      <Section title="The ship tracker I built" />
-      <Prose>
-        <p>I built a live tracker of around 1,300 ships across the Persian Gulf and Gulf of Oman. It reads AIS positions (the signal each ship broadcasts with its identity and location), classifies each ship by type, watches the tanker and LNG (liquefied natural gas) segment, and derives one strait-status signal from those positions.</p>
-      </Prose>
-
-      <Wide>
-        <Box title="Live Vessel Map" h={560}>
-          {view === "live"
-            ? <HormuzMap />
-            : <div className="mapwrap"><img className="hz-shot" src="/img/hormuz-app.webp" alt="Hormuz Tracker app on a satellite basemap" /></div>}
-        </Box>
-        <div className="hz-chips" role="tablist" aria-label="Map style">
-          {(["live", "app"] as const).map((v) => (
-            <button key={v} role="tab" aria-selected={view === v} className={"chip" + (view === v ? " on" : "")} onClick={() => setView(v)}>{v === "live" ? "Live map" : "App view"}</button>
-          ))}
-        </div>
-      </Wide>
 
       <Section title="How the gas price moved" />
       <Prose>
@@ -104,12 +93,12 @@ export default function Hormuz() {
       </Wide>
 
       <Prose>
-        <p>One event gives one before and one after. The comparison shows large daily moves becoming about three times as common. It cannot show the cause. The only 48-day windows since January 2018 with at least as large a share of moves above 5p ended in 2021, 2022 or 2023.<Fn n={5} k="b" /></p>
+        <p>One event gives one before and one after. The comparison shows large daily moves becoming about three times as common, and it cannot show the cause. The only 48-day windows since January 2018 with at least as large a share of moves above 5p ended in 2021, 2022 or 2023.<Fn n={5} k="b" /></p>
       </Prose>
 
       <Section title="What the tanker transit counts show" />
       <Prose>
-        <p>IMF PortWatch counts the tankers passing through the strait each day from AIS data.<Fn n={6} /> The count ran at between 19 and 69 a day through February, fell to 5 on the first of March, and stayed at 5 or fewer for the seven weeks to mid-April. After rising to 12 on 18 April and 23 on 29 April, it was back between 0 and 4 a day in the second half of May.</p>
+        <p>IMF PortWatch counts the tankers passing through the strait each day from AIS data (the signal each ship broadcasts with its identity and location).<Fn n={6} /> The count ran at between 19 and 69 a day through February, fell to 5 on the first of March, and stayed at 5 or fewer for the seven weeks to mid-April. After rising to 12 on 18 April and 23 on 29 April, it was back between 0 and 4 a day in the second half of May.</p>
       </Prose>
 
       <Wide>
@@ -120,11 +109,103 @@ export default function Hormuz() {
 
       <Prose>
         <p>The tanker count fell from 36 on 28 February to 5 on the first of March, and the System Average Price rose from 76.6p on 27 February to 132.8p on 3 March. I can't show from two charts that the fall in traffic caused the rise in price, but the timing is what I would expect if the market was pricing the ships. By 13 April the tanker count had been at 5 a day or fewer for six weeks.</p>
+        <p>I read any count built on AIS as approximate. Ships that switch off their transponders drop out of the data, and jamming can add crossings that never happened.<Fn n={7} /></p>
       </Prose>
 
-      <Section title="What I would watch when a shipping route is at risk" />
+      <Section title="Which tankers are in and around the strait" />
       <Prose>
-        <p>The next time news about a shipping route is followed by a jump in the gas price, I would look at the daily tanker count first, because it shows what the ships are already doing. I would read any count built on AIS as approximate, since ships that go dark drop out of the data and jamming can add crossings that never happened.<Fn n={7} /> I would size day-to-day price risk from the weeks after the event, when 38% of days moved by more than 5p, and not from the month before, when 12% did. I think a tracker like this is most useful while the market is still deciding what the strait is worth: in the second half of May 2026 the System Average Price was still above 110p.<Fn n={3} k="b" /></p>
+        <p>The tracker reads AIS positions every 15 minutes and keeps three kinds of ship: LNG (liquefied natural gas) carriers, oil tankers, and chemical and other tankers, which start switched off so the oil and gas trade leads.<Fn n={8} /> Every other vessel type is dropped. Each layer can be switched on and off under Map layers, with its live count beside it.</p>
+        <p>The bar across the top counts the vessels in the region, the carriers and tankers among them, the crossings of the strait in the last 24 hours and the pending crossings, meaning ships on course to cross within the next 24. Clicking either crossing count lists the ships and flies the map to the one you pick. A ring marks any ship that has crossed recently, and Ship finder goes straight to a vessel by name.</p>
+        <p>AIS reports arrive in batches, so a tanker on a steady course is run forward from its last fix along a dashed line, and its popup says when that fix was. Clicking a ship draws its track and rings the port it says it is bound for. Ports with a tanker or carrier heading for them are drawn brighter than the rest of the atlas.</p>
+        <p>The status under the title is my own signal. It compares the tankers and LNG carriers seen in the strait over the last 24 hours with the median of the previous 14 days, reading below 60% as disrupted and below 25% as interrupted. It also reads interrupted whenever no LNG carrier is in the strait or on course for it.</p>
+      </Prose>
+
+      <Wide>
+        <Box title="Live Vessel Map" h={560}>
+          {view === "live"
+            ? <HormuzMap />
+            : <div className="mapwrap"><img className="hz-shot" src="/img/hormuz-app.webp" alt="Hormuz Tracker app on a satellite basemap" /></div>}
+        </Box>
+        <div className="hz-chips" role="tablist" aria-label="Map style">
+          {(["live", "app"] as const).map((v) => (
+            <button key={v} role="tab" aria-selected={view === v} className={"chip" + (view === v ? " on" : "")} onClick={() => setView(v)}>{v === "live" ? "Live map" : "App view"}</button>
+          ))}
+        </div>
+      </Wide>
+
+      <Prose>
+        <p>For a reader who watches energy markets, this view answers the first question after any headline about the strait: are tankers and LNG carriers still crossing, and in which direction.</p>
+      </Prose>
+
+      <Section title="Where the tankers go after they leave" />
+      <Prose>
+        <p>A tanker that clears the Gulf of Oman would normally drop off a regional map. The tracker keeps following tankers and LNG carriers for 45 days after they were last in the region, and picks up any that are bound for a port inside it, from the feed's worldwide directory.<Fn n={8} k="b" /> Those far-off fixes are older, renewed about every three days, so their dots are not projected forward and each popup gives the date and time of the last fix.</p>
+        <p>This answers where the cargo that did get out is heading, and which ships are on their way back towards the strait.</p>
+      </Prose>
+
+      <Wide>
+        <div className="photo photo-wide">
+          <img src="/img/hormuz-departed.jpg" alt="The tracker zoomed out over the Arabian Sea in day mode, showing tanker trails leading away from the Gulf of Oman towards India and the open ocean, with a popup on a crude oil tanker bound for Fujairah giving its flag, speed and a last fix from 13 November." />
+        </div>
+      </Wide>
+
+      <Section title="Where ships have been attacked" />
+      <Prose>
+        <p>Each diamond on the map marks a report to UKMTO (United Kingdom Maritime Trade Operations) that a ship was attacked, placed where the report puts it.<Fn n={9} /> The Incidents feed on the left lists the same reports, newest first, with UKMTO's own wording and a badge when the ship caught fire, was abandoned or sank.</p>
+        <p>The Attacks slider under the replay controls sets how far back the map looks, from the last day to every report in the feed, and older reports fade so the newest stand out. Each report carries an apparent aggressor of Iran, USA or Other. UKMTO's reports do not name an attacker, so that label is a rule of thumb I apply to the place and wording of each report, set out in the footnote, and it should be read as nothing firmer.</p>
+      </Prose>
+
+      <Wide>
+        <div className="photo photo-wide">
+          <img src="/img/hormuz-incidents.jpg" alt="The tracker in day mode over the Strait of Hormuz with the Attacks slider set to all reports. Blue diamonds marking reported attacks cluster along the Musandam peninsula and the narrows, and the Incidents feed on the left shows two 16 November reports of tankers struck in the strait, each badged Apparent: Iran, Attack and Fire." />
+        </div>
+      </Wide>
+
+      <Prose>
+        <p>This answers where the risk to a ship is concentrated, and whether it is moving. Read with the replay, it also shows whether traffic carried on past the place of a report.</p>
+      </Prose>
+
+      <Section title="How oil can travel around the strait" />
+      <Prose>
+        <p>The Bypass routes layer draws the three pipelines that move crude without a tanker passing the narrows. The East-West pipeline runs from Abqaiq near the Gulf coast of Saudi Arabia to Yanbu on the Red Sea. The Abu Dhabi Crude Oil Pipeline runs from Habshan to Fujairah on the Gulf of Oman. SUMED carries crude from Ain Sukhna on the Red Sea to Sidi Kerir on the Mediterranean.<Fn n={10} /></p>
+        <p>The finer lines behind the two Gulf trunks are the feeder pipelines that gather oil from the fields, and the dashed circles off Fujairah, Khor Fakkan and Sohar mark the anchorages where cargo has been passed from ship to ship. Clicking a pipeline shows the chain from field to ship.</p>
+      </Prose>
+
+      <Wide>
+        <div className="photo photo-wide">
+          <img src="/img/hormuz-bypass.jpg" alt="The tracker zoomed out over the Arabian Peninsula in day mode with the panels hidden. Dark lines trace the East-West pipeline from Abqaiq to Yanbu, the Abu Dhabi Crude Oil Pipeline from Habshan to Fujairah, and the SUMED pipeline from Ain Sukhna to Sidi Kerir in Egypt, with labelled oil fields, ports and tanker trails in the Gulf of Oman." />
+        </div>
+      </Wide>
+
+      <Prose>
+        <p>For scale, the US Energy Information Administration put oil flow through the strait at 20 million barrels a day in 2024, and estimated that about 2.6 million barrels a day of the Saudi and UAE pipeline capacity could be available to bypass it.<Fn n={10} k="b" /> The lines on the map show where that 2.6 million can go, and the difference between the two figures is the oil that has no other way out.</p>
+      </Prose>
+
+      <Section title="Where ship positions can't be trusted" />
+      <Prose>
+        <p>The GPS jamming layer, off by default, shades hexagons over the region by the share of aircraft that report they cannot bound their own position, a reading known as an integrity category of 0. Aircraft are the probe here, so the layer marks where GPS is being disrupted, and the effect on any one ship has to be inferred. Red dots mark the aircraft reporting the fault.<Fn n={11} /></p>
+        <p>This answers when to doubt the map. A tanker that appears to jump across a red hexagon, or a crossing logged inside one, is worth a second look before it goes into anyone's count.</p>
+      </Prose>
+
+      <Section title="How the last three days played out" />
+      <Prose>
+        <p>The replay bar at the bottom takes the map back up to three days. Drag the slider to a moment, or press play to watch the ships move at 90 minutes a second, with faster speeds of 2, 5 and 10 times on the button beside it. Ships that left the area glide off the map, and an attack report appears at the moment the clock reaches it.</p>
+        <p>Day, Night and Auto switch the map between daylight imagery and a darkened chart that keeps the ships bright. Auto changes at sunset over the map, and the Gulf time under the title shows the local clock at the strait.</p>
+        <p>Replay answers what happened around an event, such as whether traffic paused after an attack or kept moving, which a single snapshot can't show.</p>
+      </Prose>
+
+      <Section title="What the full insights page adds" />
+      <Prose>
+        <p>Full insights opens a page of context behind the map. It mirrors the public dashboard at hormuzstraitmonitor.com: its closure status and a counter running from the date it gives, transits against the normal daily rate, cargo throughput, war-risk insurance, very large crude carrier (VLCC) spot rates and its estimate of trade at risk.<Fn n={12} /> Those figures are the monitor's, and I show them as published without checking them. The monitor's status can also differ from the one under my map title, because the two are worked out differently.</p>
+        <p>Alongside them sit a Brent crude price chart for 2026, tallies of the UKMTO reports by type and outcome, the PortWatch daily transit chart from 1 January, and three feeds side by side: the UKMTO incidents, news headlines about the strait, and Donald Trump's Truth Social posts that mention Iran, Israel, ships or Hormuz. The News and &lsquo;Truths&rsquo; feeds are also tabs beside Incidents on the map.</p>
+        <p>This page answers the question a trader asks after the map: what the disruption is doing to the price of oil and to shipping costs, and what the news and Donald Trump's posts are saying about it.</p>
+      </Prose>
+
+      <Section title="What the tracker can and cannot tell you" />
+      <Prose>
+        <p>I built the tracker because a statement about the strait said little about what the ships were doing. On that it gave a plain answer: tanker transits fell from dozens a day to 5 the day after the strikes began, and in the second half of May they were still between 0 and 4.<Fn n={6} k="b" /></p>
+        <p>What it cannot tell me is why. The map shows where a ship is, or where its transponder says it is, and jamming and ships going dark both bend that picture.<Fn n={7} k="b" /> Who attacked a ship is a question UKMTO's reports leave open, and my apparent aggressor label stays a rule of thumb. The gas price comparison shows large moves becoming about three times as common after 28 February, and it cannot prove the ships caused them.</p>
+        <p>If you watch the gas price, I would size day-to-day risk from the weeks after an event like this one, when 38% of days moved by more than 5p, and not from the month before, when 12% did. In the second half of May 2026 the System Average Price was still above 110p.<Fn n={3} k="b" /> When the next headline about the strait breaks, open the tracker before the price screen and look at the crossings in the last 24 hours, the newest diamonds near the narrows and whether the jamming hexagons have turned red over the shipping lanes. It is live at <a href="https://hormuz.stevenstills.com" target="_blank" rel="noopener">hormuz.stevenstills.com</a> and it refreshes every 15 minutes.</p>
       </Prose>
 
       <Footnotes notes={[
@@ -135,6 +216,11 @@ export default function Hormuz() {
         <>Daily moves are the change in the System Average Price (note 3) from one day to the next, in pence per therm: 26 changes from 2 to 27 February 2026 and 48 from 28 February to 16 April. The largest were a rise of 31.1p on 3 March and a fall of 31.5p on 10 March. The share of moves above 5p rose by 26 percentage points; resampling the days 10,000 times puts that rise between 7 and 44 points, and the ratio of the two medians between 1.0 and 3.7. Resampling treats the days as independent, which prices in a volatile spell are not, so the true ranges are wider. Of the 2,932 windows of 48 days in the same series between January 2018 and 27 February 2026, 18.5% had at least as large a share of moves above 5p, and every one of those windows ended in 2021, 2022 or 2023.</>,
         <>Daily tanker-transit counts are from <a href="https://portwatch.imf.org/" target="_blank" rel="noopener">IMF PortWatch</a>, "Daily Chokepoints Data" for the Strait of Hormuz (field <em>n_tanker</em>), built on AIS data from the UN Global Platform. Static snapshot, 1 February to 30 June 2026, retrieved 11 November 2026; the chart shows 1 February to 16 April 2026. AIS coverage in the region was degraded during the crisis by GPS jamming and vessels going dark, so the counts are approximate (note 7).</>,
         <>Windward, a maritime analytics firm, found that jamming added false crossings to its own AIS record of the strait: 393 of the 642 transits logged in August 2026 were false. That is a finding about Windward's record, and I have not found an equivalent check of the PortWatch counts. <a href="https://windward.ai/knowledge-base/gps-jamming-and-false-transits-in-the-strait-of-hormuz/" target="_blank" rel="noopener">Windward, GPS Jamming and False Transits in the Strait of Hormuz</a>.</>,
+        <>Vessel positions are AIS reports from the key-free feed at <a href="https://hormuz.data-tracking.net" target="_blank" rel="noopener">data-tracking.net</a>, read every 15 minutes and kept for 72 hours. The tracker keeps LNG carriers, oil tankers (crude, oil products and bunkering tankers) and chemical and other tankers, and drops every other vessel type at intake. Tankers and LNG carriers last seen in the region within 45 days, or bound for a port inside it, are followed beyond it from the same feed's worldwide ship directory, read every six hours; a fix older than 14 days is dropped.</>,
+        <>Incident reports are from <a href="https://www.ukmto.org/" target="_blank" rel="noopener">UKMTO, United Kingdom Maritime Trade Operations</a>, Crown copyright, Open Government Licence v3.0, read through <a href="https://hormuz.data-tracking.net" target="_blank" rel="noopener">data-tracking.net</a>. The map and the Incidents feed show only reports UKMTO classes as an attack. UKMTO's reports do not name an attacker. The tracker's apparent aggressor is my rule of thumb: a report whose text mentions military forces or disabling fire is marked USA, any other attack placed in the Strait of Hormuz, the Gulf of Oman or the Arabian (Persian) Gulf is marked Iran, and the rest, such as the Red Sea or the Gulf of Aden, are marked Other.</>,
+        <>In 2024 oil flow through the Strait of Hormuz averaged 20 million barrels a day (b/d). Saudi Aramco's East-West pipeline from Abqaiq to Yanbu has a capacity of 5 million b/d, temporarily expanded to 7 million b/d in 2019, and the UAE's pipeline to the Fujairah export terminal 1.8 million b/d; the EIA estimates about 2.6 million b/d of the two countries' pipeline capacity could be available to bypass the strait. <a href="https://www.eia.gov/todayinenergy/detail.php?id=65504" target="_blank" rel="noopener">US Energy Information Administration, Today in Energy, 16 Jun 2025</a>. Pipeline and feeder paths are OpenStreetMap ways, <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">&copy; OpenStreetMap contributors</a>; the transfer anchorages enclose ship-to-ship transfers detected by <a href="https://hormuz.data-tracking.net/sts" target="_blank" rel="noopener">data-tracking.net STS Watch</a>; route details from <a href="https://en.wikipedia.org/wiki/East%E2%80%93West_Crude_Oil_Pipeline" target="_blank" rel="noopener">East-West Crude Oil Pipeline</a>, <a href="https://en.wikipedia.org/wiki/Habshan%E2%80%93Fujairah_oil_pipeline" target="_blank" rel="noopener">Habshan-Fujairah oil pipeline</a> and <a href="https://en.wikipedia.org/wiki/SUMED_pipeline" target="_blank" rel="noopener">SUMED pipeline</a>, Wikipedia.</>,
+        <>Aircraft positions are ADS-B reports from the community feeds <a href="https://api.adsb.lol/docs" target="_blank" rel="noopener">adsb.lol</a> and <a href="https://github.com/adsbfi/opendata" target="_blank" rel="noopener">adsb.fi</a>, within 250 nautical miles of a point over the lower Gulf. Only airborne aircraft reporting their own integrity are used. An aircraft reporting an integrity category (NIC) of 0 cannot bound its own position, the symptom jamming and spoofing produce. Each hexagon is shaded by that share over the last few hours, and only hexagons with at least four readings are shaded.</>,
+        <>The insights page mirrors the dashboard at <a href="https://hormuzstraitmonitor.com/" target="_blank" rel="noopener">hormuzstraitmonitor.com</a>, refreshed about every 15 minutes. Brent crude is the daily close from <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED, series DCOILBRENTEU</a>, with the monitor's live quote as the latest point. Daily strait transits are from IMF PortWatch (note 6). Headlines come from a <a href="https://news.google.com/search?q=Strait%20of%20Hormuz" target="_blank" rel="noopener">Google News</a> search for the Strait of Hormuz over the past seven days, with Reuters, Al Jazeera, the BBC, the Financial Times and Energy Live News listed first. Truth Social posts come from an independent <a href="https://github.com/stiles/trump-truth-social-archive" target="_blank" rel="noopener">public archive</a>, filtered to posts that mention Iran, Israel, boats, ships or Hormuz.</>,
       ]} />
     </Article>
   );

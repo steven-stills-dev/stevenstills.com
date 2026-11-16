@@ -169,6 +169,13 @@ export default function SunshineDrift() {
 
   return (
     <Article kicker="Writing · forecasting" title={TITLE} lede={lede}>
+      <Prose>
+        <p>One of my hobbies is photography, which is mostly pattern recognition and balancing the settings to get the right shot, and bright sun changes that balance completely.</p>
+        <p>Spotting a pattern is the easy part. Correcting for it without fooling myself is harder, on a demand forecast at least.</p>
+        <p>Britain's public day-ahead demand forecast has a lean of its own. It runs high at midday when the sun is out and low when it isn't, and the lean has grown since 2023. Blame the sunshine.</p>
+        <p>So I tested five and a half years of that forecast against the sunshine that arrived and the sunshine that was forecast, to see how much of the error anyone could fix.</p>
+      </Prose>
+
       <Section title="Why would sunshine bias a demand forecast?" />
       <Prose>
         <p>Most of Britain's solar panels sit on roofs and small sites inside the local networks. The system operator, NESO, can't meter them, so their output shows up as lower demand on the national grid during sunny spells.<Fn n={1} /> A forecast of national demand is therefore partly a solar forecast, and NESO's estimate of installed embedded solar rose from 13.7 GW in summer 2021 to 23.6 GW in summer 2026.<Fn n={2} /></p>
@@ -181,13 +188,13 @@ export default function SunshineDrift() {
       </Prose>
       <Wide><SunshineScatter h={420} /></Wide>
       <Prose>
-        <p>The chart shows the same error split by half hour for summers 2024 to 2026. Nights are close to zero. On the brightest days the forecast peaked {F.heat_bright_peak}% high between 13:30 and 14:00, and on the dullest it fell to {Math.abs(F.heat_dull_min)}% low, so the error is a solar shape that flips sign with the weather.</p>
+        <p>The heat map splits the same error by half hour for summers 2024 to 2026. Nights are close to zero, while on the brightest days the forecast peaked {F.heat_bright_peak}% high between 13:30 and 14:00, and on the dullest it fell to {Math.abs(F.heat_dull_min)}% low, so the error is a solar shape that flips sign with the weather.</p>
       </Prose>
       <Wide><BandHeatmap /></Wide>
 
       <Section title="Is it new solar, unusual weather or more bright days?" />
       <Prose>
-        <p>A forecast can drift on sunny days for three different reasons, and each needs a different fix. I tested them in turn. The first is range: if a summer is brighter than anything the forecaster trained on, the model is extrapolating. The table shows that was never the case. No summer had more than 1.1% of its days brighter than the brightest day of every earlier summer, and 2024 to 2026 had none.</p>
+        <p>A forecast can drift on sunny days for three different reasons, and each needs a different fix, so I tested them in turn. The first is range: if a summer is brighter than anything the forecaster trained on, the model is extrapolating. The table shows that was never the case. No summer had more than 1.1% of its days brighter than the brightest day of every earlier summer, and 2024 to 2026 had none.</p>
         <p>The second is sensitivity: at the same sunshine, has the error grown? On days peaking between 600 and 800 W/m², midday error sat between 0.70% and 1.25% in 2021 to 2023 and between 3.06% and 3.36% in 2024 to 2026. Solar capacity grew every year, yet the error stepped up between 2023 and 2024 and then held, so I can't pin the step on capacity alone from public data.</p>
         <p>The third is mix: 53% of summer 2026 days peaked above 600 W/m², against 43% in 2023. I split the {F.shift_total} percentage point rise in summer midday bias between those two summers into a mix part and a within-band part (a shift-share split): {F.shift_mix} points came from having more bright days and {F.shift_within} from larger error on days of the same brightness.</p>
       </Prose>
@@ -218,10 +225,10 @@ export default function SunshineDrift() {
 
       <Section title="What I would do with these figures" />
       <Prose>
-        <p>I would judge sunny-day error against the sunshine forecast that the forecaster had, not the sunshine that arrived. Against the weather that arrived, the 2025 slope looks about a third larger (1.51 against 1.11), and that gap is error no recalibration can reach.</p>
+        <p>So how much of the sunny-day error can a forecaster correct? Less than it first looks. A photographer works with the light that turned up, but a demand forecaster only ever gets a forecast of it. Against the weather that arrived, the 2025 slope looks about a third larger (1.51 against 1.11), and that gap is error no recalibration can reach. The way not to fool myself turned out to be simple: judge sunny-day error against the sunshine forecast the forecaster had.</p>
         <p>Before changing a model I would run the three tests: range, sensitivity at matched sunshine, and mix. Here mix explained {F.shift_mix} of the {F.shift_total} percentage point rise from 2023 to 2026, and no summer was out of range, so retraining for unseen weather would have fixed nothing.</p>
-        <p>If I recalibrated, I would fit per half hour on forecast sunshine over 30 to 45 days, cap and smooth the correction, score it on a rolling origin, and expect it to fix bias rather than accuracy: bright-day bias fell from {F.raw.bias_bright}% to {F.recal_out.bias_bright}% while midday MAPE fell {Math.abs(F.mape_mid_change[0])} percentage points. I would not ship a constant midday cut, because it trades bright-day error for dull-day error. The same window-length and late-outturn choices come up in <a href="/late-actuals">lag features when actuals arrive late</a>.</p>
-        <p>Part of the remaining error lives in the sunshine forecast, so that is where I would spend the next effort, for example by forecasting demand before solar and subtracting a separate solar forecast, which is how Sheffield Solar describes NESO's own virtual demand.<Fn n={7} /> Bright days are also when <a href="/batteries">home batteries</a> charge and when <a href="/heatwave">heatwave</a> demand builds, so the same test is worth running there.</p>
+        <p>If I recalibrated, I'd fit per half hour on forecast sunshine over 30 to 45 days, cap and smooth the correction, score it on a rolling origin, and expect it to fix bias rather than accuracy: bright-day bias fell from {F.raw.bias_bright}% to {F.recal_out.bias_bright}% while midday MAPE fell {Math.abs(F.mape_mid_change[0])} percentage points. I wouldn't ship a constant midday cut, because it trades bright-day error for dull-day error. The same window-length and late-outturn choices come up in <a href="/late-actuals">lag features when actuals arrive late</a>.</p>
+        <p>Part of the remaining error lives in the sunshine forecast, so that is where I'd spend the next effort, for example by forecasting demand before solar and subtracting a separate solar forecast, which is how Sheffield Solar describes NESO's own virtual demand.<Fn n={7} /> Bright days are also when <a href="/batteries">home batteries</a> charge and when <a href="/heatwave">heatwave</a> demand builds, so that's where I'd point the same test next.</p>
       </Prose>
 
       <Footnotes notes={[

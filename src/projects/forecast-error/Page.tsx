@@ -145,6 +145,14 @@ export default function ForecastError() {
 
   return (
     <Article kicker="Writing · forecasting" title={TITLE} lede={lede}>
+      <Prose>
+        <p>I studied advertising, which still surprises people who assumed I did something in maths. I've spent the last 16 years in energy doing the maths anyway, mostly as charts with boxes and arrows, and I'm quick to spot an anomaly in a slide deck.</p>
+        <p>Other people's decks, at least. The first time I scored the forecast in this piece, the error came out at more than double the right answer, because I'd read a column of dates the wrong way round.</p>
+        <p>Once the dates were right, the harder problem was one that never shows up as a bug. The same two years of forecasts are {f.wmape_final}% out on one measure, {f.grain_month}% on another and almost exactly unbiased on a third. All three are correct, and a slide only has room for one.</p>
+        <p>That is the trouble with forecast error.</p>
+        <p>So I took Britain's day-ahead demand forecast, scored it six ways, and worked out which number I would trust, and for what.</p>
+      </Prose>
+
       <Section title="Why does one forecast have several scores?" />
       <Prose>
         <p>Every half hour the system operator publishes a forecast of national demand for the next day, and every half hour a measured outturn follows.<Fn n={1} /> The gap between them is the error, and I want one number that says how big it usually is. Averaging percentage errors, weighting them by volume, keeping the sign or dropping it, and adding up to days or months first all give different answers from the same rows.</p>
@@ -160,7 +168,7 @@ export default function ForecastError() {
 
       <Section title="Which average should a headline use?" />
       <Prose>
-        <p>The textbook choice is the mean absolute percentage error (MAPE): the size of each half hour's miss as a share of that half hour's demand, averaged. Hyndman and Athanasopoulos list its faults: it breaks when the actual is zero, swings wildly near zero and punishes some misses more than others.<Fn n={3} /> NESO still publishes the percentage error of each half hour of this forecast.<Fn n={5} /> The weighted version divides the total absolute miss by the total demand, so a quiet half hour counts for less. A third option, the mean absolute scaled error (MASE), divides the miss by that of a simple benchmark; here the benchmark is "the same half hour last week".<Fn n={4} /></p>
+        <p>The textbook choice is the mean absolute percentage error (MAPE): the size of each half hour's miss as a share of that half hour's demand, averaged. Hyndman and Athanasopoulos list its faults: it breaks when the actual is zero, swings wildly near zero and punishes some misses more than others.<Fn n={3} /> The weighted version divides the total absolute miss by the total demand, so a quiet half hour counts for less. A third option, the mean absolute scaled error (MASE), divides the miss by that of a simple benchmark; here the benchmark is "the same half hour last week".<Fn n={4} /> For all the faults of plain MAPE, NESO still publishes the percentage error of each half hour of this forecast.<Fn n={5} /></p>
         <p>The table shows every measure with a 95% interval, a measure of how far the score could move on the luck of which weeks happened to fall in the sample, which I estimated by resampling whole weeks.<Fn n={6} /> Weighted MAPE is {f.wmape_final}% ({f.wmape_lo}% to {f.wmape_hi}%), plain MAPE {f.mape_final}%, and the last-week benchmark manages {f.wmape_naive}%, so the forecast's MASE is {f.mase}.</p>
       </Prose>
       <Wide><MetricTable /></Wide>
@@ -182,7 +190,7 @@ export default function ForecastError() {
       </Prose>
       <Wide><BiasHeatmap /></Wide>
       <Prose>
-        <p>Weekends are harder. Weighted MAPE was {f.wmape_weekday}% on weekdays and {f.wmape_weekend}% at weekends, where the worst half hour, from {hhLabel(f.wmape_weekend_peak_sp)}, averaged {f.wmape_weekend_peak}%. The chart lets you switch between the three measures by half hour.</p>
+        <p>Weekends are harder: weighted MAPE was {f.wmape_weekday}% on weekdays and {f.wmape_weekend}% at weekends, where the worst half hour, from {hhLabel(f.wmape_weekend_peak_sp)}, averaged {f.wmape_weekend_peak}%. The chart lets you switch between the three measures by half hour.</p>
       </Prose>
       <Wide><ProfileChart /></Wide>
 
@@ -207,11 +215,10 @@ export default function ForecastError() {
 
       <Section title="What I would do with these figures" />
       <Prose>
-        <p>I would report weighted MAPE as the headline, at a stated grain and with an interval. Here that is {f.wmape_final}% half-hourly ({f.wmape_lo}% to {f.wmape_hi}%), and it should never sit beside a monthly {f.grain_month}% as if the two were the same measure.</p>
-        <p>I would report bias month by month, with its average size ignoring the sign ({f.bias_month_absmean}% here). I would not rely on a two-year bias of {f.bias_final}%, because over- and under-forecast months cancel inside it.</p>
-        <p>I would put a naive benchmark beside every score. A MASE of {f.mase} shows the forecast beating "the same half hour last week" by a wide margin, which a percentage alone cannot show.</p>
-        <p>Before I published any score I would check for duplicate rows, zero actuals, clock-change days and date parsing, and state which outturn the forecast was scored against.</p>
-        <p>For how forecasting methods themselves have changed, see <a href="/ml-through-the-years">machine learning through the years</a>.</p>
+        <p>So which number goes on the slide? Weighted MAPE, at a stated grain and with an interval. Here that is {f.wmape_final}% half-hourly ({f.wmape_lo}% to {f.wmape_hi}%), and it should never sit beside a monthly {f.grain_month}% as if the two were the same measure, however much better the monthly one looks.</p>
+        <p>Bias gets its own line, month by month, with its average size ignoring the sign ({f.bias_month_absmean}% here). I wouldn't rely on the two-year bias of {f.bias_final}%, which only looks clean because over- and under-forecast months cancel inside it.</p>
+        <p>Every score needs a naive benchmark beside it. A MASE of {f.mase} shows the forecast beating "the same half hour last week" by a wide margin, which a percentage on its own can't show. The models that have had to beat that benchmark over the years are in <a href="/ml-through-the-years">demand forecasting models from SARIMA to gradient boosting</a>.</p>
+        <p>As for my eye for an anomaly, the biggest one in this piece was my own: a column of dates read the wrong way round, which more than doubled the score. If you publish a forecast score, check for duplicate rows, zero actuals, clock-change days and date parsing first, and say which outturn you scored against. Then put the weighted number on the slide.</p>
       </Prose>
 
       <Footnotes notes={[

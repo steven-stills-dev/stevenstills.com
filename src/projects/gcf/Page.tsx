@@ -160,6 +160,14 @@ export default function Gcf() {
 
   return (
     <Article kicker="Writing · settlement · updated 16 Nov 2026" title={TITLE} lede={lede}>
+      <Prose>
+        <p>For most of the years I've worked in energy, Britain settled most homes on a standard daily shape and an occasional meter reading.</p>
+        <p>You'd think settling every meter on its own half hours would tidy up the sums at the end of settlement. For one number this year, it has done the opposite.</p>
+        <p>The change is hard to miss: from June to October it set a new low for the month in two decades of data.</p>
+        <p>Its name is suitably dull. The group correction factor.</p>
+        <p>Before the switch it sat a little above 1, comfortably inside the range Elexon is happy with. So I went back through every value Elexon has published since 2006 to find out when it went wrong, and why.</p>
+      </Prose>
+
       <Section title="What are group correction factors?" />
       <Prose>
         <p>Elexon, which runs electricity settlement, knows two things about each of Great Britain's 14 regional networks every half hour: how much electricity went in, and how much suppliers say their customers used. A good chunk of the second figure is estimated, so the two never quite agree. The group correction factor is the multiplier that forces them to.<Fn n={1} /></p>
@@ -168,11 +176,11 @@ export default function Gcf() {
 
       <Section title="What's the current situation?" />
       <Prose>
-        <p>Right now the factor sits well below 1, so suppliers have collectively claimed more electricity than came into their regions. I averaged every factor Elexon has published since 2006, month by month across the 14 regions.<Fn n={3} /> October 2026 came in at 0.846 vs 1.040 in October 2024, and June to October 2026 each set a new low for their month.</p>
+        <p>Right now the factor sits well below 1, so suppliers have collectively claimed more electricity than came into their regions. I averaged every factor Elexon has published since 2006, month by month across the 14 regions.<Fn n={3} /> October 2026 came in at 0.846, against 1.040 in October 2024, and June to October 2026 each set a new low for their month.</p>
       </Prose>
       <Wide><MonthlyGcfChart h={400} /></Wide>
       <Prose>
-        <p>Every region dipped. In summer the factor was lowest in the early afternoon, the hours when rooftop solar peaks: between 14:00 and 14:30 the July and August factor averaged 0.781 vs 0.914 two years earlier.</p>
+        <p>Every region dipped, and in summer the factor was lowest in the early afternoon, the hours when rooftop solar peaks: between 14:00 and 14:30 the July and August factor averaged 0.781, against 0.914 two years earlier.</p>
       </Prose>
       <Wide><SummerShapeChart /></Wide>
       <Prose>
@@ -210,7 +218,7 @@ export default function Gcf() {
 
       <Section title="Where are we now, and what should suppliers expect?" />
       <Prose>
-        <p>Where the factor lands depends on the meter. A home with good half-hourly readings has a weight of zero and settles on exactly what it used. A home on estimates is scaled half hour by half hour. The chart shows a modelled summer day for a home on estimates, at the average July and August 2026 factor for each half hour.<Fn n={11} /></p>
+        <p>Where the factor lands depends on the meter. A home with good half-hourly readings has a weight of zero and settles on exactly what it used, while a home on estimates is scaled half hour by half hour. I've modelled a summer day for a home on estimates, at the average July and August 2026 factor for each half hour.<Fn n={11} /></p>
       </Prose>
       <Wide><HouseholdDayChart /></Wide>
       <Prose>
@@ -223,7 +231,8 @@ export default function Gcf() {
       </Prose>
       <Wide><RunUpliftChart /></Wide>
       <Prose>
-        <p> Ofgem's 1.89% cap allowance was set when the factor sat above 1, and is reviewed each August,<Fn n={5} k="b" /> while Issue 120, which will settle the weights for good, is still being assessed.<Fn n={8} k="d" /> The final run comes 14 months after each day up to 30 September 2026 and seven months after each day from 1 October 2026, so September 2025 is finally settled this month and October 2026 in May 2027.<Fn n={4} k="b" /></p>
+        <p>Ofgem's 1.89% cap allowance was set when the factor sat above 1, and is reviewed each August,<Fn n={5} k="b" /> while Issue 120, which will settle the weights for good, is still being assessed.<Fn n={8} k="d" /> The final run comes 14 months after each day up to 30 September 2026 and seven months after each day from 1 October 2026, so September 2025 is finally settled this month and October 2026 in May 2027.<Fn n={4} k="b" /></p>
+        <p>So what is going on with group correction factors? Mostly export that hasn't turned up yet, and estimates carrying an overnight correction that real readings don't share. For years settlement spread most homes over a standard shape. Now the half hours are settled properly, and the number meant to tidy up after them is the one that has come loose. If you're waiting on a final answer for any day since the switch, September 2025 settles this month and October 2026 not until May 2027, so I'd treat every factor in between as a draft.</p>
       </Prose>
 
       <Footnotes notes={[

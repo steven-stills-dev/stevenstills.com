@@ -151,9 +151,16 @@ export default function PriceResponse() {
 
   return (
     <Article kicker="Writing · gas demand" title={TITLE} lede={lede}>
+      <Prose>
+        <p>I've spent 16 years in energy, and for ten of them I've been forecasting how much people will use. In gas the weather does most of that work, because a cold week moves demand far more than a price change does.</p>
+        <p>The winter of 2022/23 was the exception. The price households paid for gas more than doubled, and demand fell further than the weather can explain.</p>
+        <p>Part of that fall is people heating their homes less because gas cost more. A national series can't say how much of it was hardship and how much was waste cut out, and I don't try to.</p>
+        <p>What I can measure is the part a supplier has to plan for. When the price cap moves, how much gas should come out of the forecast and the hedge? Economists call the answer the price elasticity, and I set out to pin it down from public data.</p>
+      </Prose>
+
       <Section title="What am I trying to measure?" />
       <Prose>
-        <p>A supplier buys most of its gas months ahead, against a forecast of its customers' use. When Ofgem moves the price cap, that forecast has to move too, because people use less gas when it costs more. The number that links the two is the price elasticity: the percentage change in use for a 1% change in price. An elasticity of −0.1 means a 10% price rise cuts use by about 1%.</p>
+        <p>A supplier buys most of its gas months ahead, against a forecast of its customers' use. When Ofgem moves the price cap, that forecast has to move too, because people use less gas when it costs more. The price elasticity links the two: it is the percentage change in use for a 1% change in price. An elasticity of −0.1 means a 10% price rise cuts use by about 1%.</p>
         <p>I can't see households directly in public data. The nearest daily series is the gas National Gas hands from the transmission system to the regional distribution networks, which deliver it to homes and businesses.<Fn n={1} /> I treat it as a national picture, never as any supplier's book.</p>
       </Prose>
 
@@ -171,7 +178,7 @@ export default function PriceResponse() {
       <Section title="How much did demand respond to price?" />
       <Prose>
         <p>For price I used the ONS consumer price index for household gas, which tracks what people paid, including the government's Energy Price Guarantee, which held unit rates below the cap from October 2022 to June 2023.<Fn n={3} /> For each winter month from November to March, I compared weather-corrected demand and price with the same month a year earlier. I left out months that touch the November 2020 to March 2021 lockdowns.</p>
-        <p>The chart shows the {F.n_months} winter months from {F.n_winters} winters, with a fitted line and a 95% band. The line is fitted to logarithms of the changes, so its slope reads directly as an elasticity. In winter 2022/23 the gas price was {F.price_2223_pct}% higher than a year before and demand was {fmt(Math.abs(F.demand_2223_pct), 1)}% lower. The slope is {fmt(F.elasticity, 2)}.</p>
+        <p>The chart shows the {F.n_months} winter months from {F.n_winters} winters, with a fitted line and a 95% band. The line is fitted to logarithms of the changes, so its slope reads directly as an elasticity. In winter 2022/23 the gas price was {F.price_2223_pct}% higher than a year before and demand was {fmt(Math.abs(F.demand_2223_pct), 1)}% lower, and across all the months the slope comes out at {fmt(F.elasticity, 2)}.</p>
       </Prose>
       <Wide><ElasticityScatter /></Wide>
       <Prose>
@@ -199,7 +206,7 @@ export default function PriceResponse() {
       <Section title="How would I check a fall in a supplier's own meters?" />
       <Prose>
         <p>Inside a supplier the question is asked of meter reads, where two things can fake a fall. Customers come and go, and smart meters moved many homes from monthly to daily reads. I built {fmt(data.synthetic.messy.meta.meters)} synthetic meters with a planted 5% fall in use per meter and the same weather in both years.<Fn n={7} /> In the messy version, heavier users are more likely to leave, lighter users join, and the second year has daily reads.</p>
-        <p>The chart shows three estimates of the winter change, each with a 95% interval from a Poisson bootstrap (refitting with each meter given a random weight). The full sample reads {fmt(data.synthetic.messy["Full sample"].est, 1)}%, because churn changed who is measured. Keeping only meters present in both years gives {fmt(data.synthetic.messy["Fixed cohort"].est, 1)}%, because monthly reads smear the January peak into milder months. Thinning the daily reads back to monthly gives {fmt(data.synthetic.messy["Thinned reads"].est, 1)}%. On clean data all three agree.</p>
+        <p>The chart shows three estimates of the winter change, each with a 95% interval from a Poisson bootstrap (refitting with each meter given a random weight). The full sample reads {fmt(data.synthetic.messy["Full sample"].est, 1)}%, because churn changed who is measured. Keeping only meters present in both years gives {fmt(data.synthetic.messy["Fixed cohort"].est, 1)}%, because monthly reads smear the January peak into milder months. Thinning the daily reads back to monthly gives {fmt(data.synthetic.messy["Thinned reads"].est, 1)}%, while on clean data all three agree.</p>
       </Prose>
       <Wide><ArmsFigure /></Wide>
       <Prose>
@@ -212,10 +219,10 @@ export default function PriceResponse() {
       </Prose>
       <Wide><CapCalculator /></Wide>
       <Prose>
-        <p>For a price rise I would take the central cut out of the forecast for capped customers only, about 2.7% for July 2026, and hedge it late. I think the cut belongs in near-dated purchases, where a wrong estimate costs less to undo, because the range runs from a 3.9% cut to a 2.1% rise.</p>
-        <p>For a price fall I would add nothing back. In 2023/24 prices fell {Math.abs(F.price_2324_pct)}% and demand stayed where it was.</p>
-        <p>Before I applied a fall measured in a supplier's own meters, I would want the full sample, the fixed cohort and the thinned reads to agree in sign and clear a set size. I would treat the bootstrap interval as a floor on the uncertainty.</p>
-        <p>I would refit the slope after every winter; the interval narrows only as winters with real price changes are added.</p>
+        <p>So how far does gas demand fall when the price rises? On nine winters, by about 1% for every 10% on the price, and the winter of 2022/23 carries almost the whole of that answer. Take it out and the slope is {fmt(F.loo_without_2223, 2)}.</p>
+        <p>For a price rise I would take the central cut out of the forecast for capped customers only, about 2.7% for July 2026, and hedge it late. I think the cut belongs in near-dated purchases, where a wrong estimate costs less to undo, because the range runs from a 3.9% cut to a 2.1% rise. For a price fall I would add nothing back: in 2023/24 prices fell {Math.abs(F.price_2324_pct)}% and demand stayed where it was.</p>
+        <p>Before I applied a fall measured in a supplier's own meters, I would want the full sample, the fixed cohort and the thinned reads to agree in sign and clear a set size, and I would treat the bootstrap interval as a floor on the uncertainty.</p>
+        <p>Nine winters is all the public data holds, and the households who cut back in 2022/23 are in every one of these estimates. If you set a gas forecast against a cap change, take the central cut, buy it late and refit the slope after every winter: the interval narrows only as winters with real price changes are added.</p>
       </Prose>
 
       <Footnotes notes={[
