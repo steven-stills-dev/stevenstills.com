@@ -50,11 +50,12 @@ belongs to the data.
   two-series comparisons, no multi-colour palettes, no gridlines, title in the
   panel header, unit on the axis, nothing else. Never bake annotations into
   the SVG.
-- **Layout**: `.wrap` is 90rem with 48px gutters. Home is a two-column grid:
-  headline, lede, button and the "Projects" and "Writing" index rows on the
-  left, the selected entry's preview on a sticky stage on the right (switched
-  by clicking a row, no auto-rotation; below 900px it stacks and a tap opens
-  the entry). Articles are a 60rem column with one left edge: headline, `Prose`
+- **Layout**: `.wrap` is 90rem with 48px gutters. Home is three bands:
+  portrait, headline and lede on the left with the selected entry's preview
+  on a stage on the right; a row of four cards (pinned entries first, then the
+  newest) that switch the stage on a click, no auto-rotation; then a
+  full-width index of every entry (date, title, line, kind) where a click
+  opens the entry. Below 900px it stacks and a tap on a card opens the entry. Articles are a 60rem column with one left edge: headline, `Prose`
   and `Wide` figures both at the full 60rem.
 - **Brand mark**: wordmark in `Nav`; `public/img/initials.svg` (favicon)
   is a placeholder until the logo arrives.
@@ -65,8 +66,8 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
 
 - `meta.ts` exporting `meta: ProjectMeta` (see `src/projects/types.ts`): slug,
   kind (`project` | `writing`), title, ISO date, one-sentence `line`, optional
-  `live` URL, optional `pinned: true` (lists it under "Highlights" at the top
-  of the home index instead of in the main list), `page: lazy(() => import("./Page"))`, and
+  `live` URL, optional `pinned: true` (puts it first among the home page cards,
+  and the newest pinned entry is the one the stage opens on), `page: lazy(() => import("./Page"))`, and
   `preview: lazy(() => import("./Preview"))`.
 - `Page.tsx`: the full page, built from `Article`, `Prose`, `Wide`, `Section`,
   `Fn`, `Footnotes`, `StatRow` and `Box`. Call `usePageMeta`.
@@ -79,10 +80,10 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
 - Page-scoped CSS in the same folder, class names prefixed with the slug.
 
 `src/projects/registry.ts` discovers every `meta.ts`, sorts newest first,
-generates the routes, and feeds the home page index. Clicking an index row
+generates the routes, and feeds the home page index. Clicking a card
 previews it on the stage with its title, line and buttons beneath.
-Double-clicking the entry, clicking the preview or "Read the write-up" opens
-the article.
+Double-clicking the card, clicking the preview, "Read the write-up" or the
+entry's row in the full index opens the article.
 
 Data: the site has no backend, so live data must come from CORS-enabled public
 APIs (Environment Agency flood-monitoring, TfL Unified API, Carbon Intensity
