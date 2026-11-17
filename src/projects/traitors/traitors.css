@@ -1,0 +1,4 @@
+.traitors-credit { margin: 6px 0 0; font-size: .75rem; color: var(--ste-dusk); }
+.traitors-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.traitors-pics .photo { aspect-ratio: 16 / 9; }
+@media (max-width: 900px) { .traitors-pics { grid-template-columns: 1fr; } }
