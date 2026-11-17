@@ -83,7 +83,7 @@ export default function Gta6() {
   return (
     <Article kicker="Did it affect the grid · Part 3" title={TITLE} lede={LEDE}>
       <Prose>
-        <p>The first Grand Theft Auto I played was a top-down crime sim on the PlayStation 1, that big grey monster of a box. You drove recklessly and beat up strangers in chunky pixels.</p>
+        <p>The first Grand Theft Auto I played was a top-down crime sim on the PlayStation 1, that big grey monster of a box. You drove recklessly and beat up strangers in pixel graphics.</p>
         <p>Did I think that weird little game would change the world within 30 years? No. I was far too biased towards Japanese RPGs. Final Fantasy and Dragon Quest had my attention, so my gaming calls were never the best.</p>
         <p>My energy calls have been better. I've had a good run predicting short-term profile drift, in what has been a pretty tough year for it.</p>
         <p>That is what got me thinking. We spend so much time on group correction factors, weather impacts and electric vehicle saturation in portfolios. What if we have all missed the whale? Grand Theft Auto 6.</p>
@@ -100,7 +100,7 @@ export default function Gta6() {
 
       <Section title="People really are booking the day off" />
       <Prose>
-        <p>The game lands on Thursday 19 November.<Fn n={1} /> An Opinium poll for Uswitch this month found about {fmt(f.plan_to_play / 1e6, 1)} million UK adults plan to play it at some point, and {fmt(f.players / 1e6, 1)} million of them on day one.<Fn n={2} /></p>
+        <p>The game lands on Thursday 19 November.<Fn n={1} /> An <a href="https://www.uswitch.com/media-centre/2026/11/gt-delay-gta-vi-warning-for-13-5-million-brits-download-could-take-more-than-two-days-in-slowest-broadband-areas/" {...ext}>Opinium</a> poll for Uswitch this month found about {fmt(f.plan_to_play / 1e6, 1)} million UK adults plan to play it at some point, and {fmt(f.players / 1e6, 1)} million of them on day one.<Fn n={2} /></p>
         <p>The people I know are not unusual, either. In a OnePoll survey for Uswitch, {f.leave_pct}% of employed gamers who plan to play said they plan to or may take annual leave, and 9% admitted they may call in sick.<Fn n={2} k="b" /> BrightHR, whose absence software covers more than 1.2 million UK employees, reckons 83,000 days of leave have been booked for it, costing employers £12.4m.<Fn n={3} /></p>
         <p>The broadband has felt it already. Virgin Media O2 said the pre-load on 10 November beat its record for evening peak traffic by 3.8%.<Fn n={4} /></p>
       </Prose>
