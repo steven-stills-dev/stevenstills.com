@@ -1,0 +1,4 @@
+.eclipse-credit { margin: 6px 0 0; font-size: .75rem; color: var(--ste-dusk); }
+.eclipse-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.eclipse-pics .photo { aspect-ratio: 4 / 3; }
+@media (max-width: 900px) { .eclipse-pics { grid-template-columns: 1fr; } }

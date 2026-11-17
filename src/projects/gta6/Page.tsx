@@ -16,7 +16,7 @@ const HH_TICKS = [{ i: 0, label: "00:00" }, { i: 12, label: "06:00" }, { i: 24, 
 const f = data.facts;
 const MAPS = { "Players per 1,000 residents": "per1000", "Evening load": "mw" } as const;
 const TITLE = "What will GTA6 do to the power grid";
-const LEDE = `Grand Theft Auto VI comes out on Thursday and ${fmt(f.players / 1e6, 1)} million people in the UK say they will play it that day. I worked out what that adds to one home's meter and to national demand.`;
+const LEDE = `Grand Theft Auto VI comes out on Thursday and ${fmt(f.players / 1e6, 1)} million people in the UK say they will play it that day. What does that mean for domestic and national demand?`;
 const ext = { target: "_blank", rel: "noopener" };
 type MapKey = keyof typeof MAPS;
 
@@ -81,7 +81,7 @@ function GroupTable() {
 export default function Gta6() {
   usePageMeta(TITLE, LEDE);
   return (
-    <Article kicker="Writing · energy demand" title={TITLE} lede={LEDE}>
+    <Article kicker="Did it affect the grid · Part 3" title={TITLE} lede={LEDE}>
       <Prose>
         <p>The first Grand Theft Auto I played was a top-down crime sim on the PlayStation 1, that big grey monster of a box. You drove recklessly and beat up strangers in chunky pixels.</p>
         <p>Did I think that weird little game would change the world within 30 years? No. I was far too biased towards Japanese RPGs. Final Fantasy and Dragon Quest had my attention, so my gaming calls were never the best.</p>
