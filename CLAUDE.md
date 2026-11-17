@@ -78,6 +78,10 @@ Projects are self-registering. Create `src/projects/<slug>/` with:
   optional `h`, so the page and the preview share one source; the preview
   renders it without `h` and it fills the panel.
 - Page-scoped CSS in the same folder, class names prefixed with the slug.
+- A link-preview image: with the dev server up, run `uv run --with playwright --with pillow scripts/og_images.py`
+  to write `public/img/og/<slug>.jpg` from the page's first chart. The build's
+  `scripts/prerender-meta.mjs` then writes `dist/<slug>.html` with the article's
+  title, `line` and that image, so shared links show the article.
 
 `src/projects/registry.ts` discovers every `meta.ts`, sorts newest first,
 generates the routes, and feeds the home page index. Clicking a card
