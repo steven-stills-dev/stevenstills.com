@@ -106,32 +106,32 @@ export default function Gta6() {
 
       <Section title={`PC users miss out, and each PS5 user adds ${f.watts} W`} />
       <Prose>
-        <p>Bad news for the PC crowd: there is no PC version at launch.<Fn n={1} k="b" /> There is no disc either. The box in the shops has a download code in it.<Fn n={5} /> So this is a console story.</p>
-        <p>Sony's own numbers put a PlayStation 5 at 197 to 219 watts (W) while you play.<Fn n={6} /> An Xbox Series X is 154 W.<Fn n={7} /> I've called it {f.console_w} W for the console and thrown in {f.tv_w} W for the screen, so {f.watts} W a player.</p>
-        <p>That looked like a lot to me, so I checked it twice. It is right, and the reason is that homes use less than you'd think. A typical household gets through {fmt(f.tdcv_kwh)} kilowatt hours (kWh) a year, which works out at about {f.home_avg_w} W on average across the day and night.<Fn n={8} /> So a console and a TV really do about double what the house is drawing while they are on.</p>
-        <p>I've assumed play comes in three-hour loops, which is about the stretch between snacks and life. One loop is {fmt(f.loop_kwh, 1)} kWh. Take the day off, fit in three, and you add {fmt(f.day_kwh, 1)} kWh to a home that normally uses {fmt(f.home_kwh, 1)} kWh a day, so {f.home_uplift_pct}% more. That costs {f.cost_p}p, so the electricity is not the expensive part of the day.<Fn n={9} /></p>
+        <p>Bad news for the PC crowd: there is no PC version at launch.<Fn n={1} k="b" /> So this is a console story.</p>
+        <p>Sony's own numbers put a PlayStation 5 at 197 to 219 watts (W) while you play.<Fn n={5} /> An Xbox Series X is 154 W.<Fn n={6} /> I've called it {f.console_w} W for the console and thrown in {f.tv_w} W for the screen, so {f.watts} W a player.</p>
+        <p>That looked like a lot to me, so I checked it twice. It is right, and the reason is that homes use less than you'd think. A typical household gets through {fmt(f.tdcv_kwh)} kilowatt hours (kWh) a year, which works out at about {f.home_avg_w} W on average across the day and night.<Fn n={7} /> So a console and a TV really do about double what the house is drawing while they are on.</p>
+        <p>I've assumed play comes in three-hour loops, which is about the stretch between snacks and life I can just about handle. One loop is {fmt(f.loop_kwh, 1)} kWh. Take the day off, fit in three, and you add {fmt(f.day_kwh, 1)} kWh to a home that normally uses {fmt(f.home_kwh, 1)} kWh a day, so {f.home_uplift_pct}% more. OK, on average that's only {f.cost_p}p per day, so maybe this isn't the whale at the domestic level.<Fn n={8} /></p>
       </Prose>
       <Wide><HomeChart h={360} /></Wide>
 
       <Section title={`Launch night adds ${fmt(f.added_peak_mw)} MW to the grid`} />
       <Prose>
-        <p>Now scale it up. I've assumed the {f.leave_pct}% with leave, about {fmt(f.leave_players)} people, play three loops from 09:00. Everyone else gets one in after work, starting somewhere between 19:00 and 20:30.</p>
-        <p>By {f.added_peak_time} all {fmt(f.players / 1e6, 1)} million are on, and at {f.watts} W each that is {fmt(f.added_peak_mw)} megawatts (MW). National demand at {f.added_peak_time} last Thursday, 12 November, was {fmt(f.eve_gw, 1)} gigawatts (GW), so the launch adds {fmt(f.added_peak_pct, 1)}%.<Fn n={10} /> During the working day the people on leave add {fmt(f.added_day_mw)} MW, or {fmt(f.added_day_pct, 1)}%.</p>
+        <p>However, what if we scale this up! I've assumed the {f.leave_pct}% with leave, about {fmt(f.leave_players)} people, play three loops from 09:00. Everyone else gets one in after work, starting somewhere between 19:00 and 20:30.</p>
+        <p>By {f.added_peak_time} all {fmt(f.players / 1e6, 1)} million are on, and at {f.watts} W each that is {fmt(f.added_peak_mw)} megawatts (MW). National demand at {f.added_peak_time} last Thursday, 12 November, was {fmt(f.eve_gw, 1)} gigawatts (GW), so the launch adds {fmt(f.added_peak_pct, 1)}%.<Fn n={9} /> During the working day the people on leave add {fmt(f.added_day_mw)} MW, or {fmt(f.added_day_pct, 1)}%.</p>
       </Prose>
       <Wide><NationalChart /></Wide>
       <Prose>
         <p>If you are squinting at that chart trying to find the difference, that is the answer.</p>
-        <p>Television has done far worse. The biggest TV pickup on NESO's list is 2,800 MW, after a missed penalty in England's 1990 World Cup semi-final. Half-time in the Euro 2024 final was 1,300 MW and the 1966 final 600 MW.<Fn n={11} /> The thing with a TV pickup is that it all lands at once, when everyone gets up at half-time to put the kettle on. My GTA crowd drifts in over an hour and a half as people get home from work, which I'd guess makes for a much calmer evening in the control room.</p>
+        <p>Television has had bigger days of impact on the grid. The biggest TV pickup on NESO's list is 2,800 MW, after a missed penalty in England's 1990 World Cup semi-final. Half-time in the Euro 2024 final was 1,300 MW and the 1966 final 600 MW.<Fn n={10} /> The thing with a TV pickup is that it all lands at once, when everyone gets up at half-time to put the kettle on. My GTA crowd drifts in over an hour and a half as people get home from work, which I'd guess makes for a much calmer evening in the control room.</p>
         <p>If all {fmt(f.plan_to_play / 1e6, 1)} million played at the same moment it would be {fmt(f.all_mw)} MW, which would beat the 1990 record. Luckily some of them have work in the morning.</p>
       </Prose>
 
       <Section title="London has the most players for its size" />
       <Prose>
-        <p>I shared the players out across the 14 grid supply point (GSP) groups, which are the regions the electricity market settles in. I used two things: how many 18 to 34 year olds live in each one, and how many adults there have a console at home.<Fn n={12} /></p>
+        <p>I shared the players out across the 14 grid supply point (GSP) groups, which are the regions the electricity market settles in. I used two things: how many 18 to 34 year olds live in each one, and how many adults there have a console at home.<Fn n={11} /></p>
       </Prose>
       <Wide><PlayersMap h={620} /></Wide>
       <Prose>
-        <p>London is the odd one. Ofcom found only 37% of adults in the capital have a console at home, against 47% in the North East and the North West.<Fn n={13} /> But {fmt(f.top.young, 1)}% of people in London's group are aged 18 to 34 and nowhere else gets above {fmt(f.others_young[1], 1)}%, so it still comes top at {fmt(f.top.per1000)} players for every 1,000 residents, with {f.second.name} next on {fmt(f.second.per1000)}.</p>
+        <p>London is the odd one. Ofcom found only 37% of adults in the capital have a console at home, against 47% in the North East and the North West.<Fn n={12} /> But {fmt(f.top.young, 1)}% of people in London's group are aged 18 to 34 and nowhere else gets above {fmt(f.others_young[1], 1)}%, so it still comes top at {fmt(f.top.per1000)} players for every 1,000 residents, with {f.second.name} next on {fmt(f.second.per1000)}.</p>
       </Prose>
       <Wide><GroupTable /></Wide>
 
@@ -139,7 +139,7 @@ export default function Gta6() {
       <Prose>
         <p>Sadly, no game-changing impact on the grid. At national level the {fmt(f.added_peak_pct, 1)}% the launch adds at {f.added_peak_time} is about the size of the error the published day-ahead forecast makes in any normal half hour, which I <a href="/forecast-error">measured at 2.42%</a>. The whale is in there, but so is everything else.</p>
         <p>But someone who takes the day off, and has a shrewd eye for domestic demand, could see something like three spiking periods on their own meter, if their gaming stamina is anything like mine and three hours is an absolute cap on game-time attention.</p>
-        <p>I'll find out on the night. Elexon publishes its first estimate of demand as each half hour ends, so the {f.added_peak_time} number will be out at 21:00 on Thursday.<Fn n={10} k="b" /></p>
+        <p>I'll find out on the night. Elexon publishes its first estimate of demand as each half hour ends, so the {f.added_peak_time} number will be out at 21:00 on Thursday.<Fn n={9} k="b" /></p>
         <p>So my gaming calls are no better than they were. I picked Final Fantasy over the series that went on to change the world, and this year I went looking for a whale and found a minnow. Group correction factors, the weather and electric cars can have my attention back. If, like me, you have Thursday booked off, enjoy it: nine hours of play will cost you about {f.cost_p}p in electricity, and the grid will barely know you were there.</p>
       </Prose>
 
@@ -148,7 +148,6 @@ export default function Gta6() {
         <>Uswitch, <a href="https://www.uswitch.com/media-centre/2026/11/gt-delay-gta-vi-warning-for-13-5-million-brits-download-could-take-more-than-two-days-in-slowest-broadband-areas/" {...ext}>GTA VI warning for 13.5 million Brits</a>, updated 9 November 2026. Opinium surveyed 2,000 UK adults from 3 to 6 November 2026. OnePoll surveyed 1,000 employed UK adults who play video games from 22 to 29 September 2026, and put the time-off questions to the 438 who plan to play.</>,
         <>BrightHR, <a href="https://www.brighthr.com/blog/holidays/gta-vi-is-coming-are-your-staff-planning-a-getaway/" {...ext}>GTA VI is coming: are your staff planning a getaway?</a>, 9 November 2026. The estimate covers November and December and is scaled up from absence records for more than 1.2 million employees at 70,000 businesses.</>,
         <>Virgin Media O2, <a href="https://news.virginmediao2.co.uk/?p=11832" {...ext}>GTA VI breaks Virgin Media broadband records as fans rush to pre-load game</a>, 11 November 2026.</>,
-        <>Video Games Chronicle, <a href="https://videogameschronicle.com/news/rockstar-confirms-there-will-be-no-disc-version-of-gta6-at-launch/" {...ext}>Rockstar confirms there will be no disc version of GTA 6 at launch</a>, 24 June 2026.</>,
         <>Sony Interactive Entertainment, <a href="https://www.playstation.com/en-ie/legal/ecodesign/" {...ext}>Ecodesign for energy-related products</a>: active gaming, three-game average, from 196.9 W (CFI-1016A) to 219.2 W (CFI-71 with disc drive).</>,
         <>Microsoft, <a href="https://learn.microsoft.com/en-us/gaming/sustainability/lab-platform-baselines" {...ext}>Gaming Sustainability Lab platform baselines</a>: active gameplay averaged across more than 200 titles, 154 W on the Xbox Series X and 74 W on the Series S. The {f.tv_w} W for the television is my allowance, not a measurement.</>,
         <>Ofgem's typical household uses {fmt(f.tdcv_kwh)} kWh of electricity a year from 1 July 2026: Energy UK, <a href="https://www.energy-uk.org.uk/publications/energy-uk-explains-typical-domestic-consumption-values-2/" {...ext}>Typical Domestic Consumption Values</a>, 1 July 2026. Spread over the 8,760 hours in a year that is {f.home_avg_w} W. The ordinary day's shape is illustrative.</>,
