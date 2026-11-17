@@ -83,8 +83,7 @@ export default function Gta6() {
   return (
     <Article kicker="Did it affect the grid · Part 3" title={TITLE} lede={LEDE}>
       <Prose>
-        <p>The first Grand Theft Auto I played was a top-down crime sim on the PlayStation 1, that big grey monster of a box. You drove recklessly and beat up strangers in pixel graphics.</p>
-        <p>Did I think that weird little game would change the world within 30 years? No. I was far too biased towards Japanese RPGs. Final Fantasy and Dragon Quest had my attention, so my gaming calls were never the best.</p>
+        <p>The first Grand Theft Auto I played was a top-down crime sim on the PlayStation 1, that big grey monster of a box. You drove recklessly and beat up strangers in pixel graphics. Did I think that weird little game would change the world within 30 years? No. I was far too biased towards Japanese RPGs. Final Fantasy and Dragon Quest had my attention, so my gaming calls were never the best.</p>
         <p>My energy calls have been better. I've had a good run predicting short-term profile drift, in what has been a pretty tough year for it.</p>
         <p>That is what got me thinking. We spend so much time on group correction factors, weather impacts and electric vehicle saturation in portfolios. What if we have all missed the whale? Grand Theft Auto 6.</p>
         <p>It has certainly made waves everywhere else in my life. I know a lot of people who have been waiting, quite impatiently, since GTA5 came out in 2013. Some have booked a week off work to do it old school, the way they did for 5, and maybe even 4, and 3 back in the day. Each of those was revolutionary in its own right. So maybe, just maybe, this one changes the game for the grid too. Let's take a look at the maths.</p>
@@ -105,7 +104,7 @@ export default function Gta6() {
         <p>The broadband has felt it already. Virgin Media O2 said the pre-load on 10 November beat its record for evening peak traffic by 3.8%.<Fn n={4} /></p>
       </Prose>
 
-      <Section title="A PlayStation and a TV about double what a home is drawing" />
+      <Section title={`PC users miss out, and each PS5 user adds ${f.watts} W`} />
       <Prose>
         <p>Bad news for the PC crowd: there is no PC version at launch.<Fn n={1} k="b" /> There is no disc either. The box in the shops has a download code in it.<Fn n={5} /> So this is a console story.</p>
         <p>Sony's own numbers put a PlayStation 5 at 197 to 219 watts (W) while you play.<Fn n={6} /> An Xbox Series X is 154 W.<Fn n={7} /> I've called it {f.console_w} W for the console and thrown in {f.tv_w} W for the screen, so {f.watts} W a player.</p>
@@ -139,7 +138,7 @@ export default function Gta6() {
       <Section title="Nobody has missed the whale" />
       <Prose>
         <p>Sadly, no game-changing impact on the grid. At national level the {fmt(f.added_peak_pct, 1)}% the launch adds at {f.added_peak_time} is about the size of the error the published day-ahead forecast makes in any normal half hour, which I <a href="/forecast-error">measured at 2.42%</a>. The whale is in there, but so is everything else.</p>
-        <p>Where it does show is at the meter. Someone who takes the day off turns up as three blocks of {fmt(f.slot_kwh, 2)} kWh a half hour, and you can't miss them.</p>
+        <p>But someone who takes the day off, and has a shrewd eye for domestic demand, could see something like three spiking periods on their own meter, if their gaming stamina is anything like mine and three hours is an absolute cap on game-time attention.</p>
         <p>I'll find out on the night. Elexon publishes its first estimate of demand as each half hour ends, so the {f.added_peak_time} number will be out at 21:00 on Thursday.<Fn n={10} k="b" /></p>
         <p>So my gaming calls are no better than they were. I picked Final Fantasy over the series that went on to change the world, and this year I went looking for a whale and found a minnow. Group correction factors, the weather and electric cars can have my attention back. If, like me, you have Thursday booked off, enjoy it: nine hours of play will cost you about {f.cost_p}p in electricity, and the grid will barely know you were there.</p>
       </Prose>
