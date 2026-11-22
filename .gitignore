@@ -7,3 +7,6 @@ dist/
 scripts/gcf/*.parquet
 scripts/*/cache/
 scripts/_cache/
+archive/scripts/gcf/*.parquet
+archive/scripts/*/cache/
+archive/scripts/_cache/
