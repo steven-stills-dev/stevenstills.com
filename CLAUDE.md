@@ -72,12 +72,17 @@ showing it.
   exist yet, ask him for it; do not draft one. `Insight` in `src/insights.ts`
   has no field for extra text on purpose: do not add one.
 - **Colour is a hierarchy, not a set.** White (every panel and the nav rail, on a page tinted with Mist) and Ink
-  (text, every mark that carries a figure, the one solid button, the marker on the nav rail) do most of the work.
-  Lime is the single accent and only ever a fill: the one featured panel, with Ink text and Ink lines on it. It is
-  never a line or text on White (1.1:1). Aqua is minor: the cool line of a temperature figure. Never give cards,
-  sections or series a colour each, and never rotate through the palette. `/brand` shows the proportions.
+  (text, the one solid button, the marker on the nav rail) do most of the work. Lime is the primary colour: the fill
+  of the one featured panel, and in a figure the one usable mark. Aqua is the secondary: a second series when a
+  figure needs both. Never give cards, sections or series a colour each, and never rotate through the palette.
+  `/brand` shows the proportions.
   Palette given by Steven on 23 November 2026: White #FFFFFF, Mist #D9DDDA, Ink #151A17, Lime #ECFF44, Aqua #0AB0D1.
   He rejected warm cream neutrals and muted teal and rust the same day; do not bring them back.
+- **Figures are mostly black, white and grey, with the usable figure in the primary colour** (Steven, 23 November
+  2026). A figure with no colour tells him there is no insight to glean. In a figure with many lines the
+  supporting lines run a ramp from Aqua to Lime and the primary lines are Ink ("flipping the design narrative"). The exception is a figure with
+  only one line: that line is Ink. Every line in a figure is the same
+  weight; he called mixed weights intolerable. Lime on White measures 1.1:1, so check a Lime mark is readable.
 
 ## Archive
 

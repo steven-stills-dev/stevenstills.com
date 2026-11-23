@@ -5,7 +5,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 @media (prefers-reduced-motion: no-preference) { html.dash-on { scroll-behavior: smooth; } }
 /* one corner radius for every element; anything 48px or shorter becomes a pill or a circle with it */
 .dash { --r: 24px; --ink: var(--b-ink); --mute: color-mix(in srgb, var(--b-ink) 66%, var(--b-white)); --page: color-mix(in srgb, var(--b-mist) 45%, var(--b-white));
-  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-white)); --mark: var(--b-ink); --rest: color-mix(in srgb, var(--b-ink) 48%, var(--b-white));
+  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-white)); --mark: var(--b-lime); --rest: color-mix(in srgb, var(--b-ink) 48%, var(--b-white));
   display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; align-items: start; width: 100%; max-width: 100rem; margin: 0 auto; color: var(--ink);
   padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left)); -webkit-tap-highlight-color: transparent; }
 .dash.plain { grid-template-columns: minmax(0, 1fr); }
@@ -16,7 +16,8 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .skip:focus { top: 16px; }
 
 /* nav rail: a quiet panel the height of its icons that stays put, with one ink marker that slides to the section in view */
-.rail { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 16px; padding: 8px; border-radius: var(--r); background: var(--b-white); z-index: 5; }
+/* as tall as the hero beside it, so the first row ends on one line: sections at the top, contact at the bottom */
+.rail { position: sticky; top: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-height: min(520px, calc(100svh - 32px)); padding: 8px; border-radius: var(--r); background: var(--b-white); z-index: 5; }
 .rail ul { list-style: none; display: flex; flex-direction: column; gap: 4px; position: relative; }
 /* a little overshoot, so the marker settles instead of stopping dead */
 .rail-nav::before { content: ""; position: absolute; left: 0; top: 0; width: 48px; height: 48px; border-radius: var(--r); background: var(--b-ink);
@@ -63,7 +64,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .tile { --tx: 0; --ty: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; color: var(--ink); text-decoration: none; touch-action: manipulation;
   box-shadow: 0 1px 2px color-mix(in srgb, var(--b-ink) 5%, transparent); transition: transform .2s var(--out), box-shadow .2s var(--out); }
 .tile-t { margin-top: auto; font-family: var(--heading); font-size: 1.0625rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; text-wrap: balance; font-variant-numeric: proportional-nums; }
-.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-lime); --rest: color-mix(in srgb, var(--b-ink) 35%, var(--b-lime)); }
+.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-lime); --mark: var(--b-ink); --rest: color-mix(in srgb, var(--b-ink) 35%, var(--b-lime)); }
 .feat .tile-t { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; letter-spacing: -.02em; }
 .feat .fig { margin-block: auto; }
 .dash .feat:focus-visible { outline-color: var(--b-ink); }
@@ -79,13 +80,12 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 /* figures */
 .fig { display: block; }
 .fig svg { display: block; width: 100%; height: auto; overflow: visible; }
-.fig .line { stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
-.fig .line.quiet { stroke: var(--rest); stroke-width: 1.5; }
-/* the cool line is Aqua; the warm line and the current decade are Ink, told apart by their labels */
-.fig .line.cool { stroke: var(--b-aqua); }
-/* on Lime every line is Ink, and weight alone sets the current decade apart */
-.feat .line.cool, .feat .line.warm { stroke: var(--ink); stroke-width: 2; }
-.feat .line.now { stroke-width: 5; }
+/* every line is the same 2px on screen, whatever size its figure is drawn at; colour alone sets one apart */
+.fig .line { stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+/* the supporting lines run a ramp from Aqua (first series) to Lime (last); the lines that carry the story are Ink */
+.fig .line.quiet { stroke: color-mix(in srgb, var(--b-lime) calc(var(--t, 0) * 100%), var(--b-aqua)); }
+/* on Lime the ramp is tonal, from light to dark */
+.feat .line.quiet { stroke: color-mix(in srgb, var(--b-ink) calc(15% + var(--t, 0) * 35%), var(--b-lime)); }
 .fig .mark { fill: var(--mark); }
 .fig .rest { fill: var(--rest); }
 .fig .ax { fill: var(--mute); font-size: 11px; font-family: var(--sans); }
@@ -130,9 +130,10 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .sheet-src a:hover { color: var(--ink); }
 .sheet-turn { display: flex; gap: 8px; }
 /* the figure draws itself once the sheet has landed: lines trace, bars grow */
-.sheet .line { stroke-dasharray: 1; animation: draw .7s var(--out) .15s backwards; }
+/* unveiled left to right; the negative insets keep the stroke itself from being clipped */
+.sheet .line { animation: draw .7s var(--out) .15s backwards; }
 .sheet rect { transform-box: fill-box; transform-origin: 50% 100%; animation: grow .45s var(--out) .15s backwards; }
-@keyframes draw { from { stroke-dashoffset: 1; } }
+@keyframes draw { from { clip-path: inset(-4px 100% -4px -4px); } to { clip-path: inset(-4px); } }
 @keyframes grow { from { transform: scaleY(0); } }
 
 @media (max-width: 1100px) {
@@ -144,7 +145,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 @media (max-width: 759px) {
   .dash { grid-template-columns: minmax(0, 1fr); padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
   /* on a phone the rail becomes a bar under the thumb */
-  .rail { position: fixed; top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); left: 50%; height: auto; flex-direction: row; gap: 4px; transform: translate3d(-50%, 0, 0);
+  .rail { position: fixed; min-height: 0; top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); left: 50%; height: auto; flex-direction: row; gap: 4px; transform: translate3d(-50%, 0, 0);
     border: 1px solid var(--rule); box-shadow: 0 8px 24px color-mix(in srgb, var(--b-ink) 14%, transparent); }
   .rail ul { flex-direction: row; }
   .rail-nav::before { transform: translate3d(calc(var(--at) * 52px), 0, 0); }

@@ -39,14 +39,15 @@ export default function Figure({ fig, bare }: { fig: Fig; bare?: boolean }) {
   const x = (i: number) => pl + (i / Math.max(n - 1, 1)) * (W - pl - pr);
   const path = (v: (number | null)[]) => v.map((p, i) => (p == null ? "" : `${i === 0 || v[i - 1] == null ? "M" : "L"}${x(i).toFixed(1)} ${y(p).toFixed(1)}`)).join("");
   const labels = [0, Math.round((n - 1) / 2), n - 1];
-  // quiet lines first, so the ones that carry the story draw on top
+  // quiet lines first, so the ones that carry the story draw on top; each quiet line carries its place in the series for the ramp
   const order = [...fig.series].sort((a, b) => Number(!!a.tone) - Number(!!b.tone));
   return (
     <svg viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
       {axis}
       {!bare && <g className="ax">{labels.map((i, j) => <text key={i} x={x(i)} y={H - 6} textAnchor={j === 0 ? "start" : j === 2 ? "end" : "middle"}>{fig.x[i]}</text>)}</g>}
       {order.map((s) => (
-        <path key={s.name} d={path(s.values)} fill="none" pathLength={1} className={`line ${fig.series.length > 1 ? s.tone ?? "quiet" : "main"}`} />
+        <path key={s.name} d={path(s.values)} fill="none" pathLength={1} className={`line ${fig.series.length > 1 ? s.tone ?? "quiet" : "main"}`}
+          style={s.tone ? undefined : { ["--t" as string]: fig.series.indexOf(s) / Math.max(fig.series.length - 1, 1) }} />
       ))}
       {labelled && (
         <g className="ax">
