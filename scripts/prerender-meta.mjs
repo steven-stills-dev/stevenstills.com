@@ -1,7 +1,7 @@
-// Write dist/<slug>.html for every article and for /about, each a copy of dist/index.html with its own
-// title, description, canonical and Open Graph tags, so link previews and crawlers see the article
-// without running the app. GitHub Pages serves dist/<slug>.html at /<slug> with a 200.
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+// Write dist/about.html, a copy of dist/index.html with its own title, description, canonical and
+// Open Graph tags, so link previews and crawlers see the page without running the app.
+// GitHub Pages serves dist/<path>.html at /<path> with a 200.
+import { readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://stevenstills.com";
 const NAME = "Steven Stills";
@@ -34,17 +34,6 @@ function render({ path, title, description, image, type, date }) {
 
 const home = html.match(/<meta property="og:image" content="https:\/\/stevenstills\.com([^"]*)"/)?.[1];
 if (!home) throw new Error("index.html needs an og:image");
-let n = 0;
-for (const slug of readdirSync("src/projects")) {
-  const file = `src/projects/${slug}/meta.ts`;
-  if (!existsSync(file)) continue;
-  const src = readFileSync(file, "utf8");
-  const og = `/img/og/${slug}.jpg`;
-  render({ path: field(src, "slug"), title: field(src, "title"), description: field(src, "line"), date: field(src, "date"),
-    image: existsSync(`public${og}`) ? og : home, type: "article" });
-  n++;
-}
 render({ path: "about", title: "About", type: "website", image: home,
-  description: "A personal introduction to Steven Stills: 16 years in the energy industry, how I work, and what my household does about net zero." });
-if (n < 1) throw new Error("no articles found");
-console.log(`prerendered ${n} articles and /about`);
+  description: "I give you clean insights into your data, helping you understand your domain, de-risk your margin and open up new revenue options." });
+console.log("prerendered /about");

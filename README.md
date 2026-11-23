@@ -3,19 +3,12 @@
 Personal portfolio site for a data and statistics specialist in the energy
 sector. Vite + React + TypeScript, deployed to GitHub Pages with a custom domain.
 
-Live projects run on their own backends at their own subdomains (for example
-`hormuz.stevenstills.com`); this site links to them and writes them up. The home
-page previews the newest project in its feature panel.
-
 ## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
-
-The dev server proxies `/hormuz-api` to the live tracker so the home map works
-without CORS.
 
 ## Build and deploy
 
@@ -39,8 +32,7 @@ src/components/            Nav, Layout, Box, Thumb, Article, AboutHero
 src/components/charts/     AreaChart, LineChart, PillBars, ChartTip, geom
 src/components/maps/       UKMap, HormuzMap, useMapLibre, uk-geo
 src/pages/                 Home and About
-src/projects/<slug>/       one folder per project or article: meta, Page, Preview, CSS
-public/data/               static datasets, built by the fetch scripts in scripts/
-public/img/                photos and screenshots
+public/img/                photos
+archive/                   retired articles with their data, images and scripts; not built or deployed
 public/CNAME               custom domain
 ```
