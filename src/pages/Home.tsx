@@ -38,8 +38,6 @@ export default function Home() {
   const [show, setShow] = useState(0);
   const sheet = useRef<HTMLDialogElement>(null);
   const from = useRef<{ x: number; y: number } | null>(null);
-  const hero = useRef<HTMLElement>(null);
-  const dim = useRef<SVGSVGElement>(null);
   const it = open >= 0 ? INSIGHTS[open] : null;
 
   useEffect(() => { document.documentElement.classList.add("dash-on"); return () => document.documentElement.classList.remove("dash-on"); }, []);
@@ -51,26 +49,6 @@ export default function Home() {
     }, { rootMargin: "-45% 0px -50% 0px" });
     SECTIONS.forEach((s) => { const el = document.getElementById(s.id); if (el) io.observe(el); });
     return () => io.disconnect();
-  }, []);
-
-  // one dimension mark spans the headline's longest line, 24px above it; redrawn when the hero changes size
-  useEffect(() => {
-    const box = hero.current, svg = dim.current, h = box?.querySelector(".d-h");
-    if (!box || !svg || !h) return;
-    const draw = () => {
-      const o = box.getBoundingClientRect(), range = document.createRange();
-      range.selectNodeContents(h);
-      const lines = [...range.getClientRects()];
-      if (!lines.length) return;
-      const L = Math.min(...lines.map((r) => r.left)) - o.left, R = Math.max(...lines.map((r) => r.right)) - o.left, y = Math.min(...lines.map((r) => r.top)) - o.top - 24;
-      svg.setAttribute("width", String(o.width)); svg.setAttribute("height", String(o.height));
-      // extension lines stop 4px short of the text; open arrowheads, no words
-      svg.innerHTML = `<path d="M${L},${y + 20} V${y - 8} M${R},${y + 20} V${y - 8} M${L},${y} H${R} M${L + 6},${y - 4} L${L},${y} L${L + 6},${y + 4} M${R - 6},${y - 4} L${R},${y} L${R - 6},${y + 4}" />`;
-    };
-    const ro = new ResizeObserver(draw);
-    ro.observe(box);
-    document.fonts.ready.then(draw);
-    return () => ro.disconnect();
   }, []);
 
   /** Open an insight, or close the sheet with null. The hash is kept so the page does not jump. */
@@ -124,9 +102,8 @@ export default function Home() {
       </nav>
 
       <main className="grid">
-        <section id="top" ref={hero} className="panel hero" style={{ ["--i" as string]: 0 }}>
+        <section id="top" className="panel hero" style={{ ["--i" as string]: 0 }}>
           <p className="name" translate="no">Steven Stills</p>
-          <svg ref={dim} className="dim" aria-hidden="true" />
           <h1 className="d-h">Finding the right insights to build confidence in your data</h1>
           <p className="d-lede">I use my unique experience in front and back end development, in an AI-accelerated world, to bring design and engineering expertise together and build simple, digestible insights.</p>
           <div className="actions">

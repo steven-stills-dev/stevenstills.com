@@ -4,8 +4,8 @@
 html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in srgb, var(--b-mist) 45%, var(--b-paper)); color-scheme: light; }
 @media (prefers-reduced-motion: no-preference) { html.dash-on { scroll-behavior: smooth; } }
 /* one corner radius for every element; anything 48px or shorter becomes a pill or a circle with it */
-.dash { --r: 24px; --ink: var(--b-ink); --mute: color-mix(in srgb, var(--b-ink) 66%, var(--b-paper)); --page: color-mix(in srgb, var(--b-mist) 45%, var(--b-paper));
-  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-paper)); --mark: var(--b-cobalt); --rest: color-mix(in srgb, var(--b-ink) 48%, var(--b-paper));
+.dash { --r: 24px; --ink: var(--b-ink); --slate: color-mix(in srgb, var(--b-cobalt) 30%, var(--b-ink)); --mute: color-mix(in srgb, var(--slate) 66%, var(--b-paper)); --page: color-mix(in srgb, var(--b-mist) 45%, var(--b-paper));
+  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-paper)); --mark: var(--b-cobalt); --rest: color-mix(in srgb, var(--slate) 48%, var(--b-paper));
   display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; align-items: start; width: 100%; max-width: 100rem; margin: 0 auto; color: var(--ink);
   padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left)); -webkit-tap-highlight-color: transparent; }
 .dash.plain { grid-template-columns: minmax(0, 1fr); }
@@ -112,14 +112,9 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .tb > :first-child { border-left: 0; }
 .tb a:hover { background: var(--page); }
 .dash .tb a:focus-visible { outline-offset: -4px; }
-/* one dimension mark, over the headline: a hairline with round ends. Never on a card, never carrying words */
-.hero { position: relative; }
-.dim { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
-.dim path { fill: none; stroke: var(--ink); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
 /* icons share the figures' 2px line */
 .rail-a svg *, .d-icon svg * { vector-effect: non-scaling-stroke; stroke-width: 2px; }
-/* lines draw in once, then hold: the dimension, and each card's figure as its panel arrives */
-.dim { animation: draw .9s var(--out) .5s backwards; }
+/* lines draw in once, then hold: each card's figure as its panel arrives */
 .tile .line { animation: draw .9s var(--out) backwards; animation-delay: calc(var(--i, 0) * 45ms + .25s); }
 .tile rect { transform-box: fill-box; transform-origin: 50% 100%; animation: grow .5s var(--out) backwards; animation-delay: calc(var(--i, 0) * 45ms + .25s); }
 /* the big panel shows the insight under the pointer: its figure and title fade in and its lines draw at once */
