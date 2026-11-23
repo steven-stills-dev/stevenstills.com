@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Archive, ChevronLeft, ChevronRight, Home as HomeIcon, LayoutGrid, Linkedin, Mail, User, X } from "lucide-react";
 import { INSIGHTS, type Insight } from "../insights";
 import Figure from "../components/Figure";
-import Wordmark from "../components/Wordmark";
 import { usePageMeta } from "../lib/meta";
 import "./dash.css";
 
@@ -122,7 +121,7 @@ export default function Home() {
 
       <main className="grid">
         <section id="top" ref={hero} className="panel hero" style={{ ["--i" as string]: 0 }}>
-          <p className="name"><Wordmark /></p>
+          <p className="name" translate="no">Steven Stills</p>
           <svg ref={dim} className="dim" aria-hidden="true" />
           <h1 className="d-h">Finding the right insights to build confidence in your data</h1>
           <p className="d-lede">I use my unique experience in front and back end development, in an AI-accelerated world, to bring design and engineering expertise together and build simple, digestible insights.</p>
