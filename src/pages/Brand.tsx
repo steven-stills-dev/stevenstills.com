@@ -2,19 +2,19 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { token } from "../lib/format";
 import { usePageMeta } from "../lib/meta";
+import Wordmark from "../components/Wordmark";
 import "./dash.css";
 
 // `share` is each colour's rough share of any screen: the first two carry the page, the accent marks one thing, the last two are small.
 const COLOURS = [
-  { name: "White", v: "--b-white", rank: "Primary", role: "Every panel, and the nav rail", on: "--b-ink", share: 64 },
+  { name: "Paper", v: "--b-paper", rank: "Primary", role: "Every panel, and the nav rail", on: "--b-ink", share: 64 },
   { name: "Mist", v: "--b-mist", rank: "Ground", role: "Tints the page behind the panels", on: "--b-ink", share: 20 },
-  { name: "Ink", v: "--b-ink", rank: "Ink", role: "All text, every mark in a figure, the one solid button and the marker on the nav rail", on: "--b-white", share: 8 },
-  { name: "Lime", v: "--b-lime", rank: "Accent", role: "The fill of the one featured panel, never a line or text on white", on: "--b-ink", share: 7 },
-  { name: "Aqua", v: "--b-aqua", rank: "Minor", role: "The cool line of a temperature figure, nothing else", on: "--b-ink", share: 1 },
+  { name: "Ink", v: "--b-ink", rank: "Ink", role: "All text, the lines that carry a figure, the one solid button and the marker on the nav rail", on: "--b-paper", share: 8 },
+  { name: "Cobalt", v: "--b-cobalt", rank: "Accent", role: "The one featured panel, and the usable mark in a figure", on: "--b-paper", share: 8 },
 ];
 const PAIRS: [string, string, string][] = [
-  ["Ink", "White", "All text and every mark on a panel"], ["White", "Ink", "The solid button and the marker on the nav rail"], ["Ink", "Lime", "The featured panel"],
-  ["Aqua", "White", "The cool line, never text"],
+  ["Ink", "Paper", "All text on a panel"], ["Paper", "Ink", "The solid button and the marker on the nav rail"], ["Paper", "Cobalt", "The featured panel"],
+  ["Cobalt", "Paper", "The usable mark in a figure"],
 ];
 
 const lum = (hex: string) => {
@@ -24,7 +24,7 @@ const lum = (hex: string) => {
 /** WCAG contrast ratio between two hex colours. */
 const contrast = (a: string, b: string) => { const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x); return (hi + 0.05) / (lo + 0.05); };
 
-/** The five brand colours, the pairs they may be used in, and the type. */
+/** The brand colours, the pairs they may be used in, and the type. */
 export default function Brand() {
   usePageMeta("Brand");
   useEffect(() => { document.documentElement.classList.add("dash-on"); return () => document.documentElement.classList.remove("dash-on"); }, []);
@@ -33,12 +33,12 @@ export default function Brand() {
     <div className="dash plain">
       <main className="brand">
         <header className="d-top">
-          <Link to="/" className="name" translate="no">Steven Stills</Link>
+          <Link to="/" className="name" aria-label="Steven Stills Ltd"><Wordmark /></Link>
           <Link to="/#insights">Insights</Link>
         </header>
         <div className="panel"><h1 className="d-h">Brand colours and type</h1></div>
         <section className="panel" aria-labelledby="b-c">
-          <h2 id="b-c" className="panel-h">Five colours, in the proportion they are used</h2>
+          <h2 id="b-c" className="panel-h">Colours, in the proportion they are used</h2>
           <div className="shares" role="img" aria-label={COLOURS.map((c) => `${c.name} ${c.share}%`).join(", ")}>
             {COLOURS.map((c) => <i key={c.name} style={{ flexGrow: c.share, background: `var(${c.v})` }} />)}
           </div>
@@ -61,7 +61,7 @@ export default function Brand() {
                   <tr key={fg + bg}>
                     <td>{r >= 4.5
                       ? <span className="chip" style={{ color: hex[fg], background: hex[bg] }}>{fg} on {bg}</span>
-                      : <span className="chip" style={{ color: hex[bg === "Ink" ? "White" : "Ink"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
+                      : <span className="chip" style={{ color: hex[bg === "Ink" ? "Paper" : "Ink"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
                     <td>{use}</td><td>{r.toFixed(1)}:1</td><td>{r >= 4.5 ? "All text" : r >= 3 ? "Large text and graphics" : "Decoration only"}</td>
                   </tr>
                 );

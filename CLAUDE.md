@@ -39,9 +39,9 @@ One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
 `/about` and `/sample` redirect to it. `/brand` shows the colours.
 
 - **Nav rail** (left; a bottom bar on phones): Home, Insights, Archive, About,
-  then email and LinkedIn. A White panel the height of its icons; one Ink marker slides to the section in view.
-- **Panels**: hero (name, headline, lede, the two buttons) beside the portrait;
-  the insight grid, with the newest insight as the one Lime featured
+  then email and LinkedIn. A Paper panel as tall as the hero; one Ink marker slides to the section in view.
+- **Panels**: hero (wordmark, headline, lede, the two buttons) beside the portrait;
+  the insight grid, with the newest insight as the one Cobalt featured
   panel; Archive (date and question); About (his three paragraphs and the
   buttons, so the page ends on how to reach him).
 - **Sheet**: clicking any insight opens it in a `<dialog>` that grows from the
@@ -71,18 +71,29 @@ showing it.
   no summary line, no invented title. If his wording for a card does not
   exist yet, ask him for it; do not draft one. `Insight` in `src/insights.ts`
   has no field for extra text on purpose: do not add one.
-- **Colour is a hierarchy, not a set.** White (every panel and the nav rail, on a page tinted with Mist) and Ink
-  (text, the one solid button, the marker on the nav rail) do most of the work. Lime is the primary colour: the fill
-  of the one featured panel, and in a figure the one usable mark. Aqua is the secondary: a second series when a
-  figure needs both. Never give cards, sections or series a colour each, and never rotate through the palette.
-  `/brand` shows the proportions.
-  Palette given by Steven on 23 November 2026: White #FFFFFF, Mist #D9DDDA, Ink #151A17, Lime #ECFF44, Aqua #0AB0D1.
-  He rejected warm cream neutrals and muted teal and rust the same day; do not bring them back.
+- **Colour is a hierarchy, not a set.** Paper (every panel and the nav rail, on a page tinted with Mist) and Ink
+  (text, the lines that carry a figure, the one solid button, the marker on the nav rail) do most of the work.
+  Cobalt is the only colour: the one featured panel, and in a figure the usable mark. Never give cards, sections or
+  series a colour each. `/brand` shows the proportions.
+  Palette from 23 November 2026, when Steven asked to pare colour back to cobalt blue with professional off-whites
+  and blacks: Paper #F8F9FB, Mist #D5DAE2, Ink #10131C, Cobalt #2447F9. The same day he rejected warm cream
+  neutrals with teal and rust, and then a white, lime and aqua scheme; do not bring either back.
 - **Figures are mostly black, white and grey, with the usable figure in the primary colour** (Steven, 23 November
   2026). A figure with no colour tells him there is no insight to glean. In a figure with many lines the
-  supporting lines run a ramp from Aqua to Lime and the primary lines are Ink ("flipping the design narrative"). The exception is a figure with
-  only one line: that line is Ink. Every line in a figure is the same
-  weight; he called mixed weights intolerable. Lime on White measures 1.1:1, so check a Lime mark is readable.
+  supporting lines run a ramp of Cobalt tints and the primary lines are Ink ("flipping the design narrative"); on
+  the Cobalt panel the primary lines are Paper. A figure with only one line draws it in Ink. A bar chart marks one
+  bar in Cobalt among grey. Every line in a figure is the same weight; he called mixed weights intolerable.
+
+### Wordmark and drawing cues (23 November 2026)
+
+- **Wordmark only, no symbol**: STEVEN STILLS | LTD in Schibsted Grotesk caps (`src/components/Wordmark.tsx`,
+  `.wm`). Weight 600 at 0.14em tracking, a rule 0.045em wide and 1.3em tall with 0.6em either side, then LTD at
+  half size, weight 500, 0.2em tracking. Outlined SVGs are in `previews/`. He dropped every icon and logo-symbol
+  idea; do not bring one back.
+- **Borrowed from engineering dimensional drawings, simplified hard**: one 2px weight for icons and figure lines,
+  hairline rules between the Archive rows, one dimension mark over the headline (`.dim`), a title-block footer in
+  ruled cells and small caps (`.tb`), and lines that draw in once. Never a drawing annotation on a card, and no
+  added copy. He rejected a fuller version with dash-dot construction lines the same day.
 
 ## Archive
 
