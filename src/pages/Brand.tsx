@@ -6,15 +6,15 @@ import "./dash.css";
 
 // `share` is each colour's rough share of any screen: the first two carry the page, the accent marks one thing, the last two are small.
 const COLOURS = [
-  { name: "Parchment", v: "--b-parchment", rank: "Primary", role: "Every panel", on: "--b-ink", share: 62 },
-  { name: "Dust Grey", v: "--b-dust", rank: "Ground", role: "Tints the page behind the panels", on: "--b-ink", share: 20 },
-  { name: "Ink Black", v: "--b-ink", rank: "Ink", role: "All text, the nav rail and the one solid button", on: "--b-parchment", share: 10 },
-  { name: "Digital Blue", v: "--b-blue", rank: "Accent", role: "The one featured panel, and the mark to look at in a figure", on: "--b-parchment", share: 7 },
-  { name: "Vibrant Coral", v: "--b-coral", rank: "Minor", role: "The warm line of a temperature figure, nothing else", on: "--b-ink", share: 1 },
+  { name: "Bone", v: "--b-bone", rank: "Primary", role: "Every panel, and the nav rail", on: "--b-ink", share: 66 },
+  { name: "Sand", v: "--b-sand", rank: "Ground", role: "Tints the page behind the panels", on: "--b-ink", share: 20 },
+  { name: "Soot", v: "--b-ink", rank: "Ink", role: "All text, the one solid button and the marker on the nav rail", on: "--b-bone", share: 6 },
+  { name: "Petrol", v: "--b-petrol", rank: "Accent", role: "The one featured panel, and the one mark among several in a figure", on: "--b-bone", share: 7 },
+  { name: "Rust", v: "--b-rust", rank: "Minor", role: "The warm line of a temperature figure, nothing else", on: "--b-bone", share: 1 },
 ];
 const PAIRS: [string, string, string][] = [
-  ["Ink Black", "Parchment", "All text on a panel"], ["Parchment", "Ink Black", "The nav rail and the solid button"], ["Parchment", "Digital Blue", "The featured panel: large text only"],
-  ["Digital Blue", "Parchment", "The accent in a figure"], ["Vibrant Coral", "Parchment", "The warm line, never text"],
+  ["Soot", "Bone", "All text on a panel"], ["Bone", "Soot", "The solid button and the marker on the nav rail"], ["Bone", "Petrol", "The featured panel"],
+  ["Petrol", "Bone", "The accent in a figure"], ["Rust", "Bone", "The warm line, never text"],
 ];
 
 const lum = (hex: string) => {
@@ -61,7 +61,7 @@ export default function Brand() {
                   <tr key={fg + bg}>
                     <td>{r >= 4.5
                       ? <span className="chip" style={{ color: hex[fg], background: hex[bg] }}>{fg} on {bg}</span>
-                      : <span className="chip" style={{ color: hex[bg === "Ink Black" ? "Parchment" : "Ink Black"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
+                      : <span className="chip" style={{ color: hex[bg === "Soot" ? "Bone" : "Soot"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
                     <td>{use}</td><td>{r.toFixed(1)}:1</td><td>{r >= 4.5 ? "All text" : r >= 3 ? "Large text and graphics" : "Decoration only"}</td>
                   </tr>
                 );
