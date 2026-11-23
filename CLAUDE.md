@@ -90,9 +90,9 @@ showing it.
   logo-symbol idea, then called the STEVEN STILLS | LTD caps wordmark bad and had it removed. Do not add a logo,
   symbol or wordmark unless he asks.
 - **Borrowed from engineering dimensional drawings, simplified hard**: one 2px weight for icons and figure lines,
-  hairline rules between the Archive rows, one dimension mark over the headline (`.dim`), a title-block footer in
-  ruled cells and small caps (`.tb`), and lines that draw in once. Never a drawing annotation on a card, and no
-  added copy. He rejected a fuller version with dash-dot construction lines the same day.
+  hairline rules between the Archive rows, a title-block footer in ruled cells and small caps (`.tb`), and lines
+  that draw in once. Never a drawing annotation on a card, and no added copy. He rejected a fuller version with
+  dash-dot construction lines the same day, and had the dimension mark over the headline removed on 23 November 2026.
 
 ## Archive
 
