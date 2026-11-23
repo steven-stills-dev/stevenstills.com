@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { token } from "../lib/format";
 import { usePageMeta } from "../lib/meta";
-import Wordmark from "../components/Wordmark";
 import "./dash.css";
 
 // `share` is each colour's rough share of any screen: the first two carry the page, the accent marks one thing, the last two are small.
@@ -33,7 +32,7 @@ export default function Brand() {
     <div className="dash plain">
       <main className="brand">
         <header className="d-top">
-          <Link to="/" className="name" aria-label="Steven Stills Ltd"><Wordmark /></Link>
+          <Link to="/" className="name" translate="no">Steven Stills</Link>
           <Link to="/#insights">Insights</Link>
         </header>
         <div className="panel"><h1 className="d-h">Brand colours and type</h1></div>

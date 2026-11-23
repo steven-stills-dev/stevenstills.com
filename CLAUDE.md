@@ -40,7 +40,7 @@ One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
 
 - **Nav rail** (left; a bottom bar on phones): Home, Insights, Archive, About,
   then email and LinkedIn. A Paper panel as tall as the hero; one Ink marker slides to the section in view.
-- **Panels**: hero (wordmark, headline, lede, the two buttons) beside the portrait;
+- **Panels**: hero (name, headline, lede, the two buttons) beside the portrait;
   the insight grid, with the newest insight as the one Cobalt featured
   panel; Archive (date and question); About (his three paragraphs and the
   buttons, so the page ends on how to reach him).
@@ -84,12 +84,11 @@ showing it.
   the Cobalt panel the primary lines are Paper. A figure with only one line draws it in Ink. A bar chart marks one
   bar in Cobalt among grey. Every line in a figure is the same weight; he called mixed weights intolerable.
 
-### Wordmark and drawing cues (23 November 2026)
+### Name and drawing cues (23 November 2026)
 
-- **Wordmark only, no symbol**: STEVEN STILLS | LTD in Schibsted Grotesk caps (`src/components/Wordmark.tsx`,
-  `.wm`). Weight 600 at 0.14em tracking, a rule 0.045em wide and 1.3em tall with 0.6em either side, then LTD at
-  half size, weight 500, 0.2em tracking. Outlined SVGs are in `previews/`. He dropped every icon and logo-symbol
-  idea; do not bring one back.
+- **No logo yet.** The hero shows his name as plain text. On 23 November 2026 he dropped every icon and
+  logo-symbol idea, then called the STEVEN STILLS | LTD caps wordmark bad and had it removed. Do not add a logo,
+  symbol or wordmark unless he asks.
 - **Borrowed from engineering dimensional drawings, simplified hard**: one 2px weight for icons and figure lines,
   hairline rules between the Archive rows, one dimension mark over the headline (`.dim`), a title-block footer in
   ruled cells and small caps (`.tb`), and lines that draw in once. Never a drawing annotation on a card, and no
