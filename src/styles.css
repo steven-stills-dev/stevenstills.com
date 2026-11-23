@@ -20,12 +20,11 @@
   --sans: 'Source Sans 3', 'Helvetica Neue', Arial, system-ui, sans-serif;          /* body */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --t-kpilabel-size: 0.8125rem; --t-kpilabel-weight: 500;
-  /* Brand colours for the dashboard home (Steven, 23 November 2026). Every other shade there is a mix of two of these. */
-  --b-white: #FFFFFF;  /* primary: every panel, and the nav rail */
-  --b-ink: #151A17;    /* all text, every mark that carries a figure, the one solid button and the marker on the nav rail */
-  --b-lime: #ECFF44;   /* accent: the fill of the one featured panel, never a line or text on white */
-  --b-mist: #D9DDDA;   /* minor: tints the page behind the panels */
-  --b-aqua: #0AB0D1;   /* minor: the cool line of a temperature figure only */
+  /* Brand colours for the dashboard home (Steven, 23 November 2026): one cobalt, off-whites and blacks. Every other shade there is a mix of two of these. */
+  --b-paper: #F8F9FB;   /* primary: every panel, and the nav rail */
+  --b-ink: #10131C;     /* all text, the lines that carry a figure, the one solid button and the marker on the nav rail */
+  --b-cobalt: #2447F9;  /* the one colour: the featured panel, and in a figure the usable mark and the supporting ramp */
+  --b-mist: #D5DAE2;    /* tints the page behind the panels */
   --out: cubic-bezier(0.16, 1, 0.3, 1);
   --move: cubic-bezier(0.65, 0, 0.35, 1);
   --in: cubic-bezier(0.7, 0, 0.84, 0);
