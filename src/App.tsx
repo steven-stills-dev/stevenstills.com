@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import About from "./pages/About";
+import Brand from "./pages/Brand";
 import DesignTray from "./components/DesignTray";
 
 function ScrollToTop() {
@@ -22,7 +22,9 @@ export default function App() {
       <Suspense fallback={<Fallback />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={<Navigate to="/#about" replace />} />
+          <Route path="/sample" element={<Navigate to="/" replace />} />
+          <Route path="/brand" element={<Brand />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

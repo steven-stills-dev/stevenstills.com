@@ -33,6 +33,50 @@ npm run build      # tsc --noEmit && vite build -> dist/
 Push to `main` deploys via `.github/workflows/deploy.yml` (Pages source must be
 set to GitHub Actions in the repo settings).
 
+## Home (the whole site, rebuilt 23 November 2026)
+
+One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
+`/about` and `/sample` redirect to it. `/brand` shows the colours.
+
+- **Nav rail** (left; a bottom bar on phones): Home, Insights, Archive, About,
+  then email and LinkedIn. One marker slides to the section in view.
+- **Panels**: hero (name, headline, lede, the two buttons) beside the portrait;
+  the insight grid, with the newest insight as the one Digital Blue featured
+  panel; Archive (date and question); About (his three paragraphs and the
+  buttons, so the page ends on how to reach him).
+- **Sheet**: clicking any insight opens it in a `<dialog>` that grows from the
+  panel clicked (`?i=<slug>`), with the figure, his one or two sentences and
+  the source. Arrow keys and the two buttons step between insights.
+- **Data**: `src/insights.ts`; figures draw with `src/components/Figure.tsx`.
+  `scripts/seasonal-normal/build.py [MM-DD]` writes
+  `src/data/seasonal-normal-MM-DD.json` (ERA5 hourly normals by decade).
+- **Motion** follows the `ux-motion` skill: staggered entrance once, a pointer
+  tilt and lift on insight panels, a squash on press, origin-aware sheet that
+  closes faster than it opens, the figure drawing itself in the sheet, and
+  everything reduced to fades under `prefers-reduced-motion`.
+- **One corner radius**: every element uses `--r` (24px, set on `.dash`).
+  Steven asked for uniform corners on 23 November 2026; never add a second
+  radius.
+- The colour tokens (`--b-*`) and easing curves live in `src/styles.css`.
+  The "Design system" section below describes the older ink-on-white pages
+  and the archived articles' components, not this page.
+
+### Hard rules for cards and colour (Steven, 23 November 2026)
+
+He has raised both more than once. Check every change against them before
+showing it.
+
+- **A card shows only the question Steven answers or the insight he gives**,
+  in his words, with its figure. No headline number, no caption, no label,
+  no summary line, no invented title. If his wording for a card does not
+  exist yet, ask him for it; do not draft one. `Insight` in `src/insights.ts`
+  has no field for extra text on purpose: do not add one.
+- **Colour is a hierarchy, not a set.** Parchment (every panel, on a page tinted with Dust Grey) and Ink Black
+  (text, the nav rail, the one solid button) do most of the work. Digital Blue is the single accent: the
+  one featured panel, and the one mark to look at in a figure. Vibrant Coral is minor: for the warm line of a
+  temperature figure. Never give cards, sections or series a colour each, and
+  never rotate through the palette. `/brand` shows the proportions.
+
 ## Archive
 
 `archive/` holds the retired articles and everything that only they used. It

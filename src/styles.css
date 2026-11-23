@@ -20,6 +20,15 @@
   --sans: 'Source Sans 3', 'Helvetica Neue', Arial, system-ui, sans-serif;          /* body */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --t-kpilabel-size: 0.8125rem; --t-kpilabel-weight: 500;
+  /* Brand colours for the dashboard home (Steven, 23 November 2026). Every other shade there is a mix of two of these. */
+  --b-parchment: #F4F3F0;  /* primary: every panel */
+  --b-ink: #0A0E1A;        /* all text, the nav rail and the one solid button */
+  --b-blue: #2070E9;       /* accent: the featured panel, and the mark to look at in a figure */
+  --b-dust: #D1D2D5;       /* minor: tints the page behind the panels */
+  --b-coral: #F87060;      /* minor: the warm line of a temperature figure only */
+  --out: cubic-bezier(0.16, 1, 0.3, 1);
+  --move: cubic-bezier(0.65, 0, 0.35, 1);
+  --in: cubic-bezier(0.7, 0, 0.84, 0);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, #root { background: var(--ste-midday); }
@@ -66,19 +75,6 @@ img { max-width: 100%; display: block; }
 .chart-fill { width: 100%; height: 100%; position: relative; }
 .box-body > .chart-fill { flex: 1 1 0; min-height: 0; height: auto; }
 .box-body > .legend { flex: 0 0 auto; justify-content: center; margin-top: 12px; }
-
-/* ── split: text beside the portrait, used by Home and About ── */
-.wrap { display: flex; flex-direction: column; }
-.wrap > main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 64px; align-items: center; padding: 64px 0; }
-.split-text { max-width: var(--measure); }
-.portrait { display: block; position: relative; border-radius: var(--radius); overflow: hidden; background: var(--ste-day); }
-.portrait img { width: 100%; height: 100%; object-fit: cover; }
-.portrait-wide { aspect-ratio: 4 / 3; }
-.portrait-wide img { object-position: 50% 30%; }
-.portrait-tall { aspect-ratio: 4 / 5; }
-.portrait .btn { position: absolute; left: 16px; bottom: 16px; }
-.split .prose { margin-top: 24px; }
 
 /* ── maps ────────────────────────────────────────────────── */
 .mapwrap { position: relative; width: 100%; height: 100%; border-radius: var(--radius); overflow: hidden; background: var(--ste-day); }
@@ -171,12 +167,8 @@ sup.fn a:hover { text-decoration: underline; }
 /* ── responsive ──────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .wrap { padding: 0 24px; }
-  .split { column-gap: 40px; }
 }
 @media (max-width: 900px) {
-  .wrap > main { justify-content: flex-start; }
-  .split { grid-template-columns: minmax(0, 1fr); row-gap: 32px; padding: 40px 0; }
-  .portrait-tall { max-width: 280px; }
   .article { padding: 40px 0 64px; }
 }
 @media (max-width: 640px) {
