@@ -34,6 +34,8 @@ export default function Home() {
   const { hash } = useLocation();
   const open = INSIGHTS.findIndex((it) => it.slug === params.get("i"));
   const [at, setAt] = useState(0);
+  // the insight in the big panel: the newest, or whichever small panel the pointer or focus is on
+  const [show, setShow] = useState(0);
   const sheet = useRef<HTMLDialogElement>(null);
   const from = useRef<{ x: number; y: number } | null>(null);
   const hero = useRef<HTMLElement>(null);
@@ -95,9 +97,11 @@ export default function Home() {
 
   const turn = (d: number) => go(INSIGHTS[(open + d + N) % N].slug);
   const tile = (x: Insight, i: number, feat = false) => (
-    <a key={x.slug} className={`panel tile${feat ? " feat" : ""}`} href={`?i=${x.slug}`} onClick={(e) => pick(e, x.slug)} onPointerMove={tilt} onPointerLeave={level} style={{ ["--i" as string]: Math.min(2 + i, 8) }}>
-      <span className="fig"><Figure fig={x.figure} bare /></span>
-      <span className="tile-t">{x.title}</span>
+    <a key={feat ? "feat" : x.slug} className={`panel tile${feat ? " feat" : ""}`} href={`?i=${x.slug}`} onClick={(e) => pick(e, x.slug)} onPointerMove={tilt} onPointerLeave={level}
+      onPointerEnter={feat ? undefined : (e) => { if (e.pointerType === "mouse") setShow(i); }} onFocus={feat ? undefined : () => setShow(i)} style={{ ["--i" as string]: Math.min(2 + i, 8) }}>
+      {/* keyed by insight, so the big panel's figure and title change with a fade instead of a jump */}
+      <span className="fig" key={`${x.slug}-fig`}><Figure fig={x.figure} bare /></span>
+      <span className="tile-t" key={`${x.slug}-t`}>{x.title}</span>
     </a>
   );
 
@@ -134,9 +138,10 @@ export default function Home() {
           <img src="/img/me_lisbon.jpeg" alt="Steven Stills" width="935" height="1169" />
         </div>
 
-        <section id="insights" className="insights" aria-labelledby="insights-h">
+        <section id="insights" className="insights" aria-labelledby="insights-h" onPointerLeave={() => setShow(0)}>
           <h2 id="insights-h" className="sr-only">Insights</h2>
-          {INSIGHTS.map((x, i) => tile(x, i, i === 0))}
+          {tile(INSIGHTS[show], 0, true)}
+          {INSIGHTS.slice(1).map((x, i) => tile(x, i + 1))}
         </section>
 
         <section id="archive" className="panel archive" aria-labelledby="archive-h">

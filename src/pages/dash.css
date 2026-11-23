@@ -64,7 +64,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .tile { --tx: 0; --ty: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; color: var(--ink); text-decoration: none; touch-action: manipulation;
   box-shadow: 0 1px 2px color-mix(in srgb, var(--b-ink) 5%, transparent); transition: transform .2s var(--out), box-shadow .2s var(--out); }
 .tile-t { margin-top: auto; font-family: var(--heading); font-size: 1.0625rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; text-wrap: balance; font-variant-numeric: proportional-nums; }
-.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-cobalt); --ink: var(--b-paper); --mark: var(--b-paper); }
+.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-cobalt); --ink: var(--b-paper); --mark: var(--b-paper); --rest: color-mix(in srgb, var(--b-paper) 40%, var(--b-cobalt)); }
 .feat .tile-t { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; letter-spacing: -.02em; }
 .feat .fig { margin-block: auto; }
 .dash .feat:focus-visible { outline-color: var(--b-ink); }
@@ -122,6 +122,10 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .dim { animation: draw .9s var(--out) .5s backwards; }
 .tile .line { animation: draw .9s var(--out) backwards; animation-delay: calc(var(--i, 0) * 45ms + .25s); }
 .tile rect { transform-box: fill-box; transform-origin: 50% 100%; animation: grow .5s var(--out) backwards; animation-delay: calc(var(--i, 0) * 45ms + .25s); }
+/* the big panel shows the insight under the pointer: its figure and title fade in and its lines draw at once */
+.feat .fig, .feat .tile-t { animation: fade .25s var(--out); }
+.feat .line, .feat rect { animation-delay: 0s; animation-duration: .5s; }
+@keyframes fade { from { opacity: 0; } }
 
 /* the sheet: one insight, opened from the panel that was clicked */
 .sheet { width: min(680px, calc(100vw - 32px)); max-height: calc(100svh - 32px); margin: auto; padding: 0; border: 0; border-radius: var(--r); background: var(--b-paper); color: var(--b-ink);
