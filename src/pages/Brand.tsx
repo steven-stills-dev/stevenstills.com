@@ -6,15 +6,15 @@ import "./dash.css";
 
 // `share` is each colour's rough share of any screen: the first two carry the page, the accent marks one thing, the last two are small.
 const COLOURS = [
-  { name: "Bone", v: "--b-bone", rank: "Primary", role: "Every panel, and the nav rail", on: "--b-ink", share: 66 },
-  { name: "Sand", v: "--b-sand", rank: "Ground", role: "Tints the page behind the panels", on: "--b-ink", share: 20 },
-  { name: "Soot", v: "--b-ink", rank: "Ink", role: "All text, the one solid button and the marker on the nav rail", on: "--b-bone", share: 6 },
-  { name: "Petrol", v: "--b-petrol", rank: "Accent", role: "The one featured panel, and the one mark among several in a figure", on: "--b-bone", share: 7 },
-  { name: "Rust", v: "--b-rust", rank: "Minor", role: "The warm line of a temperature figure, nothing else", on: "--b-bone", share: 1 },
+  { name: "White", v: "--b-white", rank: "Primary", role: "Every panel, and the nav rail", on: "--b-ink", share: 64 },
+  { name: "Mist", v: "--b-mist", rank: "Ground", role: "Tints the page behind the panels", on: "--b-ink", share: 20 },
+  { name: "Ink", v: "--b-ink", rank: "Ink", role: "All text, every mark in a figure, the one solid button and the marker on the nav rail", on: "--b-white", share: 8 },
+  { name: "Lime", v: "--b-lime", rank: "Accent", role: "The fill of the one featured panel, never a line or text on white", on: "--b-ink", share: 7 },
+  { name: "Aqua", v: "--b-aqua", rank: "Minor", role: "The cool line of a temperature figure, nothing else", on: "--b-ink", share: 1 },
 ];
 const PAIRS: [string, string, string][] = [
-  ["Soot", "Bone", "All text on a panel"], ["Bone", "Soot", "The solid button and the marker on the nav rail"], ["Bone", "Petrol", "The featured panel"],
-  ["Petrol", "Bone", "The accent in a figure"], ["Rust", "Bone", "The warm line, never text"],
+  ["Ink", "White", "All text and every mark on a panel"], ["White", "Ink", "The solid button and the marker on the nav rail"], ["Ink", "Lime", "The featured panel"],
+  ["Aqua", "White", "The cool line, never text"],
 ];
 
 const lum = (hex: string) => {
@@ -61,7 +61,7 @@ export default function Brand() {
                   <tr key={fg + bg}>
                     <td>{r >= 4.5
                       ? <span className="chip" style={{ color: hex[fg], background: hex[bg] }}>{fg} on {bg}</span>
-                      : <span className="chip" style={{ color: hex[bg === "Soot" ? "Bone" : "Soot"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
+                      : <span className="chip" style={{ color: hex[bg === "Ink" ? "White" : "Ink"], background: hex[bg] }}><i style={{ background: hex[fg] }} />{fg} on {bg}</span>}</td>
                     <td>{use}</td><td>{r.toFixed(1)}:1</td><td>{r >= 4.5 ? "All text" : r >= 3 ? "Large text and graphics" : "Decoration only"}</td>
                   </tr>
                 );

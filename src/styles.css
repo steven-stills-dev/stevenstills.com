@@ -21,11 +21,11 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --t-kpilabel-size: 0.8125rem; --t-kpilabel-weight: 500;
   /* Brand colours for the dashboard home (Steven, 23 November 2026). Every other shade there is a mix of two of these. */
-  --b-bone: #F6F3EC;    /* primary: every panel, and the nav rail */
-  --b-ink: #171512;     /* Soot: all text, the one solid button and the marker on the nav rail */
-  --b-petrol: #12707A;  /* accent: the featured panel, and the one mark among several in a figure */
-  --b-sand: #DCD5C7;    /* minor: tints the page behind the panels */
-  --b-rust: #C4512D;    /* minor: the warm line of a temperature figure only */
+  --b-white: #FFFFFF;  /* primary: every panel, and the nav rail */
+  --b-ink: #151A17;    /* all text, every mark that carries a figure, the one solid button and the marker on the nav rail */
+  --b-lime: #ECFF44;   /* accent: the fill of the one featured panel, never a line or text on white */
+  --b-mist: #D9DDDA;   /* minor: tints the page behind the panels */
+  --b-aqua: #0AB0D1;   /* minor: the cool line of a temperature figure only */
   --out: cubic-bezier(0.16, 1, 0.3, 1);
   --move: cubic-bezier(0.65, 0, 0.35, 1);
   --in: cubic-bezier(0.7, 0, 0.84, 0);

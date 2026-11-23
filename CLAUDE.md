@@ -39,9 +39,9 @@ One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
 `/about` and `/sample` redirect to it. `/brand` shows the colours.
 
 - **Nav rail** (left; a bottom bar on phones): Home, Insights, Archive, About,
-  then email and LinkedIn. A Bone panel the height of its icons; one Soot marker slides to the section in view.
+  then email and LinkedIn. A White panel the height of its icons; one Ink marker slides to the section in view.
 - **Panels**: hero (name, headline, lede, the two buttons) beside the portrait;
-  the insight grid, with the newest insight as the one Petrol featured
+  the insight grid, with the newest insight as the one Lime featured
   panel; Archive (date and question); About (his three paragraphs and the
   buttons, so the page ends on how to reach him).
 - **Sheet**: clicking any insight opens it in a `<dialog>` that grows from the
@@ -71,12 +71,13 @@ showing it.
   no summary line, no invented title. If his wording for a card does not
   exist yet, ask him for it; do not draft one. `Insight` in `src/insights.ts`
   has no field for extra text on purpose: do not add one.
-- **Colour is a hierarchy, not a set.** Bone (every panel and the nav rail, on a page tinted with Sand) and Soot
-  (text, the one solid button, the marker on the nav rail) do most of the work. Petrol is the single accent: the
-  one featured panel, and the one mark among several in a figure (a lone line draws in Soot). Rust is minor: for the warm line of a
-  temperature figure. Never give cards, sections or series a colour each, and
-  never rotate through the palette. `/brand` shows the proportions. Palette chosen 23 November 2026:
-  Bone #F6F3EC, Sand #DCD5C7, Soot #171512, Petrol #12707A, Rust #C4512D.
+- **Colour is a hierarchy, not a set.** White (every panel and the nav rail, on a page tinted with Mist) and Ink
+  (text, every mark that carries a figure, the one solid button, the marker on the nav rail) do most of the work.
+  Lime is the single accent and only ever a fill: the one featured panel, with Ink text and Ink lines on it. It is
+  never a line or text on White (1.1:1). Aqua is minor: the cool line of a temperature figure. Never give cards,
+  sections or series a colour each, and never rotate through the palette. `/brand` shows the proportions.
+  Palette given by Steven on 23 November 2026: White #FFFFFF, Mist #D9DDDA, Ink #151A17, Lime #ECFF44, Aqua #0AB0D1.
+  He rejected warm cream neutrals and muted teal and rust the same day; do not bring them back.
 
 ## Archive
 
