@@ -5,7 +5,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 @media (prefers-reduced-motion: no-preference) { html.dash-on { scroll-behavior: smooth; } }
 /* one corner radius for every element; anything 48px or shorter becomes a pill or a circle with it */
 .dash { --r: 24px; --ink: var(--b-ink); --slate: color-mix(in srgb, var(--b-cobalt) 30%, var(--b-ink)); --mute: color-mix(in srgb, var(--slate) 66%, var(--b-paper)); --page: color-mix(in srgb, var(--b-mist) 45%, var(--b-paper));
-  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-paper)); --mark: var(--b-cobalt); --rest: color-mix(in srgb, var(--slate) 48%, var(--b-paper));
+  --rule: color-mix(in srgb, var(--b-ink) 14%, var(--b-paper)); --soft: color-mix(in srgb, var(--slate) 30%, var(--b-paper)); --hair: color-mix(in srgb, var(--slate) 22%, var(--b-paper)); --mark: var(--b-cobalt); --rest: color-mix(in srgb, var(--slate) 48%, var(--b-paper));
   display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; align-items: start; width: 100%; max-width: 100rem; margin: 0 auto; color: var(--ink);
   padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left)); -webkit-tap-highlight-color: transparent; }
 .dash.plain { grid-template-columns: minmax(0, 1fr); }
@@ -64,7 +64,7 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .tile { --tx: 0; --ty: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; color: var(--ink); text-decoration: none; touch-action: manipulation;
   box-shadow: 0 1px 2px color-mix(in srgb, var(--b-ink) 5%, transparent); transition: transform .2s var(--out), box-shadow .2s var(--out); }
 .tile-t { margin-top: auto; font-family: var(--heading); font-size: 1.0625rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; text-wrap: balance; font-variant-numeric: proportional-nums; }
-.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-cobalt); --ink: var(--b-paper); --mark: var(--b-paper); --rest: color-mix(in srgb, var(--b-paper) 40%, var(--b-cobalt)); }
+.feat { grid-column: span 2; grid-row: span 2; padding: 32px; gap: 24px; background: var(--b-cobalt); --ink: var(--b-paper); --mark: var(--b-paper); --rest: color-mix(in srgb, var(--b-paper) 40%, var(--b-cobalt)); --soft: color-mix(in srgb, var(--b-paper) 38%, var(--b-cobalt)); --hair: color-mix(in srgb, var(--b-paper) 30%, var(--b-cobalt)); }
 .feat .tile-t { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; letter-spacing: -.02em; }
 .feat .fig { margin-block: auto; }
 .dash .feat:focus-visible { outline-color: var(--b-ink); }
@@ -88,6 +88,13 @@ html.dash-on, html.dash-on body, html.dash-on #root { background: color-mix(in s
 .feat .line.quiet { stroke: color-mix(in srgb, var(--b-paper) calc(20% + var(--t, 0) * 35%), var(--b-cobalt)); }
 .fig .mark { fill: var(--mark); }
 .fig .rest { fill: var(--rest); }
+/* card infographics: pale shapes and hairlines set the scene, Ink and the one Cobalt mark carry it; red is only the choke point and an incident */
+.pic { clip-path: inset(0 round var(--r)); }
+.pic * { vector-effect: non-scaling-stroke; }
+.pic .soft { fill: var(--soft); } .pic .land { fill: var(--hair); } .pic .solid, .pic .moon { fill: var(--ink); } .pic .alert { fill: var(--b-alert); }
+.pic .hair, .pic .ray, .pic .alert-line { fill: none; stroke-width: 2; stroke-linecap: round; }
+.pic .hair { stroke: var(--hair); } .pic .ray { stroke: var(--ink); } .pic .alert-line { stroke: var(--b-alert); }
+.feat .pic .moon { fill: var(--b-cobalt); stroke: var(--hair); stroke-width: 2; }
 .fig .ax { fill: var(--mute); font-size: 11px; font-family: var(--sans); }
 .fig .lab { font-weight: 600; fill: var(--ink); }
 

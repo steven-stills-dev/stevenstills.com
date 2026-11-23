@@ -24,6 +24,7 @@
   --b-paper: #F8F9FB;   /* primary: every panel, and the nav rail */
   --b-ink: #10131C;     /* all text, the lines that carry a figure, the one solid button and the marker on the nav rail */
   --b-cobalt: #2447F9;  /* the one colour: the featured panel, and in a figure the usable mark and the supporting ramp */
+  --b-alert: #E5484D;   /* red, for a choke point or an incident on a map and nothing else */
   --b-mist: #D5DAE2;    /* tints the page behind the panels */
   --out: cubic-bezier(0.16, 1, 0.3, 1);
   --move: cubic-bezier(0.65, 0, 0.35, 1);

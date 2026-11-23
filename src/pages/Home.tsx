@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Archive, ChevronLeft, ChevronRight, Home as HomeIcon, LayoutGrid, Linkedin, Mail, User, X } from "lucide-react";
 import { INSIGHTS, type Insight } from "../insights";
 import Figure from "../components/Figure";
+import Picture, { hasPicture } from "../components/Picture";
 import { usePageMeta } from "../lib/meta";
 import "./dash.css";
 
@@ -78,7 +79,7 @@ export default function Home() {
     <a key={feat ? "feat" : x.slug} className={`panel tile${feat ? " feat" : ""}`} href={`?i=${x.slug}`} onClick={(e) => pick(e, x.slug)} onPointerMove={tilt} onPointerLeave={level}
       onPointerEnter={feat ? undefined : (e) => { if (e.pointerType === "mouse") setShow(i); }} onFocus={feat ? undefined : () => setShow(i)} style={{ ["--i" as string]: Math.min(2 + i, 8) }}>
       {/* keyed by insight, so the big panel's figure and title change with a fade instead of a jump */}
-      <span className="fig" key={`${x.slug}-fig`}><Figure fig={x.figure} bare /></span>
+      <span className="fig" key={`${x.slug}-fig`}>{hasPicture(x) ? <Picture x={x} /> : <Figure fig={x.figure} bare />}</span>
       <span className="tile-t" key={`${x.slug}-t`}>{x.title}</span>
     </a>
   );
