@@ -47,6 +47,11 @@ One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
 - **Sheet**: clicking any insight opens it in a `<dialog>` that grows from the
   panel clicked (`?i=<slug>`), with the figure, his one or two sentences and
   the source. Arrow keys and the two buttons step between insights.
+- **Cards show infographics, not charts** (Steven, 23 November 2026: "sharp clean infographic images, not random
+  lines in a square"). `src/components/Picture.tsx` draws one picture per insight slug from the insight's own
+  figure data: the picture is the subject, every shape is to scale, no words, one Cobalt mark. The Hormuz map's
+  vessel positions are illustrative at his request, and its choke point and incident use `--b-alert` red, the only
+  place red appears. The sheet still shows the chart with axes. An insight without a picture falls back to its chart.
 - **Data**: `src/insights.ts`; figures draw with `src/components/Figure.tsx`.
   `scripts/seasonal-normal/build.py [MM-DD]` writes
   `src/data/seasonal-normal-MM-DD.json` (ERA5 hourly normals by decade).
