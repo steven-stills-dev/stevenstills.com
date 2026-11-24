@@ -44,6 +44,10 @@ One page, a dashboard of panels: `src/pages/Home.tsx` and `src/pages/dash.css`.
   the insight grid, with the newest insight as the one Cobalt featured
   panel; Archive (date and question); About (his three paragraphs and the
   buttons, so the page ends on how to reach him).
+- **Under construction (24 November 2026)**: production hides the insight grid and the Archive and shows one
+  panel with a turbine (`src/components/Turbine.tsx`) and Steven's message. `SOON` in `Home.tsx` switches it:
+  always on in a production build, and on locally with `?soon`. Remove `import.meta.env.PROD ||` to bring the
+  cards back. The hero lede also carries his leadership sentence, and About a leadership paragraph from his CV.
 - **Sheet**: clicking any insight opens it in a `<dialog>` that grows from the
   panel clicked (`?i=<slug>`), with the figure, his one or two sentences and
   the source. Arrow keys and the two buttons step between insights.
