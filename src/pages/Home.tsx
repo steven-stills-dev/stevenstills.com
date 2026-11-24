@@ -4,17 +4,20 @@ import { Archive, ChevronLeft, ChevronRight, Home as HomeIcon, LayoutGrid, Linke
 import { INSIGHTS, type Insight } from "../insights";
 import Figure from "../components/Figure";
 import Picture, { hasPicture } from "../components/Picture";
+import Turbine from "../components/Turbine";
 import { usePageMeta } from "../lib/meta";
 import "./dash.css";
 
 const MAIL = "mailto:stevenprusinskistills@proton.me";
 const LINKEDIN = "https://www.linkedin.com/in/steven-stills";
+// production shows an under-construction panel in place of the insights and the archive; add ?soon to see it locally
+const SOON = import.meta.env.PROD || new URLSearchParams(window.location.search).has("soon");
 const SECTIONS = [
   { id: "top", label: "Home", Icon: HomeIcon },
   { id: "insights", label: "Insights", Icon: LayoutGrid },
   { id: "archive", label: "Archive", Icon: Archive },
   { id: "about", label: "About", Icon: User },
-];
+].filter((s) => !SOON || s.id === "top" || s.id === "about");
 const N = INSIGHTS.length;
 const longDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const shortDate = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -33,7 +36,7 @@ export default function Home() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { hash } = useLocation();
-  const open = INSIGHTS.findIndex((it) => it.slug === params.get("i"));
+  const open = SOON ? -1 : INSIGHTS.findIndex((it) => it.slug === params.get("i"));
   const [at, setAt] = useState(0);
   // the insight in the big panel: the newest, or whichever small panel the pointer or focus is on
   const [show, setShow] = useState(0);
@@ -86,7 +89,7 @@ export default function Home() {
 
   return (
     <div className="dash">
-      <a className="skip" href="#insights">Skip to the insights</a>
+      {!SOON && <a className="skip" href="#insights">Skip to the insights</a>}
 
       <nav className="rail" aria-label="Sections">
         <ul className="rail-nav" style={{ ["--at" as string]: at }}>
@@ -106,7 +109,7 @@ export default function Home() {
         <section id="top" className="panel hero" style={{ ["--i" as string]: 0 }}>
           <p className="name" translate="no">Steven Stills</p>
           <h1 className="d-h">Finding the right insights to build confidence in your data</h1>
-          <p className="d-lede">I use my unique experience in front and back end development, in an AI-accelerated world, to bring design and engineering expertise together and build simple, digestible insights.</p>
+          <p className="d-lede">I use my unique experience in front and back end development, in an AI-accelerated world, to bring design and engineering expertise together and build simple, digestible insights. I am a talented people leader capable of motivation, empathy and moving the project forward.</p>
           <div className="actions">
             <a className="d-btn" href={MAIL}>Get in touch</a>
             <a className="d-btn ghost" href={LINKEDIN} target="_blank" rel="noopener">LinkedIn</a>
@@ -116,6 +119,12 @@ export default function Home() {
           <img src="/img/me_lisbon.jpeg" alt="Steven Stills" width="935" height="1169" />
         </div>
 
+        {SOON ? (
+          <section className="panel soon">
+            <Turbine />
+            <p>I'm moving from longform content to shorter digestible insights and will be up and running within the week. Thanks for stopping over.</p>
+          </section>
+        ) : (<>
         <section id="insights" className="insights" aria-labelledby="insights-h" onPointerLeave={() => setShow(0)}>
           <h2 id="insights-h" className="sr-only">Insights</h2>
           {tile(INSIGHTS[show], 0, true)}
@@ -135,11 +144,13 @@ export default function Home() {
             ))}
           </ul>
         </section>
+        </>)}
 
         <section id="about" className="panel about" aria-labelledby="about-h">
           <h2 id="about-h" className="panel-h">About</h2>
           <p className="d-lede">I give you clean insights into your data, helping you understand your domain, de-risk your margin and open up new revenue options.</p>
           <p>I learned the dark art of front-end design first, in 2012. Then I had to pick up engineering and data literacy after that to hit my own goals, so I've always been highly self-driven and laser-focused on the end result.</p>
+          <p>I have led technical teams since 2017. I have managed managers, specialists and new starters. I hire and empower people to be better than me and give them the solid foundation to achieve what they are capable of.</p>
           <p>Whether you're a senior leader in an organisation who's lost track of your data stack, or a fresh start-up looking to set up your data pipeline on best principles, I've done this for companies of all sizes over the last 15 years, in full-time and contract employment. Send me a message if you'd like to talk about how I can help, or about your specific business bottlenecks.</p>
           <div className="actions">
             <a className="d-btn" href={MAIL}>Get in touch</a>
