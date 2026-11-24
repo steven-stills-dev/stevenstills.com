@@ -37,6 +37,24 @@ const monthOf = (i: number) => new Date(Date.UTC(2024, 9 + i, 1)).toLocaleDateSt
 
 export const INSIGHTS: Insight[] = [
   {
+    slug: "gas-weather-shortfall",
+    date: "2026-11-25",
+    title: "Seasonal normal weather in gas demand allocation",
+    line: "By my estimate the weather running warmer than the seasonal normal accounted for some 19 TWh of the 64 TWh shortfall in 2024/25, about £630m of gas at that year's average price.",
+    source: { label: "National Gas data portal: LDZ offtake against seasonal normal demand, gas year 2024/25", url: "https://data.nationalgas.com/find-gas-data" },
+    figure: { kind: "bars", unit: "TWh", mark: 0, items: [{ label: "Warmer weather", value: 19 }, { label: "Everything else", value: 45 }] },
+    alt: "Two bars splitting the 64 TWh by which gas demand fell short of the seasonal normal forecast in 2024/25: 19 TWh from weather warmer than normal and 45 TWh from everything else.",
+  },
+  {
+    slug: "tv-pickups",
+    date: "2026-11-24",
+    title: "Television has had bigger days of impact on the grid",
+    line: "The biggest TV pickup on NESO's list is 2,800 MW, after a missed penalty in England's 1990 World Cup semi-final. Half-time in the Euro 2024 final was 1,300 MW and the 1966 final 600 MW.",
+    source: { label: "NESO, record electricity demand during the FIFA World Cup, 8 June 2026", url: "https://www.neso.energy/news/neso-ready-record-electricity-demand-during-biggest-ever-fifa-world-cup" },
+    figure: { kind: "bars", unit: "MW", mark: 1, items: [{ label: "1966 final", value: 600 }, { label: "1990 semi-final", value: 2800 }, { label: "Euro 2024 final", value: 1300 }] },
+    alt: "Three bars of the surge in electricity demand after football matches on television: 600 MW after the 1966 World Cup final, 2,800 MW after the 1990 World Cup semi-final and 1,300 MW at half-time in the Euro 2024 final.",
+  },
+  {
     slug: "seasonal-normal-by-decade",
     date: "2026-11-23",
     title: "Why your seasonal normal weather forecast models are way out of date, in winter",

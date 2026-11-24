@@ -103,7 +103,36 @@ function Coins({ x }: { x: Insight }) {
   );
 }
 
+/** One flame per unit, in rows of eight, the marked bar's share lit in the primary colour. */
+function Flames({ x }: { x: Insight }) {
+  const f = bars(x)!, total = f.items.reduce((a, d) => a + d.value, 0), lit = f.items[f.mark ?? 0].value, cols = 8, dx = 34, dy = 26;
+  const rows = Math.ceil(total / cols), x0 = (W - (cols - 1) * dx) / 2, y0 = (H - (rows - 1) * dy) / 2;
+  return (
+    <>
+      {Array.from({ length: total }, (_, i) => (
+        <path key={i} className={i < lit ? "mark" : "soft"} fillRule="evenodd" d="M2 -12 C2 -6 8 -3 7 4 A7 7 0 0 1 -7 4 C-7 0 -5 -2 -4 -6 C-2 -4 -1 -8 2 -12Z M0 2 C2 4 2.6 5.4 2.6 6.4 A2.6 2.6 0 0 1 -2.6 6.4 C-2.6 5.4 -2 4 0 2Z" transform={`translate(${x0 + (i % cols) * dx} ${y0 + Math.floor(i / cols) * dy})`} />
+      ))}
+    </>
+  );
+}
+
+const KETTLE = "M4 18 L5.5 7 H14.5 L16 18Z M5.2 9.4 L0.8 6.2 L1.8 5 L5.6 7.6Z M8.6 4.4 h2.8 v2.6 h-2.8Z M15 8.4 C20.4 8.4 20.4 15.8 15.8 15.8 L15.6 14 C18 14 18 10.2 15.2 10.2Z";
+
+/** One kettle per 100 units, a block for each bar standing on a shared base line, the marked block in the primary colour. */
+function Kettles({ x }: { x: Insight }) {
+  const f = bars(x)!, cols = 4, dx = 20, dy = 26, gap = 24, block = cols * dx, x0 = (W - f.items.length * block - (f.items.length - 1) * gap) / 2, base = 214;
+  return (
+    <>
+      {f.items.map((d, i) => Array.from({ length: Math.round(d.value / 100) }, (_, k) => (
+        <path key={`${d.label}${k}`} className={i === f.mark ? "mark" : "soft"} d={KETTLE} transform={`translate(${x0 + i * (block + gap) + (k % cols) * dx} ${base - 20 - Math.floor(k / cols) * dy})`} />
+      )))}
+    </>
+  );
+}
+
 const PICTURES: Record<string, (p: { x: Insight }) => JSX.Element> = {
+  "gas-weather-shortfall": Flames,
+  "tv-pickups": Kettles,
   "seasonal-normal-by-decade": Thermometers,
   "summer-normal-by-decade": Thermometers,
   "hormuz-tanker-transits": Strait,
