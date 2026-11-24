@@ -122,7 +122,7 @@ export default function Home() {
         {SOON ? (
           <section className="panel soon">
             <Turbine />
-            <p>I'm moving from longform content to shorter digestible insights and will be up and running within the week. Thanks for stopping over.</p>
+            <p>Sorry my articles are down whilst I move from longform content to short digestible insights. I'll be up and running within the week. Thanks for stopping by and hope to see you soon.</p>
           </section>
         ) : (<>
         <section id="insights" className="insights" aria-labelledby="insights-h" onPointerLeave={() => setShow(0)}>
